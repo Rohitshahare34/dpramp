@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple CSS Test</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+    <style>
+        .test-box {
+            background: linear-gradient(135deg, #00B4D8 0%, #00A86B 100%);
+            color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1>CSS Test Page</h1>
+        <p>If you see a blue-green gradient background, CSS is working!</p>
+    </div>
+    
+    <div style="margin: 20px; padding: 20px; border: 2px solid #00B4D8;">
+        <h2>Django Template Test</h2>
+        <p>Current time: {% now "Y-m-d H:i:s" %}</p>
+        <p>If you see the current time above, Django templates are working!</p>
+    </div>
+</body>
+</html>

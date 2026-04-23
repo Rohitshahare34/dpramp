@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Contact</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Contact</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Contact Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <h3 class="text-primary mb-4">Contact Us</h3>
+                <h4 class="mb-4">Let's Build Something Amazing!</h4>
+                <p class="mb-4">Have a project in mind or need expert guidance? Share your details and our team will connect with you shortly.</p>
+                
+                <div class="d-flex align-items-center mb-4">
+                    <div class="flex-shrink-0 bg-primary p-3">
+                        <div class="icon-box">
+                            <i class="fas fa-map-marker-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="mb-0">Our Office</h5>
+                        <p class="mb-0">59, Kodamendhi, Aroli, Nagpur, Ramtek, Maharashtra - 441106, India</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex align-items-center mb-4">
+                    <div class="flex-shrink-0 bg-primary p-3">
+                        <div class="icon-box">
+                            <i class="fas fa-phone-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="mb-0">Call Us</h5>
+                        <p class="mb-0">+91 9359919779</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-primary p-3">
+                        <div class="icon-box">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="mb-0">Email Us</h5>
+                        <p class="mb-0">info@dpramp.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="POST" id="contactForm">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                                <label for="name">Full Name *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                                <label for="email">Email Address *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="+91 9876543210" required>
+                                <label for="mobile">Mobile Number *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="service_type" name="service_type">
+                                    <option value="">Choose Service</option>
+                                    <option value="iot">IoT Solutions</option>
+                                    <option value="drone">Drone Technology</option>
+                                    <option value="arvr">AR/VR Development</option>
+                                    <option value="software">Software Development</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <label for="service_type">Service Type</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Tell us about your project..." id="message" name="message" style="height: 150px"></textarea>
+                                <label for="message">Project Details</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Thank you for your message! We will get back to you soon.');
+    this.reset();
+});
+</script>
+{% endblock %}

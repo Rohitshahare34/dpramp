@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}Features - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+/* Scrolling Features Section */
+.scrolling-features-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 10%);
+    padding: 60px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.scrolling-features-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: proximity;
+    scrollbar-width: thin;
+    scrollbar-height: 8px;
+}
+
+.scrolling-feature-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    min-width: 280px;
+    max-width: 320px;
+    flex: 0 0 auto;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.scrolling-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 168, 107, 0.15);
+}
+
+.scrolling-feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #00A86B 0%, #00B4D8 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.scrolling-feature-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.scrolling-feature-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.scrolling-features-scroll-btn {
+    background: linear-gradient(135deg, #00A86B, #00B4D8 100%);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scrolling-features-scroll-btn:hover {
+    background: linear-gradient(135deg, #00A86B, #00B4D8 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 168, 107, 0.15);
+}
+
+/* Hide scrollbar on mobile */
+@media (max-width: 768px) {
+    .scrolling-features-container {
+        scroll-behavior: auto;
+    }
+    
+    .scrolling-features-scroll-btn {
+        display: none;
+    }
+}
+</style>
+
+<!-- Scrolling Features Section -->
+<div class="scrolling-features-section">
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+        <h6 class="text-primary text-uppercase mb-3">Scrolling <span class="text-emerald">Features</span></h6>
+        <p class="lead text-muted mb-5">Discover our comprehensive range of technology solutions and services designed to transform your business.</p>
+    </div>
+    
+    <div class="scrolling-features-container">
+        {% if features %}
+            <div class="scrolling-features-wrapper">
+                {% for feature in features %}
+                    <div class="scrolling-feature-card">
+                        <div class="scrolling-feature-icon">
+                            <i class="{{ feature.icon }}"></i>
+                        </div>
+                        <div class="scrolling-feature-content">
+                            <h4 class="scrolling-feature-title">{{ feature.title }}</h4>
+                            <p class="scrolling-feature-description">{{ feature.description|truncatewords:20 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="text-center mt-4">
+                <button class="scrolling-features-scroll-btn" onclick="scrollFeatures('left')">
+                    <i class="fas fa-chevron-left me-2"></i>
+                    <span>Scroll Left</span>
+                </button>
+                <button class="scrolling-features-scroll-btn" onclick="scrollFeatures('right')">
+                    <span>Scroll Right</span>
+                    <i class="fas fa-chevron-right me-2"></i>
+                </button>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <h4>No Features Available</h4>
+                    <p class="mb-0">Check back soon or contact support to add features to showcase your services.</p>
+                </div>
+        </div>
+    </div>
+</div>
+<!-- Scrolling Features Section End -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function scrollFeatures(direction) {
+    const container = document.querySelector('.scrolling-features-container');
+    const scrollAmount = 300;
+    
+    if (direction === 'left') {
+        container.scrollBy({
+            left: Math.max(0, container.scrollLeft - scrollAmount),
+            behavior: 'smooth'
+        });
+    } else if (direction === 'right') {
+        container.scrollBy({
+            left: Math.max(0, container.scrollLeft + scrollAmount),
+            behavior: 'smooth'
+        });
+    } else {
+        container.scrollBy({
+            left: Math.max(0, container.scrollLeft - scrollAmount),
+            behavior: 'smooth'
+        });
+    }
+    }
+}
+</script>
+{% endblock %}

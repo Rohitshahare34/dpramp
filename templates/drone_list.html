@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Drones - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Drones</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Drones</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Drone List Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-3">Our Drones</h6>
+            <h1 class="display-5 mb-4">Professional <span class="text-emerald">Drones</span> Collection</h1>
+            <p class="lead text-muted mb-5">Explore our complete range of professional drones for various applications and industries.</p>
+        </div>
+        
+        {% if drones %}
+            <div class="row g-4">
+                {% for drone in drones %}
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                        <div class="pro-card">
+                            <div class="pro-img-wrapper">
+                                {% if drone.image %}
+                                    <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
+                                {% else %}
+                                    <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="{{ drone.name }}">
+                                {% endif %}
+                                {% if drone.featured %}
+                                    <div class="pro-status-badge">Featured</div>
+                                {% endif %}
+                            </div>
+                            <div class="pro-card-body">
+                                <div class="pro-category">{{ drone.category|default:"Drone" }}</div>
+                                <h6 class="pro-title">{{ drone.name }}</h6>
+                                <div class="pro-card-footer">
+                                    <div class="pro-price-box">
+                                        <span class="pro-price-label">Price</span>
+                                        <span class="pro-price-value">Rs.{{ drone.price }}</span>
+                                    </div>
+                                    <a href="{% url 'notes:drone_detail' drone.slug %}" class="btn-pro-details">
+                                        Details <i class="fas fa-chevron-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-helicopter fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted mb-3">No Drones Available</h4>
+                <p class="text-muted">Check back later for our amazing drone collection.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<!-- Drone List End -->
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.text-emerald {
+    background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>
+{% endblock %}

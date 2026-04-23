@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- Favicon -->
+    <link href="{% static 'img/rough imgs/WhatsApp_Image_2025-12-09_at_00.31.10-removebg-preview.png' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    
+
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark py-2 px-lg-5 d-none d-lg-block">
+        <div class="container">
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-3 text-left mb-2 mb-lg-0">
+                    <div class="d-inline-flex align-items-center" style="height: 45px;">
+                        <small class="text-truncate me-3" style="height: 18px;"><i class="fa fa-map-marker-alt me-2"></i>59, Kodamendhi, Aroli, Nagpur, Ramtek, Maharashtra - 441106, India</small>
+                        <small class="text-truncate me-3" style="height: 18px;"><i class="fa fa-clock me-2"></i> 9.00 am - 9.00 pm</small>
+                    </div>
+                </div>
+                <div class="col-lg-9 text-right mb-2 mb-lg-0">
+                    <div class="d-inline-flex align-items-center" style="height: 45px;">
+                        <small class="text-truncate me-3" style="height: 18px;"><i class="fa fa-envelope me-2"></i>info@dpramp.com</small>
+                        <small class="text-truncate me-3" style="height: 18px;"><i class="fa fa-phone-alt me-2"></i>+91 9359919779</small>
+                    </div>
+                </div>
+            </div>
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container">
+            <h1 class="display-3 mb-4 animated slideInDown">About Us</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">About</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="img-about">
+                        <img class="img-fluid rounded" src="{% static 'img/about.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <h1 class="display-5 mb-4">We Help You To Grow Your Business</h1>
+                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                    <p class="mb-4">Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat finibus</p>
+                    <div class="row g-4 mb-3">
+                        <div class="col-sm-6">
+                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Award Winning</h6>
+                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Professional Staff</h6>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>24/7 Support</h6>
+                            <h6 class="mb-3"><i class="fa fa-check text-primary me-2"></i>Fair Prices</h6>
+                        </div>
+                    </div>
+                    <a href="{% url 'notes:services' %}" class="btn btn-primary py-3 px-5 mt-2">Explore More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Team Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="section-title text-center position-relative pb-3 mb-5 mx-auto" style="max-width: 600px;">
+                <h5 class="text-primary text-uppercase">Team Members</h5>
+                <h1 class="display-4">Our Professional Team</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="team-item bg-light rounded">
+                        <div class="text-center border-bottom p-4">
+                            <img class="img-fluid rounded-circle mb-4" src="{% static 'img/team-1.jpg' %}" style="width: 200px; height: 200px;" alt="">
+                            <h4>Rohit Shahare</h4>
+                            <p class="m-0">CEO & Founder</p>
+                        </div>
+                        <div class="d-flex justify-content-center p-4">
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="team-item bg-light rounded">
+                        <div class="text-center border-bottom p-4">
+                            <img class="img-fluid rounded-circle mb-4" src="{% static 'img/team-2.jpg' %}" style="width: 200px; height: 200px;" alt="">
+                            <h4>Tech Lead</h4>
+                            <p class="m-0">Development</p>
+                        </div>
+                        <div class="d-flex justify-content-center p-4">
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="team-item bg-light rounded">
+                        <div class="text-center border-bottom p-4">
+                            <img class="img-fluid rounded-circle mb-4" src="{% static 'img/team-3.jpg' %}" style="width: 200px; height: 200px;" alt="">
+                            <h4>Project Manager</h4>
+                            <p class="m-0">Operations</p>
+                        </div>
+                        <div class="d-flex justify-content-center p-4">
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-primary m-1" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-primary mb-4">DPRAMP-TECH SOLUTIONS</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>59, Kodamendhi, Aroli, Nagpur, Ramtek, Maharashtra - 441106, India</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+91 9359919779</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@dpramp.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-square btn-outline-light me-1" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square btn-outline-light me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square btn-outline-light me-1" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square btn-outline-light me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-primary mb-4">Quick Links</h4>
+                    <a class="btn btn-link" href="{% url 'notes:about' %}">About Us</a>
+                    <a class="btn btn-link" href="{% url 'notes:contact' %}">Contact Us</a>
+                    <a class="btn btn-link" href="">Privacy Policy</a>
+                    <a class="btn btn-link" href="">Terms & Condition</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-primary mb-4">Popular Links</h4>
+                    <a class="btn btn-link" href="{% url 'notes:home' %}">Home</a>
+                    <a class="btn btn-link" href="{% url 'notes:about' %}">About</a>
+                    <a class="btn btn-link" href="{% url 'notes:services' %}">Services</a>
+                    <a class="btn btn-link" href="{% url 'notes:product_list' %}">PDF Notes</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-primary mb-4">Newsletter</h4>
+                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative w-100 mt-3">
+                        <input class="form-control bg-white w-100 py-3 ps-4 pe-5" type="text" placeholder="Your Email">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a href="#">DPRAMP-TECH SOLUTIONS</a>, All Right Reserved. 
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

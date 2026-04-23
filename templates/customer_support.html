@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Support - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Customer Support</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Customer Support</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Customer Support Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-3">Get Help</h6>
+            <h1 class="display-5 mb-4">24/7 Customer <span class="text-emerald">Support</span></h1>
+            <p class="lead text-muted mb-5">We're here to help you with any questions or issues. Reach out to us via email, WhatsApp, or phone.</p>
+        </div>
+        
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="support-form-card border-0 shadow-sm rounded-3 p-4">
+                    <h4 class="mb-4">Submit Support Request</h4>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="POST" id="customerSupportForm">
+                        {% csrf_token %}
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">Personal Information</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                                    <label for="name">Name *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                                    <label for="email">Email *</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+                                    <label for="phone">Phone Number</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="tel" class="form-control" id="whatsapp_number" name="whatsapp_number" placeholder="WhatsApp Number (Optional)">
+                                    <label for="whatsapp_number">WhatsApp Number</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">Support Details</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="support_type" name="support_type" required>
+                                        <option value="">Preferred Contact Method</option>
+                                        <option value="email">Email</option>
+                                        <option value="whatsapp">WhatsApp</option>
+                                        <option value="phone">Phone Call</option>
+                                        <option value="chat">Live Chat</option>
+                                    </select>
+                                    <label for="support_type">Preferred Contact Method *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="priority" name="priority" required>
+                                        <option value="">Select Priority</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                    <label for="priority">Priority *</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Brief subject line" required>
+                                    <label for="subject">Subject *</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="message" name="message" placeholder="Describe your issue or question in detail..." style="height: 120px" required></textarea>
+                                    <label for="message">Message *</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Support Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="contact-info-card border-0 shadow-sm rounded-3 p-4">
+                    <h4 class="mb-4">Contact Information</h4>
+                    
+                    <div class="contact-method mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Email Support</h6>
+                                <p class="mb-0">support@dpramp.com</p>
+                                <small class="text-muted">Response within 24 hours</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">WhatsApp Support</h6>
+                                <p class="mb-0">+91 98765 43210</p>
+                                <small class="text-muted">Available 9 AM - 9 PM</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Phone Support</h6>
+                                <p class="mb-0">+91 12345 67890</p>
+                                <small class="text-muted">Available 24/7 for urgent issues</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="contact-icon bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Live Chat</h6>
+                                <p class="mb-0">Available on website</p>
+                                <small class="text-muted">Instant response during business hours</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="response-time-info mt-4 p-3 bg-light rounded-3">
+                        <h6 class="text-center mb-3">
+                            <i class="fas fa-clock me-2"></i>Average Response Times
+                        </h6>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <strong>Email</strong><br>
+                                <span class="text-primary">2-4 hours</span>
+                            </div>
+                            <div class="col-4">
+                                <strong>WhatsApp</strong><br>
+                                <span class="text-success">1-2 hours</span>
+                            </div>
+                            <div class="col-4">
+                                <strong>Phone</strong><br>
+                                <span class="text-info">Immediate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Customer Support End -->
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.text-emerald {
+    background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.support-form-card, .contact-info-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+}
+
+.contact-method {
+    padding: 15px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.contact-method:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.response-time-info {
+    border-left: 4px solid #00A86B;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment - {{ order.order_id }} - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Payment</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Payment</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Payment Section Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="payment-card border-0 shadow-lg rounded-3 p-4">
+                    <div class="payment-header mb-4">
+                        <h4 class="text-center mb-3">Order Summary</h4>
+                        <div class="order-details">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Order ID:</strong> {{ order.order_id }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Type:</strong> {{ order.get_order_type_display }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Name:</strong> {{ order.user_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Email:</strong> {{ order.user_email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Phone:</strong> {{ order.user_phone }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Amount:</strong> ₹{{ order.amount }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method mb-4">
+                        <h5 class="text-center mb-3">Select Payment Method</h5>
+                        <div class="payment-options">
+                            <button id="rzp-button" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-credit-card me-2"></i>Pay with Razorpay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Payment Section End -->
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.payment-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+.payment-header {
+    background: linear-gradient(135deg, #00A86B, #00B4D8);
+    color: white;
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+}
+
+.order-details .detail-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.payment-method {
+    border-top: 2px solid #e9ecef;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+#rzp-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+#rzp-button:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/razorpay.js"></script>
+<script>
+    var options = {
+        key: "{{ RAZORPAY_KEY_ID }}",
+        amount: {{ order.amount }}00,
+        currency: "INR",
+        name: "{{ order.order_id }}",
+        description: "Order for {{ order.get_order_type_display }}",
+        image: "https://example.com/your_logo.png",
+        handler: function (response) {
+            if (response.razorpay_payment_id) {
+                // Payment successful
+                window.location.href = "{% url 'notes:order_success' order_id=order.order_id %}";
+            }
+        },
+        prefill: {
+            contact: "{{ order.user_email }}",
+            name: "{{ order.user_name }}"
+        }
+    };
+    
+    var rzp = new Razorpay(options);
+    var btn = document.getElementById('rzp-button');
+    
+    btn.onclick = function(e) {
+        e.preventDefault();
+        rzp.open();
+    }
+</script>
+{% endblock %}

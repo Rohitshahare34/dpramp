@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block title %}Register for {{ workshop.title }} - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Workshop Registration</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'notes:workshops' %}">Workshops</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ workshop.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Workshop Registration Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="workshop-info border-0 shadow-sm rounded-3 p-3">
+                    <h5 class="mb-3 text-center">{{ workshop.title }}</h5>
+                    
+                    <div class="workshop-details">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-calendar text-primary me-2"></i>
+                            <small><strong>{{ workshop.date|date:"M d, Y" }}</strong> at {{ workshop.date|date:"g:i A" }}</small>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            <small>{{ workshop.location }}</small>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-user-tie text-primary me-2"></i>
+                            <small>{{ workshop.instructor }}</small>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-users text-primary me-2"></i>
+                            <small><span class="badge bg-success">{{ workshop.max_participants|add:"-"|add:workshop.registrations.count }}</span> seats left</small>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info py-2">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <small>Register by: {{ workshop.registration_deadline|date:"M d" }}</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="registration-form border-0 shadow-sm rounded-3 p-3">
+                    <h5 class="mb-3 text-center">Quick Registration</h5>
+                    
+                    <form method="POST" id="workshopRegistrationForm">
+                        {% csrf_token %}
+                        
+                        <!-- Compact Basic Information -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-12">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                                    <label for="name">Name *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    <label for="email">Email *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-2">
+                                    <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Phone" required>
+                                    <label for="mobile">Phone *</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Simplified Dynamic Fields -->
+                        {% if form_fields %}
+                            <div class="row g-2 mb-3">
+                                {% for field in form_fields %}
+                                    <div class="col-12">
+                                        {% if field.field_type == 'text' or field.field_type == 'email' or field.field_type == 'tel' or field.field_type == 'number' or field.field_type == 'date' %}
+                                            <div class="form-floating mb-2">
+                                                <input type="{{ field.field_type }}" 
+                                                       class="form-control" 
+                                                       id="{{ field.field_name }}" 
+                                                       name="{{ field.field_name }}" 
+                                                       placeholder="{{ field.placeholder|default:field.field_label }}"
+                                                       {% if field.required %}required{% endif %}>
+                                                <label for="{{ field.field_name }}">{{ field.field_label }}{% if field.required %} *{% endif %}</label>
+                                            </div>
+                                        
+                                        {% elif field.field_type == 'textarea' %}
+                                            <div class="mb-2">
+                                                <label class="form-label">{{ field.field_label }}{% if field.required %} *{% endif %}</label>
+                                                <textarea class="form-control" 
+                                                          id="{{ field.field_name }}" 
+                                                          name="{{ field.field_name }}" 
+                                                          placeholder="{{ field.placeholder|default:field.field_label }}"
+                                                          rows="2"
+                                                          {% if field.required %}required{% endif %}></textarea>
+                                            </div>
+                                        
+                                        {% elif field.field_type == 'select' %}
+                                            <div class="form-floating mb-2">
+                                                <select class="form-select" 
+                                                        id="{{ field.field_name }}" 
+                                                        name="{{ field.field_name }}"
+                                                        {% if field.required %}required{% endif %}>
+                                                    <option value="">Select {{ field.field_label }}</option>
+                                                    {% for option in field.options|split:"," %}
+                                                        <option value="{{ option|strip }}">{{ option|strip }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label for="{{ field.field_name }}">{{ field.field_label }}{% if field.required %} *{% endif %}</label>
+                                            </div>
+                                        
+                                        {% elif field.field_type == 'radio' %}
+                                            <div class="mb-2">
+                                                <label class="form-label small">{{ field.field_label }}{% if field.required %} *{% endif %}</label>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    {% for option in field.options|split:"," %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" 
+                                                                   type="radio" 
+                                                                   name="{{ field.field_name }}" 
+                                                                   id="{{ field.field_name }}_{{ forloop.counter }}" 
+                                                                   value="{{ option|strip }}"
+                                                                   {% if field.required %}required{% endif %}>
+                                                            <label class="form-check-label small" for="{{ field.field_name }}_{{ forloop.counter }}">
+                                                                {{ option|strip }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        
+                                        {% elif field.field_type == 'checkbox' %}
+                                            <div class="mb-2">
+                                                <label class="form-label small">{{ field.field_label }}{% if field.required %} *{% endif %}</label>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    {% for option in field.options|split:"," %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" 
+                                                                   type="checkbox" 
+                                                                   name="{{ field.field_name }}" 
+                                                                   id="{{ field.field_name }}_{{ forloop.counter }}" 
+                                                                   value="{{ option|strip }}">
+                                                            <label class="form-check-label small" for="{{ field.field_name }}_{{ forloop.counter }}">
+                                                                {{ option|strip }}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        
+                                        {% elif field.field_type == 'file' %}
+                                            <div class="mb-2">
+                                                <label class="form-label small">{{ field.field_label }}{% if field.required %} *{% endif %}</label>
+                                                <input type="file" 
+                                                       class="form-control form-control-sm" 
+                                                       id="{{ field.field_name }}" 
+                                                       name="{{ field.field_name }}"
+                                                       {% if field.required %}required{% endif %}>
+                                                {% if field.placeholder %}
+                                                    <div class="form-text small">{{ field.placeholder }}</div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="fas fa-check me-1"></i>Register Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Workshop Registration End -->
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.workshop-info, .registration-form {
+    background: white;
+}
+
+.workshop-details div {
+    padding: 8px 0;
+}
+
+.form-floating label {
+    color: #6c757d;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #00A86B;
+    box-shadow: 0 0 0 0.2rem rgba(0, 168, 107, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00A86B, #00B4D8);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #008050, #0077BE);
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}

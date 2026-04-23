@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Success - {{ order.order_id }} - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Order Success</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Order Success</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Order Success Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="success-card border-0 shadow-lg rounded-3 p-5 text-center">
+                    <div class="success-icon mb-4">
+                        <i class="fas fa-check-circle fa-4x text-success"></i>
+                    </div>
+                    
+                    <h3 class="mb-3">Payment Successful!</h3>
+                    <p class="lead mb-4">Your order has been confirmed successfully.</p>
+                    
+                    <div class="order-summary mb-4">
+                        <h5 class="mb-3">Order Details</h5>
+                        <div class="summary-item">
+                            <strong>Order ID:</strong> {{ order.order_id }}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Type:</strong> {{ order.get_order_type_display }}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Name:</strong> {{ order.user_name }}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Email:</strong> {{ order.user_email }}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Amount:</strong> ₹{{ order.amount }}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Status:</strong> <span class="badge bg-success">Paid</span>
+                        </div>
+                    </div>
+                    
+                    {% if order.order_type == 'workshop' %}
+                        <div class="workshop-info mt-4 p-3 bg-light rounded-3">
+                            <h6 class="mb-2">Workshop Registration Confirmed</h6>
+                            <p class="mb-0">You have successfully registered for the workshop. We will send you the details via email.</p>
+                        </div>
+                    {% endif %}
+                    
+                    {% if order.order_type == 'drone' %}
+                        <div class="shipping-info mt-4 p-3 bg-light rounded-3">
+                            <h6 class="mb-2">Shipping Information</h6>
+                            <p class="mb-0"><strong>Shipping Address:</strong> {{ order.shipping_address|default:"Will be notified soon" }}</p>
+                            <p class="mb-0"><strong>Billing Address:</strong> {{ order.billing_address|default:"Will be notified soon" }}</p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="actions mt-4">
+                        <a href="{% url 'notes:home' %}" class="btn btn-primary me-2">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                        <a href="{% url 'notes:my_orders' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-list me-2"></i>My Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Order Success End -->
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.success-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+.success-icon {
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    background: #f8f9fa;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.actions {
+    border-top: 2px solid #e9ecef;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+</style>
+{% endblock %}

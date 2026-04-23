@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+
+{% block title %}PDF Notes - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+</style>
+
+<!-- PDF Notes Hero Section -->
+<!-- PDF Notes Premium Hero Section -->
+<div class="container-fluid py-5 overflow-hidden position-relative" style="min-height: 450px; display: flex; align-items: center;">
+    <div class="mesh-bg"></div>
+    
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7 wow fadeInLeft" data-wow-delay="0.1s">
+                <div class="badge bg-white text-primary px-3 py-2 rounded-pill mb-4 shadow-sm fw-bold">
+                    <i class="fas fa-graduation-cap me-2"></i> LEARN FROM THE BEST
+                </div>
+                <h1 class="pdf-hero-title text-white mb-4">
+                    Master Your <span class="text-gradient-white">Skills</span> With <br>
+                    Premium <span class="text-gradient-white">Study Notes</span>
+                </h1>
+                <p class="lead text-white-50 mb-5 pe-lg-5">
+                    Unlock a library of expertly curated PDFs, PPTs, and project guides. Designed by industry professionals to accelerate your career growth and academic success.
+                </p>
+                
+                <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <h2 class="text-white mb-1 fw-bold">6+</h2>
+                            <small class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.7rem; letter-spacing: 1px;">Categories</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <h2 class="text-white mb-1 fw-bold">50+</h2>
+                            <small class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.7rem; letter-spacing: 1px;">Materials</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-none d-md-block">
+                        <div class="glass-card text-center h-100">
+                            <h2 class="text-white mb-1 fw-bold">₹1</h2>
+                            <small class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.7rem; letter-spacing: 1px;">Start From</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="position-relative text-center wow fadeInRight" data-wow-delay="0.3s">
+                    <div class="floating-artifact">
+                        <i class="fas fa-book-reader fa-10x text-white" style="opacity: 0.2;"></i>
+                    </div>
+                    <div class="position-absolute top-50 start-50 translate-middle w-100">
+                        <div class="row g-4 rotate-n-15">
+                            <div class="col-6">
+                                <div class="glass-card mb-4 floating-artifact" style="animation-delay: 1s;">
+                                    <i class="fas fa-file-pdf fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">PDF Guides</p>
+                                </div>
+                                <div class="glass-card floating-artifact" style="animation-delay: 2s;">
+                                    <i class="fas fa-file-powerpoint fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">Presentations</p>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-5">
+                                <div class="glass-card mb-4 floating-artifact" style="animation-delay: 1.5s;">
+                                    <i class="fas fa-file-word fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">DOC Resources</p>
+                                </div>
+                                <div class="glass-card floating-artifact" style="animation-delay: 2.5s;">
+                                    <i class="fas fa-shield-check fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">Verified Quality</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PDF Notes Hero Section End -->
+
+<!-- Breadcrumb -->
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'notes:home' %}" class="text-muted">Home</a></li>
+            <li class="breadcrumb-item active text-dark">PDF Notes</li>
+        </ol>
+    </nav>
+</div>
+
+<style>
+@keyframes slideInLeft {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInRight {
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+</style><!-- Search & Filter Section -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="glass-filter-wrapper wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-4">
+                    <label class="form-label small fw-bold text-muted mb-2">Search Materials</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 rounded-start-12">
+                            <i class="fas fa-search text-primary"></i>
+                        </span>
+                        <input type="text" class="form-control search-input-modern border-start-0 ps-0" id="searchInput" placeholder="Search by title or topic...">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label small fw-bold text-muted mb-2">Sort By</label>
+                    <select class="form-select form-select-modern" id="sortSelect">
+                        <option value="name">Name (A-Z)</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label class="form-label small fw-bold text-muted mb-2">Category</label>
+                    <select class="form-select form-select-modern" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.name }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <label class="form-label d-none d-lg-block mb-2">&nbsp;</label>
+                    <button class="btn btn-primary w-100 rounded-pill py-2 fw-bold" onclick="applyFilters()">
+                        <i class="fas fa-sync-alt me-2"></i>Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <!-- Stats -->
+                
+                <!-- Categories -->
+                <div class="mb-5 wow fadeInUp" data-wow-delay="0.3s">
+                    <h5 class="fw-bold mb-4 d-flex align-items-center">
+                        <span class="bg-primary-light p-2 rounded-3 me-3"><i class="fas fa-th-large text-primary"></i></span>
+                        Categories
+                    </h5>
+                    <div class="category-filters">
+                        <div class="category-btn-modern active" data-category="all">
+                            <i class="fas fa-list-ul me-2"></i> All Study Notes
+                        </div>
+                        {% for category in categories %}
+                        <div class="category-btn-modern" data-category="{{ category.name }}">
+                            <i class="fas fa-folder-open me-2"></i> {{ category.name }}
+                            <span class="badge bg-white text-primary float-end rounded-circle" style="width: 24px; height: 24px; line-height: 18px; font-size: 10px;">{{ category.products.count }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="mb-5 wow fadeInUp" data-wow-delay="0.4s">
+                    <h5 class="fw-bold mb-4 d-flex align-items-center">
+                        <span class="bg-primary-light p-2 rounded-3 me-3"><i class="fas fa-tag text-primary"></i></span>
+                        Price Filter
+                    </h5>
+                    <div class="bg-light p-4 rounded-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="small fw-bold text-muted">Range</span>
+                            <span class="small fw-bold text-primary">₹<span id="minPriceValue">0</span> - ₹<span id="maxPriceValue">1000</span></span>
+                        </div>
+                        <input type="range" class="form-range custom-range mb-2" id="minPrice" min="0" max="1000" value="0">
+                        <input type="range" class="form-range custom-range" id="maxPrice" min="0" max="1000" value="1000">
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="bg-gradient-primary rounded-4 p-4 text-center text-white shadow">
+                        <i class="fas fa-question-circle fa-3x mb-3 opacity-50"></i>
+                        <h6 class="fw-bold mb-2">Need Help?</h6>
+                        <p class="small mb-3">Finding hard to locate the right notes?</p>
+                        <a href="{% url 'notes:contact' %}" class="btn btn-white btn-sm rounded-pill w-100 fw-bold">Contact Support</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="col-lg-9">
+                <!-- Results Header -->
+                <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom wow fadeIn" data-wow-delay="0.1s">
+                    <div>
+                        <h4 class="fw-bold mb-1">Explore Resources</h4>
+                        <p class="text-muted small mb-0"><span id="resultsCount">0</span> items matching your preference</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-light btn-square rounded-3 active" onclick="toggleView('grid')"><i class="fas fa-th"></i></button>
+                        <button class="btn btn-light btn-square rounded-3" onclick="toggleView('list')"><i class="fas fa-list"></i></button>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="row g-4" id="productsGrid">
+                    {% if categories %}
+                        {% for category in categories %}
+                            {% if category.products.exists %}
+                                {% for product in category.products.all %}
+                                <div class="col-md-6 col-lg-4 product-item wow fadeInUp" 
+                                     data-wow-delay="0.{{ forloop.counter }}s"
+                                     data-category="{{ category.name }}" 
+                                     data-price="{{ product.price }}" 
+                                     data-name="{{ product.title|lower }}">
+                                    <div class="pro-card">
+                                        <div class="pro-img-wrapper">
+                                            {% if product.thumbnail %}
+                                                <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
+                                            {% else %}
+                                                <img src="{% static 'img/service-1.jpg' %}" alt="{{ product.title }}">
+                                            {% endif %}
+                                            <div class="pro-status-badge">{% if forloop.counter|divisibleby:2 %}HOT{% else %}NEW{% endif %}</div>
+                                        </div>
+                                        <div class="pro-card-body">
+                                            <div class="pro-category">{{ category.name }}</div>
+                                            <h6 class="pro-title">{{ product.title }}</h6>
+                                            <div class="pro-card-footer">
+                                                <div class="pro-price-box">
+                                                    <span class="pro-price-label">Price</span>
+                                                    <span class="pro-price-value">₹{{ product.price }}</span>
+                                                </div>
+                                                <a href="{% url 'notes:product_detail' product.slug %}" class="btn-pro-details">
+                                                    Details <i class="fas fa-chevron-right ms-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12 text-center py-5 wow fadeIn" data-wow-delay="0.3s">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                                <i class="fas fa-search fa-3x text-muted"></i>
+                            </div>
+                            <h4 class="fw-bold">No results found</h4>
+                            <p class="text-muted">Oops! We couldn't find any study materials matching your current filters.</p>
+                            <button class="btn btn-primary rounded-pill mt-3 px-4" onclick="location.reload()">Clear All Filters</button>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Pagination -->
+                <nav class="mt-5 pt-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <ul class="pagination pagination-modern justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link shadow-none" href="#"><i class="fas fa-chevron-left"></i></a>
+                        </li>
+                        <li class="page-item active"><a class="page-link shadow-none" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link shadow-none" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link shadow-none" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link shadow-none" href="#"><i class="fas fa-chevron-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Local helper for title height consistency */
+.title-limit {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 38px;
+    line-height: 1.2;
+}
+.rounded-start-12 { border-top-left-radius: 12px !important; border-bottom-left-radius: 12px !important; }
+.mr-2 { margin-right: 0.5rem; }
+.rotate-n-15 { transform: rotate(-15deg); }
+.bg-white { background-color: #fff !important; }
+.btn-white { background-color: #fff; color: var(--primary); }
+.btn-white:hover { background-color: #f8f9fa; transform: translateY(-3px); }
+</style>
+
+<script>
+// Re-initializing tooltips or custom logic if needed
+document.addEventListener('DOMContentLoaded', function() {
+    updateProductCount();
+    updateResultsCount();
+    
+    // Category button click handler (Update for new class names)
+    document.querySelectorAll('.category-btn-modern').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.category-btn-modern').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            filterProducts(this.dataset.category);
+        });
+    });
+});
+
+function updateProductCount() {
+    const total = document.querySelectorAll('.product-item').length;
+    const el = document.getElementById('totalProducts');
+    if(el) el.textContent = total;
+}
+
+function updateResultsCount() {
+    const visible = document.querySelectorAll('.product-item:not(.d-none)').length;
+    const el = document.getElementById('resultsCount');
+    if(el) el.textContent = visible;
+}
+
+function filterProducts(category) {
+    const products = document.querySelectorAll('.product-item');
+    products.forEach(p => {
+        if (category === 'all' || p.dataset.category === category) {
+            p.classList.remove('d-none');
+            p.classList.add('wow', 'fadeInUp'); // Re-trigger animation
+        } else {
+            p.classList.add('d-none');
+        }
+    });
+    updateResultsCount();
+}
+
+// Range logic
+document.getElementById('minPrice').addEventListener('input', function() {
+    document.getElementById('minPriceValue').textContent = this.value;
+    applyFilters();
+});
+document.getElementById('maxPrice').addEventListener('input', function() {
+    document.getElementById('maxPriceValue').textContent = this.value;
+    applyFilters();
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', function() {
+    applyFilters();
+});
+
+// Combined Filters
+function applyFilters() {
+    const category = document.querySelector('.category-btn-modern.active').dataset.category;
+    const min = parseInt(document.getElementById('minPrice').value);
+    const max = parseInt(document.getElementById('maxPrice').value);
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    
+    document.querySelectorAll('.product-item').forEach(p => {
+        const pCat = p.dataset.category;
+        const pPrice = parseInt(p.dataset.price);
+        const pName = p.dataset.name;
+        
+        const matchCat = (category === 'all' || pCat === category);
+        const matchPrice = (pPrice >= min && pPrice <= max);
+        const matchSearch = pName.includes(search);
+        
+        if (matchCat && matchPrice && matchSearch) {
+            p.classList.remove('d-none');
+        } else {
+            p.classList.add('d-none');
+        }
+    });
+    updateResultsCount();
+}
+
+function toggleView(type) {
+    const grid = document.getElementById('productsGrid');
+    const btns = document.querySelectorAll('.btn-square');
+    btns.forEach(b => b.classList.remove('active'));
+    
+    if (type === 'list') {
+        grid.classList.remove('row');
+        grid.classList.add('list-group', 'px-3');
+        event.currentTarget.classList.add('active');
+    } else {
+        grid.classList.add('row');
+        grid.classList.remove('list-group', 'px-3');
+        event.currentTarget.classList.add('active');
+    }
+}
+</script>
+{% endblock %}
+%}

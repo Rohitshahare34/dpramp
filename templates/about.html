@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">About Us</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">About Us</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                    <img class="img-fluid w-100" src="{% static 'img/about.jpg' %}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <h1 class="mb-4">Welcome to DPRAMP-TECH SOLUTIONS</h1>
+                <p class="mb-4">DPRAMP-TECH SOLUTIONS is a technology-driven innovation company specializing in IoT, Drone Technology, AR/VR Development, and Advanced Software Solutions. We are committed to delivering cutting-edge solutions that transform businesses and improve lives.</p>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-6 d-flex align-items-center">
+                        <div class="flex-shrink-0 btn-square bg-primary text-white me-3">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-0">Innovation First</h5>
+                            <span class="text-muted">Cutting-edge technology solutions</span>
+                        </div>
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <div class="flex-shrink-0 btn-square bg-primary text-white me-3">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-0">Expert Team</h5>
+                            <span class="text-muted">Experienced professionals</span>
+                        </div>
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <div class="flex-shrink-0 btn-square bg-primary text-white me-3">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-0">Quality Assured</h5>
+                            <span class="text-muted">Best-in-class solutions</span>
+                        </div>
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <div class="flex-shrink-0 btn-square bg-primary text-white me-3">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-0">24/7 Support</h5>
+                            <span class="text-muted">Always here to help</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a class="btn btn-primary py-3 px-5 mt-2" href="{% url 'notes:contact' %}">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+{% endblock %}

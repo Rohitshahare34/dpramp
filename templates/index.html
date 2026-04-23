@@ -1,0 +1,2718 @@
+{% extends 'base.html' %}
+
+{% block title %}DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block extra_js %}
+<script>
+// Fix mobile menu closing
+document.addEventListener('DOMContentLoaded', function() {
+    // Close mobile menu when clicking on nav links
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+            if (window.innerWidth < 992) { // Only on mobile/tablet
+                navbarCollapse.classList.remove('show');
+                navbarToggler.classList.add('collapsed');
+                navbarToggler.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const isClickInsideNavbar = navbarCollapse.contains(event.target);
+        const isClickInsideToggler = navbarToggler.contains(event.target);
+        
+        if (!isClickInsideNavbar && !isClickInsideToggler && window.innerWidth < 992) {
+            if (navbarCollapse.classList.contains('show')) {
+                navbarCollapse.classList.remove('show');
+                navbarToggler.classList.add('collapsed');
+                navbarToggler.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- Favicon -->
+    <link href="{% static 'logos/logo.png' %}" rel="icon" type="image/png">
+
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    
+
+    
+<!-- Professional White & Green Hero Section Start -->
+<div class="container-fluid hero-white-theme mb-5">
+    <style>
+        .hero-white-theme {
+            background-color: #f9fbfb;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle mesh gradient background */
+        .hero-white-theme::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 168, 107, 0.03) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(0, 180, 216, 0.03) 0%, transparent 40%);
+            z-index: 1;
+        }
+
+        .hero-carousel-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge-modern {
+            display: inline-block;
+            background: rgba(0, 168, 107, 0.08);
+            color: #00A86B;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 168, 107, 0.15);
+        }
+
+        .hero-title-modern {
+            color: #1a1a2e;
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .text-emerald {
+            background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc-modern {
+            color: #2d3748;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            max-width: 550px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .btn-modern-green {
+            background: linear-gradient(135deg, #00A86B 0%, #059669 100%);
+            color: white;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            box-shadow: 0 10px 20px rgba(0, 168, 107, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-modern-green:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 168, 107, 0.3);
+            background: linear-gradient(135deg, #059669 0%, #0077BE 100%);
+            color: white;
+        }
+
+        .btn-modern-outline {
+            color: #4a4a5e;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid #e2e8f0;
+            background: transparent;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-modern-outline:hover {
+            border-color: #00A86B;
+            color: #00A86B;
+            background: rgba(0, 168, 107, 0.03);
+            transform: translateY(-3px);
+        }
+
+        .hero-img-wrapper-modern {
+            position: relative;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .hero-img-modern {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            aspect-ratio: 1/1;
+            border: 3px solid rgba(255,255,255,0.8);
+        }
+
+        @keyframes heroLevitate {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            animation: heroLevitate 5s ease-in-out infinite reverse;
+        }
+
+        .badge-1 { top: 20%; left: -50px; }
+        .badge-2 { bottom: 20%; right: -20px; }
+
+        .carousel-indicators [button] {
+            width: 40px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: #e2e8f0;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicators .active {
+            width: 60px;
+            background-color: #00A86B;
+        }
+
+        /* Hero Carousel Navigation Arrows */
+        .hero-carousel-arrow {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(0, 168, 107, 0.2);
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .hero-carousel-arrow:hover {
+            background: #00A86B;
+            border-color: #00A86B;
+            opacity: 1;
+        }
+
+        .hero-carousel-arrow:hover .carousel-control-prev-icon,
+        .hero-carousel-arrow:hover .carousel-control-next-icon {
+            filter: invert(1) brightness(2);
+        }
+
+        .carousel-control-prev.hero-carousel-arrow {
+            left: 20px;
+        }
+
+        .carousel-control-next.hero-carousel-arrow {
+            right: 20px;
+        }
+
+        .hero-carousel-arrow .hero-arrow-icon {
+            font-size: 20px;
+            color: #00A86B;
+            transition: color 0.3s ease;
+        }
+
+        .hero-carousel-arrow:hover .hero-arrow-icon {
+            color: #ffffff;
+        }
+
+        /* Ensure continuous smooth carousel rotation */
+        .carousel-item {
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-inner {
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Prevent carousel from pausing on hover */
+        .carousel:hover .carousel-item {
+            transition: transform 0.5s ease-in-out;
+        }
+
+        @media (max-width: 991.98px) {
+            .hero-title-modern { font-size: 2.5rem; }
+            .hero-white-theme { padding: 30px 15px; }
+            .hero-img-wrapper-modern { 
+                margin-top: 30px;
+                max-width: 400px;
+                padding: 10px;
+            }
+            .hero-img-modern {
+                height: 400px;
+                width: 100%;
+                aspect-ratio: 1/1;
+            }
+            .btn-modern-outline { margin-left: 0; margin-top: 15px; width: 100%; text-align: center; }
+            .btn-modern-green { width: 100%; text-align: center; }
+            .floating-badge { display: none; }
+        }
+
+        @media (max-width: 575.98px) {
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                position: relative;
+            }
+            
+            .hero-img-wrapper-modern { 
+                max-width: 280px;
+                padding: 1px;
+                margin: 0 auto 15px auto;
+            }
+            .hero-img-modern {
+                height: 280px;
+                width: 100%;
+                aspect-ratio: 1/1;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.12), 0 5px 15px rgba(0,0,0,0.08);
+                border: 2px solid rgba(255,255,255,0.6);
+            }
+            .hero-white-theme {
+                padding: 100px 25px 30px 25px !important;
+                overflow-x: hidden;
+            }
+            .hero-carousel-container {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+            .container {
+                padding: 0 15px;
+                max-width: 100vw;
+            }
+            
+            /* Mobile layout: Image first, then text */
+            .carousel-item .row {
+                flex-direction: column;
+                margin: 0;
+            }
+            
+            .carousel-item .col-lg-6:first-child {
+                order: 2;
+                text-align: center;
+                margin-top: 10px;
+                padding: 0 10px;
+            }
+            
+            .carousel-item .col-lg-6:last-child {
+                order: 1;
+                text-align: center;
+                padding: 0;
+                margin-bottom: 15px;
+            }
+            
+            .hero-title-modern {
+                font-size: 1.5rem;
+                text-align: center;
+                margin-bottom: 10px;
+                line-height: 1.2;
+                word-wrap: break-word;
+            }
+            
+            .hero-desc-modern {
+                font-size: 0.9rem;
+                text-align: center;
+                margin: 0 auto 25px auto;
+                max-width: 100%;
+                line-height: 1.4;
+                padding: 0 10px;
+            }
+            
+            .hero-badge-modern {
+                display: inline-block;
+                margin-bottom: 12px;
+                font-size: 0.75rem;
+                padding: 6px 14px;
+                background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
+                color: white;
+                border-radius: 20px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border: none;
+            }
+            
+            .d-flex.flex-wrap {
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .btn-modern-green {
+                font-size: 0.85rem;
+                padding: 12px 24px;
+                width: 80%;
+                margin: 0 auto;
+            }
+            
+            /* Hide carousel indicators and arrows in mobile for clean view */
+            .carousel-indicators, .hero-carousel-arrow {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <div class="hero-carousel-container">
+        <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false" data-bs-wrap="true">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="3"></button>
+            </div>
+            
+            <div class="carousel-inner">
+                <!-- Slide 1: Drones -->
+                <div class="carousel-item active">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 wow fadeInLeft">
+                                <span class="hero-badge-modern">Student Projects</span>
+                                <h1 class="hero-title-modern">Drone For <span class="text-emerald">Student</span><br>Projects</h1>
+                                <p class="hero-desc-modern">Complete drone solutions for student projects with expert guidance. Learn drone technology with hands-on training and practical implementation.</p>
+                                <div class="d-flex flex-wrap">
+                                    <a href="{% url 'notes:drone_shop' %}" class="btn-modern-green">
+                                        Explore Drones <i class="fas fa-helicopter ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 wow fadeInRight">
+                                <div class="hero-img-wrapper-modern">
+                                    <img src="{% static 'img/Drone met Camera.jpg' %}" alt="Drone Solutions" class="hero-img-modern">
+                                    <div class="floating-badge badge-1">
+                                        <i class="fas fa-award text-emerald me-3 fa-2x"></i>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">Certified Lab</h6>
+                                            <p class="mb-0 small text-muted">Advanced Aerial Tech</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Education -->
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <span class="hero-badge-modern">Premium Learning</span>
+                                <h1 class="hero-title-modern">Study <span class="text-emerald">Smarter</span>,<br>Not Harder</h1>
+                                <p class="hero-desc-modern">Access premium PDF notes and study materials designed by experts. Master complex topics with our structured guides and placement resources.</p>
+                                <div class="d-flex flex-wrap">
+                                    <a href="{% url 'notes:product_list' %}" class="btn-modern-green">
+                                        Explore Notes <i class="fas fa-file-pdf ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hero-img-wrapper-modern">
+                                    <img src="{% static 'img/Gemini_Generated_Image_rvt2bnrvt2bnrvt2 (1).png' %}" alt="Study Materials" class="hero-img-modern">
+                                    <div class="floating-badge badge-2">
+                                        <i class="fas fa-star text-warning me-3 fa-2x"></i>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">4.9/5 Rating</h6>
+                                            <p class="mb-0 small text-muted">Trusted by 10k+ Students</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Workshops -->
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <span class="hero-badge-modern">Practical Learning</span>
+                                <h1 class="hero-title-modern">Workshop On <span class="text-emerald">IoT And</span><br>Practical Learning</h1>
+                                <p class="hero-desc-modern">Join hands-on IoT workshops with practical learning experience. Build real projects and gain industry-ready skills with expert guidance.</p>
+                                <div class="d-flex flex-wrap">
+                                    <a href="{% url 'notes:workshops' %}" class="btn-modern-green">
+                                        Join Now <i class="fas fa-chalkboard-teacher ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hero-img-wrapper-modern">
+                                    <img src="{% static 'img/Edit_this_image_202604201333.png' %}" alt="Workshops" class="hero-img-modern">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Innovation -->
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <span class="hero-badge-modern">Next-Gen Tech</span>
+                                <h1 class="hero-title-modern">Future-Ready <span class="text-emerald">Innovation</span><br>Systems</h1>
+                                <p class="hero-desc-modern">Harness the power of high-end technology solutions for digital transformation and enterprise automation.</p>
+                                <div class="d-flex flex-wrap">
+                                    <a href="#services" class="btn-modern-green">
+                                        Get Started <i class="fas fa-rocket ms-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hero-img-wrapper-modern">
+                                    <img src="{% static 'img/🤍.jpg' %}" alt="Innovation" class="hero-img-modern">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Navigation Arrows -->
+            <button class="carousel-control-prev hero-carousel-arrow" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
+                <i class="fas fa-chevron-left hero-arrow-icon" aria-hidden="true"></i>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next hero-carousel-arrow" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
+                <i class="fas fa-chevron-right hero-arrow-icon" aria-hidden="true"></i>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Professional White & Green Hero Section End -->
+
+<!-- Features Section Start -->
+<div class="container-xxl py-5 features-section">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-3">Our Features</h6>
+            <h1 class="display-5 mb-4">What We Offer</h1>
+            <p class="lead text-muted mb-5">Discover our comprehensive range of technology solutions and services designed to transform your business.</p>
+        </div>
+        
+        {% if features %}
+            <!-- Scrolling Features Container -->
+            <div class="scrolling-features-wrapper">
+                <div class="scrolling-features-container">
+                    {% for feature in features %}
+                        <div class="scrolling-feature-card">
+                            <div class="scrolling-feature-icon">
+                                <i class="{{ feature.icon|default:'fas fa-star' }}"></i>
+                            </div>
+                            <div class="scrolling-feature-content">
+                                <h4 class="scrolling-feature-title">{{ feature.title }}</h4>
+                                <p class="scrolling-feature-description">{{ feature.description|truncatewords:20 }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <h4>No Features Available</h4>
+                    <p class="mb-0">Check back soon or contact support to add features to showcase your services.</p>
+                </div>
+        {% endif %}
+    </div>
+</div>
+<!-- Features Section End -->
+
+    <!-- About Start -->
+<div class="container-xxl py-5 about-section">
+    <div class="container">
+        <div class="row g-5 align-items-center mb-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="about-image-wrapper position-relative d-flex align-items-center justify-content-center">
+                    <div class="iot-spinner-wrapper">
+                        <img 
+                            src="{% static 'img/rough imgs/img1.png' %}" 
+                            alt="Internet of Things" 
+                            class="img-fluid advanced-iot-spinner"
+                            role="img"
+                            aria-label="Internet of Things">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="about-content">
+                    <div class="section-label mb-3">
+                        <span class="badge bg-gradient-primary text-white px-4 py-2 rounded-pill fw-semi-bold">
+                            <i class="fa fa-info-circle me-2"></i>About Us
+                        </span>
+                    </div>
+                    <h1 class="display-4 fw-bold mb-4 about-title">
+                        DPRAMP-TECH SOLUTIONS LLP
+                    </h1>
+                    <div class="about-description mb-4">
+                        <p class="lead text-muted mb-3">
+                            DPRAMP-TECH SOLUTIONS LLP is a technology-driven innovation company specializing in <strong class="text-primary">IoT</strong>, <strong class="text-primary">Drone Technology</strong>, <strong class="text-primary">AR/VR Development</strong>, and <strong class="text-primary">Advanced Software Solutions</strong>.
+                        </p>
+                        <p class="text-muted">
+                            We work at the intersection of hardware and software to deliver cutting-edge industrial, educational, and research-based technology solutions.
+                        </p>
+                    </div>
+                    <div class="about-highlight-box bg-light rounded-4 p-4 mb-4 border-start border-primary border-4">
+                        <p class="mb-0 text-dark">
+                            <i class="fa fa-check-circle text-primary me-2"></i>
+                            Our organization is committed to building next-generation tech labs, developing smart automation systems, and offering industry-ready project development and consulting services.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Tabs Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="advanced-tabs-wrapper bg-white rounded-3 shadow-sm p-3 p-md-4">
+                    <nav>
+                        <div class="nav nav-pills nav-justified mb-3 advanced-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link advanced-tab-btn active" id="nav-story-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-story" type="button" role="tab" aria-controls="nav-story"
+                                aria-selected="true">
+                                <i class="fa fa-book-open me-2"></i>
+                                <span>Story</span>
+                            </button>
+
+                            <button class="nav-link advanced-tab-btn" id="nav-mission-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-mission" type="button" role="tab" aria-controls="nav-mission"
+                                aria-selected="false">
+                                <i class="fa fa-bullseye me-2"></i>
+                                <span>Mission</span>
+                            </button>
+
+                            <button class="nav-link advanced-tab-btn" id="nav-vision-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-vision" type="button" role="tab" aria-controls="nav-vision"
+                                aria-selected="false">
+                                <i class="fa fa-eye me-2"></i>
+                                <span>Vision</span>
+                            </button>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content advanced-tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-story" role="tabpanel"
+                            aria-labelledby="nav-story-tab">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="info-card bg-gradient-primary text-white rounded-3 p-3 h-100">
+                                        <h6 class="mb-3 fw-bold"><i class="fa fa-building me-2"></i>Company Details</h6>
+                                        <ul class="list-unstyled mb-0 small">
+                                            <li class="mb-2">
+                                                <strong>Name:</strong> DPRAMP-TECH SOLUTIONS LLP
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>LLPIN:</strong> ACJ-7302
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>Established:</strong> 2025
+                                            </li>
+                                            <li>
+                                                <strong>Team:</strong> 15-20 Employees
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card bg-light border-start border-primary border-4 rounded-3 p-3 h-100">
+                                        <h6 class="mb-2 text-primary fw-bold"><i class="fa fa-lightbulb me-2"></i>Our Story</h6>
+                                        <p class="text-muted mb-0 small lh-sm">
+                                            DPRAMP-TECH SOLUTIONS LLP is a technology-driven innovation company specializing in <strong>IoT</strong>, <strong>Drone Technology</strong>, <strong>AR/VR Development</strong>, and <strong>Advanced Software Solutions</strong>. We work at the intersection of hardware and software to deliver cutting-edge industrial, educational, and research-based technology solutions.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-mission" role="tabpanel"
+                            aria-labelledby="nav-mission-tab">
+                            <div class="mission-content">
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-box bg-gradient-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 50px; height: 50px;">
+                                        <i class="fa fa-bullseye"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-2 fw-bold">Our Mission</h5>
+                                        <p class="text-muted mb-0 small lh-sm">
+                                            To deliver high-impact, future-ready technology solutions, labs, and consulting services that accelerate innovation, enhance technical skills, and support industries in their journey toward digital transformation and automation.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-vision" role="tabpanel"
+                            aria-labelledby="nav-vision-tab">
+                            <div class="vision-content">
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-box bg-gradient-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 50px; height: 50px;">
+                                        <i class="fa fa-eye"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-2 fw-bold">Our Vision</h5>
+                                        <p class="text-muted mb-0 small lh-sm">
+                                            To become a leading technology enabler by building innovative, industry-ready IoT, Drone, and AR/VR ecosystems that empower education, research, and industrial transformation.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- About End -->
+
+<style>
+    .text-emerald {
+        background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+/* Features Section Styles */
+.features-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.feature-card {
+    background: white;
+    border: none;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 168, 107, 0.15);
+}
+
+.feature-icon-wrapper {
+    position: relative;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 168, 107, 0.2);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 168, 107, 0.3);
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    transition: color 0.3s ease;
+}
+
+.feature-card:hover .feature-title {
+    color: #00A86B;
+}
+
+.feature-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    transition: color 0.3s ease;
+}
+
+.feature-card:hover .feature-description {
+    color: #6c757d;
+}
+</style>
+
+<!-- PDF Notes Section Start -->
+<div class="container-xxl py-5" id="notes-section">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 650px;">
+            <div class="section-label mb-4">
+                <span class="badge bg-gradient-primary text-white px-4 py-2 rounded-pill fw-semi-bold">
+                    <i class="fas fa-file-pdf me-2"></i>PDF Notes
+                </span>
+            </div>
+            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Premium Study Materials</h1>
+            <p class="lead text-muted mb-5">Access high-quality PDF notes for Data Science, Programming, Web Development, Placement & Interview Prep, and more. Get company test papers, previous year questions (PYQ), and expertly crafted study materials to boost your career.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Dynamic Database Products -->
+            {% for product in featured_notes|slice:"0:4" %}
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                <div class="pro-card">
+                    <div class="pro-status-badge">{% if forloop.counter|divisibleby:2 %}HOT{% else %}NEW{% endif %}</div>
+                    <div class="pro-img-wrapper">
+                        {% if product.thumbnail %}
+                            <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
+                        {% else %}
+                            <img src="{% static 'img/service-1.jpg' %}" alt="{{ product.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">{{ product.category.name|default:"PDF NOTES" }}</div>
+                        <h6 class="pro-title">{{ product.title }}</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">₹{{ product.price|floatformat:0 }}</span>
+                            </div>
+                            <a href="{% url 'notes:product_detail' product.slug %}" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Fallback static cards if no products in database -->
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="pro-card">
+                    <div class="pro-status-badge">Popular</div>
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/service-1.jpg' %}" alt="PDF Notes">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">PDF Notes</div>
+                        <h6 class="pro-title">Data Structures & Algorithms</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">₹499</span>
+                            </div>
+                            <a href="{% url 'notes:product_list' %}" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="pro-card">
+                    <div class="pro-status-badge">New</div>
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/service-2.jpg' %}" alt="PDF Notes">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">PDF Notes</div>
+                        <h6 class="pro-title">Machine Learning Fundamentals</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">₹599</span>
+                            </div>
+                            <a href="{% url 'notes:product_list' %}" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="pro-card">
+                    <div class="pro-status-badge">Trending</div>
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/service-3.jpg' %}" alt="PDF Notes">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">PDF Notes</div>
+                        <h6 class="pro-title">Full Stack Web Development</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">₹799</span>
+                            </div>
+                            <a href="{% url 'notes:product_list' %}" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="pro-card">
+                    <div class="pro-status-badge">Bestseller</div>
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/service-4.jpg' %}" alt="PDF Notes">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">PDF Notes</div>
+                        <h6 class="pro-title">Python Programming Master</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">₹399</span>
+                            </div>
+                            <a href="{% url 'notes:product_list' %}" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.5s">
+            <a href="{% url 'notes:product_list' %}" class="btn-pro-view-all">
+                <i class="fas fa-book-open me-2"></i>View All PDF Notes
+                <i class="fas fa-arrow-right ms-3"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- PDF Notes Section End -->
+
+<!-- Drone Shop Section Start -->
+<div class="container-xxl py-5" id="drones-section">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 650px;">
+            <div class="section-label mb-4">
+                <span class="badge text-white px-4 py-2 rounded-pill fw-semi-bold" style="background: linear-gradient(135deg, #00A86B, #00B4D8);">
+                    <i class="fas fa-helicopter me-2"></i>Drone Shop
+                </span>
+            </div>
+            <h1 class="display-4 fw-bold mb-4">Professional <span class="text-emerald">Drones</span> For Sale</h1>
+            <p class="lead text-muted mb-5">Explore our range of professional drones for agriculture, surveillance, photography, and industrial applications.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Dynamic Drone Products from Database -->
+            {% for drone in featured_drones %}
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                    <div class="pro-card">
+                        {% if drone.featured %}
+                            <div class="pro-status-badge">Featured</div>
+                        {% endif %}
+                        <div class="pro-img-wrapper">
+                            {% if drone.image %}
+                                <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
+                            {% else %}
+                                <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="{{ drone.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="pro-card-body">
+                            <div class="pro-category">{{ drone.category|default:"Drone" }}</div>
+                            <h6 class="pro-title">{{ drone.name }}</h6>
+                            <div class="pro-card-footer">
+                                <div class="pro-price-box">
+                                    <span class="pro-price-label">Price</span>
+                                    <span class="pro-price-value">Rs.{{ drone.price|floatformat:0 }}</span>
+                                </div>
+                                <a href="{% url 'notes:drone_detail' drone.slug %}" class="btn-pro-details">
+                                    Details <i class="fas fa-chevron-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.5s">
+            <a href="{% url 'notes:drone_shop' %}" class="btn-pro-view-all" style="background: linear-gradient(135deg, #2A2A2A, #4A4A4A); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                <i class="fas fa-helicopter me-2"></i>View All Drones
+                <i class="fas fa-arrow-right ms-3"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Drone Shop Section End -->
+
+
+
+    <!-- Facts Start -->
+    <div class="container-fluid facts my-3 py-3" style="overflow: hidden;">
+        <div class="container py-2">
+            <div class="row g-2 g-md-3">
+                <div class="col-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-users fa-2x text-white mb-2"></i>
+                    <h2 class="h3 fw-bold text-white mb-1">50+</h2>
+                    <span class="small text-white-50 d-block">Happy Clients</span>
+                </div>
+                <div class="col-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-check fa-2x text-white mb-2"></i>
+                    <h2 class="h3 fw-bold text-white mb-1">60+</h2>
+                    <span class="small text-white-50 d-block">Projects Completed</span>
+                </div>
+                <div class="col-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-users-cog fa-2x text-white mb-2"></i>
+                    <h2 class="h3 fw-bold text-white mb-1">15-20</h2>
+                    <span class="small text-white-50 d-block">Dedicated Staff</span>
+                </div>
+                <div class="col-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
+                    <i class="fa fa-award fa-2x text-white mb-2"></i>
+                    <h2 class="h3 fw-bold text-white mb-1" data-toggle="counter-up">10</h2>
+                    <span class="small text-white-50 d-block">Awards Achieved</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Facts End -->
+
+<!-- Features Start -->
+<div class="container-xxl feature py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">Why Choose Us</p>
+                <h1 class="display-5 mb-4">We Deliver Technology You Can Trust</h1>
+                <p class="mb-4">
+                    We combine innovation, expertise, and technology to turn your ideas into powerful digital and IoT solutions.
+                    Our focus is to provide reliable, scalable, and secure services that enhance business efficiency and growth.
+                </p>
+                <a class="btn btn-primary py-3 px-5" href="#services">Explore More</a>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-6">
+                        <div class="row g-4">
+
+                            <div class="col-12 wow fadeIn" data-wow-delay="0.3s">
+                                <div class="feature-box border rounded p-4">
+                                    <i class="fa fa-rocket fa-3x text-primary mb-3"></i>
+                                    <h4 class="mb-3">Fast & Efficient Delivery</h4>
+                                    <p class="mb-3">Quick development with high performance and minimal downtime.</p>
+                                    <!-- <a class="fw-semi-bold" href="#contact">Read More <i class="fa fa-arrow-right ms-1"></i></a> -->
+                                </div>
+                            </div>
+
+                            <div class="col-12 wow fadeIn" data-wow-delay="0.5s">
+                                <div class="feature-box border rounded p-4">
+                                    <i class="fa fa-handshake fa-3x text-primary mb-3"></i>
+                                    <h4 class="mb-3">24/7 Expert Support</h4>
+                                    <p class="mb-3">We are always available to assist you at every stage of your project.</p>
+                                    <!-- <a class="fw-semi-bold" href="#contact">Read More <i class="fa fa-arrow-right ms-1"></i></a> -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 wow fadeIn" data-wow-delay="0.7s">
+                        <div class="feature-box border rounded p-4">
+                            <i class="fa fa-shield-alt fa-3x text-primary mb-3"></i>
+                            <h4 class="mb-3">Secure & Reliable Solutions</h4>
+                            <p class="mb-3">Advanced protection and performance to keep your business running smoothly.</p>
+                            <!-- <a class="fw-semi-bold" href="#services">Read More <i class="fa fa-arrow-right ms-1"></i></a> -->
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Features End -->
+
+
+<!-- Service Start -->
+<div class="container-xxl service py-5" id="services">
+    <div class="container">
+        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <div class="section-label mb-4">
+                <span class="badge bg-gradient-primary text-white px-4 py-2 rounded-pill fw-semi-bold">
+                    <i class="fa fa-cogs me-2"></i>Our Services
+                </span>
+            </div>
+            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Innovative IT & IoT Solutions For Modern Businesses</h1>
+            <p class="lead text-muted mb-5">With 10+ years of expertise, we deliver cutting-edge technology services that transform ideas into powerful and scalable solutions.</p>
+        </div>
+
+        <div class="row g-5 wow fadeInUp" data-wow-delay="0.3s">
+            <div class="col-lg-4">
+                <div class="service-nav-wrapper">
+                    <div class="nav nav-pills flex-column service-nav" role="tablist">
+
+                        <button class="nav-link service-nav-item active d-flex align-items-start p-4 mb-3 rounded-4"
+                            data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button" role="tab">
+                            <div class="service-icon-wrapper me-3">
+                                <i class="fa fa-network-wired"></i>
+                            </div>
+                            <div class="service-nav-content">
+                                <h5 class="mb-1 fw-bold">IoT Lab Setup & Solutions</h5>
+                                <small class="text-muted d-block">Smart automation systems</small>
+                            </div>
+                        </button>
+
+                        <button class="nav-link service-nav-item d-flex align-items-start p-4 mb-3 rounded-4"
+                            data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button" role="tab">
+                            <div class="service-icon-wrapper me-3">
+                                <i class="fa fa-drone"></i>
+                            </div>
+                            <div class="service-nav-content">
+                                <h5 class="mb-1 fw-bold">Drone Lab Development</h5>
+                                <small class="text-muted d-block">Aerial solutions</small>
+                            </div>
+                        </button>
+
+                        <button class="nav-link service-nav-item d-flex align-items-start p-4 mb-3 rounded-4"
+                            data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button" role="tab">
+                            <div class="service-icon-wrapper me-3">
+                                <i class="fa fa-vr-cardboard"></i>
+                            </div>
+                            <div class="service-nav-content">
+                                <h5 class="mb-1 fw-bold">AR/VR Lab & Development</h5>
+                                <small class="text-muted d-block">Immersive experiences</small>
+                            </div>
+                        </button>
+
+                        <button class="nav-link service-nav-item d-flex align-items-start p-4 mb-3 rounded-4"
+                            data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button" role="tab">
+                            <div class="service-icon-wrapper me-3">
+                                <i class="fa fa-code"></i>
+                            </div>
+                            <div class="service-nav-content">
+                                <h5 class="mb-1 fw-bold">Software Solutions</h5>
+                                <small class="text-muted d-block">Custom development</small>
+                            </div>
+                        </button>
+
+                        <button class="nav-link service-nav-item d-flex align-items-start p-4 mb-3 rounded-4"
+                            data-bs-toggle="pill" data-bs-target="#tab-pane-5" type="button" role="tab">
+                            <div class="service-icon-wrapper me-3">
+                                <i class="fa fa-industry"></i>
+                            </div>
+                            <div class="service-nav-content">
+                                <h5 class="mb-1 fw-bold">Industry Projects & Consulting</h5>
+                                <small class="text-muted d-block">R&D support</small>
+                            </div>
+                        </button>
+
+                        <button class="nav-link service-nav-item d-flex align-items-start p-4 mb-0 rounded-4"
+                            data-bs-toggle="pill" data-bs-target="#tab-pane-6" type="button" role="tab">
+                            <div class="service-icon-wrapper me-3">
+                                <i class="fa fa-file-alt"></i>
+                            </div>
+                            <div class="service-nav-content">
+                                <h5 class="mb-1 fw-bold">Patent Consultancy</h5>
+                                <small class="text-muted d-block">End-to-end support</small>
+                            </div>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="tab-content service-content-wrapper">
+
+                    <!-- IoT Lab Setup & Solutions -->
+                    <div class="tab-pane fade show active" id="tab-pane-1" role="tabpanel">
+                        <div class="service-tab-content bg-white rounded-4 shadow-lg p-4 p-md-5">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="service-image-wrapper rounded-4 overflow-hidden shadow">
+                                        <img class="w-100 h-100" src="{% static 'img/image101.png' %}" style="object-fit: cover; min-height: 350px;" alt="IoT Solutions">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-badge mb-3">
+                                        <span class="badge bg-gradient-primary text-white px-3 py-2 rounded-pill">
+                                            <i class="fa fa-network-wired me-2"></i>IoT Solutions
+                                        </span>
+                                    </div>
+                                    <h2 class="fw-bold mb-4" style="color: #2A2A2A;">IoT Lab Setup & Solutions</h2>
+                                    <p class="text-muted mb-4 lead">Complete IoT lab design, setup, and deployment services for educational institutions and industries.</p>
+                                    <div class="service-features">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">IoT Lab Design, Setup & Deployment</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Smart Automation & Embedded Systems</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Industrial IoT (IIoT) Solutions</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Sensor Integration, PCB Design & Prototyping</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drone Lab Development -->
+                    <div class="tab-pane fade" id="tab-pane-2" role="tabpanel">
+                        <div class="service-tab-content bg-white rounded-4 shadow-lg p-4 p-md-5">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="service-image-wrapper rounded-4 overflow-hidden shadow">
+                                        <img class="w-100 h-100" src="{% static 'img/image102.png' %}" style="object-fit: cover; min-height: 350px; display: block;" alt="Drone Lab">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-badge mb-3">
+                                        <span class="badge bg-gradient-primary text-white px-3 py-2 rounded-pill">
+                                            <i class="fa fa-drone me-2"></i>Drone Solutions
+                                        </span>
+                                    </div>
+                                    <h2 class="fw-bold mb-4" style="color: #2A2A2A;">Drone Lab Development & Services</h2>
+                                    <p class="text-muted mb-4 lead">Comprehensive drone lab setup and services for schools, colleges, and industries.</p>
+                                    <div class="service-features">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Drone Lab Setup for Schools, Colleges & Industries</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Custom Drone Design & Fabrication</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Aerial Survey, Mapping & Monitoring Solutions</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Drone Training & Certification Support</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AR/VR Lab & Development -->
+                    <div class="tab-pane fade" id="tab-pane-3" role="tabpanel">
+                        <div class="service-tab-content bg-white rounded-4 shadow-lg p-4 p-md-5">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="service-image-wrapper rounded-4 overflow-hidden shadow">
+                                        <img class="w-100 h-100" src="{% static 'img/image103.png' %}" style="object-fit: cover; min-height: 350px;" alt="AR/VR Lab">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-badge mb-3">
+                                        <span class="badge bg-gradient-primary text-white px-3 py-2 rounded-pill">
+                                            <i class="fa fa-vr-cardboard me-2"></i>AR/VR Solutions
+                                        </span>
+                                    </div>
+                                    <h2 class="fw-bold mb-4" style="color: #2A2A2A;">AR/VR Lab & Development</h2>
+                                    <p class="text-muted mb-4 lead">Immersive AR/VR lab setup and development services for skill development and training.</p>
+                                    <div class="service-features">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">AR/VR Lab Setup for Skill Development</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Virtual Reality Simulations for Training</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Augmented Reality Applications for Education & Industry</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">3D Content & Interactive Experience Development</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Software Solutions -->
+                    <div class="tab-pane fade" id="tab-pane-4" role="tabpanel">
+                        <div class="service-tab-content bg-white rounded-4 shadow-lg p-4 p-md-5">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="service-image-wrapper rounded-4 overflow-hidden shadow">
+                                        <img class="w-100 h-100" src="{% static 'img/image104.png' %}" style="object-fit: cover; min-height: 350px;" alt="Software Solutions">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-badge mb-3">
+                                        <span class="badge bg-gradient-primary text-white px-3 py-2 rounded-pill">
+                                            <i class="fa fa-code me-2"></i>Software Development
+                                        </span>
+                                    </div>
+                                    <h2 class="fw-bold mb-4" style="color: #2A2A2A;">Software Solutions</h2>
+                                    <p class="text-muted mb-4 lead">Custom software development and automation solutions for businesses.</p>
+                                    <div class="service-features">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Custom Software Development</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Web, Mobile & Cloud-Based Applications</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">ERP, CRM & Industry Workflow Automation</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">AI, Machine Learning & Automation Tools</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Industry Projects & Consulting -->
+                    <div class="tab-pane fade" id="tab-pane-5" role="tabpanel">
+                        <div class="service-tab-content bg-white rounded-4 shadow-lg p-4 p-md-5">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="service-image-wrapper rounded-4 overflow-hidden shadow">
+                                        <img class="w-100 h-100" src="{% static 'img/image101.png' %}" style="object-fit: cover; min-height: 350px;" alt="Industry Projects">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-badge mb-3">
+                                        <span class="badge bg-gradient-primary text-white px-3 py-2 rounded-pill">
+                                            <i class="fa fa-industry me-2"></i>Industry Solutions
+                                        </span>
+                                    </div>
+                                    <h2 class="fw-bold mb-4" style="color: #2A2A2A;">Industry Projects & Consulting</h2>
+                                    <p class="text-muted mb-4 lead">Comprehensive R&D project support and technology consulting services.</p>
+                                    <div class="service-features">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Industrial R&D Project Support</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Technology Feasibility & Design Consulting</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Prototype Development & Product Engineering</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Industry Collaboration for Innovation & Automation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patent Consultancy Services -->
+                    <div class="tab-pane fade" id="tab-pane-6" role="tabpanel">
+                        <div class="service-tab-content bg-white rounded-4 shadow-lg p-4 p-md-5">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="service-image-wrapper rounded-4 overflow-hidden shadow">
+                                        <img class="w-100 h-100" src="{% static 'img/image102.png' %}" style="object-fit: cover; min-height: 350px;" alt="Patent Consultancy">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                            <i class="fa fa-file-alt me-2"></i>Patent Services
+                                        </span>
+                                    </div>
+                                    <h2 class="fw-bold mb-4" style="color: #2A2A2A;">Patent Consultancy Services</h2>
+                                    <p class="text-muted mb-4 lead">Complete patent consultancy from idea development to patent grant.</p>
+                                    <div class="service-features">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Idea Evaluation & Development</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Patent Drafting & Filing</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">Publication, Examination & Grant Support</span>
+                                        </div>
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="feature-icon me-3">
+                                                <i class="fa fa-check-circle text-primary"></i>
+                                            </div>
+                                            <span class="text-dark">End-to-End Professional Process</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+
+
+
+
+<!-- Contact Section Start -->
+<div class="container-fluid callback my-5 pt-5">
+    <div class="container pt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="bg-white border rounded shadow p-4 p-sm-5 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                        <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3">
+                            Contact Us
+                        </p>
+                        <h1 class="display-5 mb-3">Let's Build Something Amazing!</h1>
+                        <p class="text-muted mb-4">
+                            Have a project in mind or need expert guidance? Share your details and our team will connect with you shortly.
+                        </p>
+                    </div>
+                    <form id="contactForm">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" placeholder="John Doe" required>
+                                    <label for="name">Full Name *</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                                    <label for="email">Email Address *</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="phone" placeholder="+91 9876543210" required>
+                                    <label for="phone">Mobile Number *</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating">
+                                    <select class="form-select" id="service">
+                                        <option selected>Choose Service</option>
+                                        <option value="1">IoT Lab Setup & Solutions</option>
+                                        <option value="2">Drone Lab Development & Services</option>
+                                        <option value="3">AR/VR Lab & Development</option>
+                                        <option value="4">Software Solutions</option>
+                                        <option value="5">Industry Projects & Consulting</option>
+                                        <option value="6">Patent Consultancy Services</option>
+                                    </select>
+                                    <label for="service">Service Type</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Tell us about your requirement"
+                                        id="message" style="height: 110px" required></textarea>
+                                    <label for="message">Your Message *</label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary w-100 py-3 fw-bold" type="submit">
+                                    Send Message <i class="fa fa-paper-plane ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact Section End -->
+<div class="container-xxl py-4">
+    <div class="container">
+        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <div class="section-label mb-4">
+                <span class="badge text-white px-4 py-2 rounded-pill fw-semi-bold" style="background: linear-gradient(135deg, #00B4D8, #00A86B);">
+                    <i class="fa fa-briefcase me-2"></i>Our Portfolio
+                </span>
+            </div>
+            <h1 class="display-5 mb-2 fw-bold" style="font-size: 2rem;">Delivering <span class="text-emerald">Innovation</span> Through Projects</h1>
+            <p class="text-muted mb-4" style="font-size: 0.9rem;">We have built reliable digital solutions trusted by clients across various industries and technologies.</p>
+        </div>
+
+        <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
+            <!-- Web Development Project -->
+            <div class="col-lg-4 col-md-6">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Web Development">
+                        <div class="pro-status-badge">Web Tech</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Web Development</div>
+                        <h6 class="pro-title">Corporate Business Website</h6>
+                        <p class="text-muted small mb-4">Professional corporate website with modern design and responsive layout.</p>
+                        <div class="pro-card-footer mt-auto">
+                           <a href="{% url 'notes:services' %}#web-development" class="btn-pro-details w-100 text-center">
+                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VR Training Platform -->
+            <div class="col-lg-4 col-md-6">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="VR Training Platform">
+                        <div class="pro-status-badge">AR/VR Development</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">EduTech Industries</div>
+                        <h6 class="pro-title">VR Training Platform</h6>
+                        <p class="text-muted small mb-4">Immersive virtual reality platform for industrial training and education. Features realistic simulations and progress tracking.</p>
+                        <div class="pro-card-footer mt-auto">
+                           <a href="{% url 'notes:services' %}#vr-development" class="btn-pro-details w-100 text-center">
+                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Industrial Drone Monitoring -->
+            <div class="col-lg-4 col-md-6">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Industrial Drone Monitoring">
+                        <div class="pro-status-badge">Drone Technology</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">AgriTech Solutions</div>
+                        <h6 class="pro-title">Industrial Drone Monitoring</h6>
+                        <p class="text-muted small mb-4">Agricultural drone system for crop monitoring and precision farming. Includes real-time video streaming and data analytics.</p>
+                        <div class="pro-card-footer mt-auto">
+                           <a href="{% url 'notes:services' %}#drone-technology" class="btn-pro-details w-100 text-center">
+                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Home Automation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Smart Home Automation">
+                        <div class="pro-status-badge">IoT Solutions</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">SmartLiving Inc</div>
+                        <h6 class="pro-title">Smart Home & Automation System</h6>
+                        <p class="text-muted small mb-4">Complete IoT solution for home automation with smart controls and sensors. Features voice control, mobile app integration, and energy monitoring.</p>
+                        <div class="pro-card-footer mt-auto">
+                           <a href="{% url 'notes:services' %}#iot-solutions" class="btn-pro-details w-100 text-center">
+                                View <i class="fa fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for project in featured_projects %}
+                <div class="col-lg-4 col-md-6" {% if forloop.counter > 4 %}id="portfolio-card-{{ forloop.counter }}" style="display: none;"{% endif %}>
+                    <div class="pro-card">
+                        <div class="pro-img-wrapper">
+                            {% if project.image %}
+                                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                            {% else %}
+                                <img src="{% static 'img/rough imgs/pro2.png' %}" alt="{{ project.title }}">
+                            {% endif %}
+                            <div class="pro-status-badge">{{ project.get_project_type_display|default:"Project" }}</div>
+                        </div>
+                        <div class="pro-card-body">
+                            <div class="pro-category">{{ project.client_name|default:"Client Project" }}</div>
+                            <h6 class="pro-title">{{ project.title }}</h6>
+                            <p class="text-muted small mb-4">{{ project.description|truncatewords:20 }}</p>
+                            <div class="pro-card-footer mt-auto">
+                                <a href="{% if project.case_study_link %}{{ project.case_study_link }}{% else %}{% url 'notes:project_detail' project.slug %}{% endif %}" class="btn-pro-details w-100 text-center">
+                                    View Case Study <i class="fa fa-external-link-alt ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">No projects found. Check back later!</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Show More Button -->
+        <div class="text-center mt-5">
+            <button id="show-more-btn" class="btn btn-lg px-5 py-3" style="background: linear-gradient(135deg, #FF6B6B, #FF7F50); color: white; border: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);">
+                <i class="fas fa-plus-circle me-2"></i>Show More Projects
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Portfolio End -->
+
+
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+            class="bi bi-arrow-up"></i></a>
+
+    <a href="https://wa.me/919359919779?text=Hello%2C%20I%20want%20to%20build%20or%20upgrade%20my%20website.%20Please%20share%20pricing%2C%20timeline%2C%20and%20next%20steps." class="whatsapp-float" target="_blank" rel="noopener"
+        aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- PDF Notes Promotional Popup -->
+    <div class="modal fade" id="pdfPopupModal" tabindex="-1" aria-labelledby="pdfPopupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-gradient-primary text-white border-0 position-relative">
+                    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #00A86B 0%, #008050 100%); opacity: 0.95;"></div>
+                    <div class="position-relative d-flex justify-content-between align-items-center w-100">
+                        <h5 class="modal-title fw-bold mb-0">
+                            <i class="fas fa-rocket me-2 text-warning"></i>
+                            <span class="text-warning">EXCLUSIVE ACCESS:</span> Innovative Tech Solutions
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="position: relative; z-index: 10;"></button>
+                    </div>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-5 bg-gradient-info text-white p-0 position-relative" style="min-height: 200px;">
+                            <img src="{% static 'img/ChatGPT Image Apr 18, 2026, 01_45_28 PM.png' %}" 
+                                 class="w-100 h-100" 
+                                 alt="Study Smart" 
+                                 style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center p-4" 
+                                 style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);">
+                                <div>
+                                    <h5 class="fw-bold mb-2 text-white">🎓 Your Success Partner</h5>
+                                    <p class="small mb-3 text-white-50">Excellence in Education & Technology</p>
+                                    <h4 class="fw-bold mb-3 text-white">Study Smart, Not Hard!</h4>
+                                    <p class="small mb-0 text-white-50">Join thousands of students who've aced their exams</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 p-4">
+                            <div class="mb-4">
+                                <h3 class="text-primary fw-bold mb-3 text-center text-md-start">
+                                    <i class="fas fa-bolt text-warning me-2"></i>
+                                    Empowering Your Future
+                                </h3>
+                                <p class="text-muted mb-3 text-center text-md-start" style="font-size: 0.95rem;">
+                                    <strong>Study Materials | Drones | Workshops | IoT | AI/ML</strong>
+                                </p>
+                            </div>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <a href="{% url 'notes:product_list' %}" class="popup-service-item text-decoration-none">
+                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-file-pdf text-emerald" style="font-size: 1.2rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">Study Materials</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{% url 'notes:drone_shop' %}" class="popup-service-item text-decoration-none">
+                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-drone text-success" style="font-size: 1.2rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">Drone Purchase</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{% url 'notes:workshops' %}" class="popup-service-item text-decoration-none">
+                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-chalkboard-teacher text-warning" style="font-size: 1.2rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">Workshops</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{% url 'notes:services' %}" class="popup-service-item text-decoration-none">
+                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-network-wired text-info" style="font-size: 1.2rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-2">
+                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">IoT Solutions</h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <p class="text-center text-muted d-block d-md-none mb-3" style="font-size: 0.8rem;">Explore high-quality tech solutions designed for excellence.</p>
+                            
+                            <div class="alert alert-emerald border-0 d-none d-md-block" role="alert" style="background: rgba(0, 168, 107, 0.1); color: #008050;">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>All Services:</strong> Premium Study materials, drones, and tech workshops available!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <div class="row w-100 g-2">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Skip
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <a href="{% url 'notes:product_list' %}" class="btn btn-gradient-emerald text-white w-100">
+                                <i class="fas fa-shopping-cart me-2"></i>Explore
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #00A86B 0%, #008050 100%) !important;
+        }
+
+        .popup-service-item {
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .popup-service-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .popup-service-item:hover .bg-light {
+            background-color: #e9ecef !important;
+            box-shadow: 0 4px 10px rgba(0, 168, 107, 0.15);
+            border: 1px solid rgba(0, 168, 107, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .bg-gradient-info {
+            background: linear-gradient(135deg, #00A86B 0%, #008050 100%) !important;
+        }
+
+        .btn-gradient-emerald {
+            background: linear-gradient(135deg, #00A86B 0%, #008050 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-emerald:hover {
+            background: linear-gradient(135deg, #008050 0%, #00A86B 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 168, 107, 0.4);
+        }
+        
+        #pdfPopupModal .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        #pdfPopupModal .modal-dialog {
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+            margin: 1rem;
+            max-width: 90vw;
+        }
+        
+        #pdfPopupModal.show .modal-dialog {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        /* Mobile responsive popup */
+        @media (max-width: 768px) {
+            #pdfPopupModal .modal-dialog {
+                margin: 0.5rem;
+                max-width: 95vw;
+            }
+            
+            #pdfPopupModal .modal-content {
+                border-radius: 10px;
+            }
+        }
+        
+        /* WhatsApp Floating Button Fix */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .whatsapp-float:hover {
+            background: #128C7E;
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+        }
+        
+        /* Scrolling Features Section */
+        .scrolling-features-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 10%);
+            padding: 60px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .scrolling-features-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .scrolling-features-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: proximity;
+            scrollbar-width: thin;
+            padding: 10px 0;
+        }
+
+        .scrolling-feature-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            min-width: 280px;
+            max-width: 320px;
+            flex: 0 0 auto;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .scrolling-feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 168, 107, 0.15);
+        }
+
+        .scrolling-feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00A86B 0%, #00B4D8 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .scrolling-feature-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+
+        .scrolling-feature-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .scrolling-features-scroll-btn {
+            background: linear-gradient(135deg, #00A86B, #00B4D8 100%);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .scrolling-features-scroll-btn:hover {
+            background: linear-gradient(135deg, #00A86B, #00B4D8 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 168, 107, 0.15);
+        }
+
+        /* Custom scrollbar styling */
+        .scrolling-features-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scrolling-features-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scrolling-features-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00A86B, #00B4D8);
+            border-radius: 10px;
+        }
+
+        .scrolling-features-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #008B5A, #0096C7);
+        }
+
+        /* Mobile responsive layout fixes */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                position: relative !important;
+            }
+
+            /* Standardized Section Padding for Mobile */
+            .features-section, 
+            .about-section, 
+            #notes-section, 
+            #drones-section, 
+            .feature, 
+            .service, 
+            .portfolio,
+            .callback,
+            .footer {
+                padding-top: 30px !important;
+                padding-bottom: 30px !important;
+            }
+
+            .footer { margin-top: 20px !important; }
+            .facts {
+                padding-top: 30px !important;
+                padding-bottom: 30px !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
+            /* Fix excessive horizontal gutters on mobile */
+            .row {
+                margin-left: -10px !important;
+                margin-right: -10px !important;
+                --bs-gutter-x: 20px !important;
+            }
+            
+            .row > * {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                margin-top: 15px !important; /* Standardize vertical gap between stacked columns */
+            }
+
+            /* Ensure content is not hidden by WOW animations or overflow */
+            .wow {
+                visibility: visible !important;
+                opacity: 1 !important;
+                animation-name: none !important;
+            }
+            
+            section, div:not(.scrolling-features-container):not(.service-nav):not(.advanced-tabs) {
+                overflow-x: visible !important;
+            }
+
+            .scrolling-features-container, .service-nav, .advanced-tabs {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .mb-5 { margin-bottom: 25px !important; }
+            .mb-4 { margin-bottom: 20px !important; }
+            .mt-5 { margin-top: 25px !important; }
+            .py-5 { padding-top: 30px !important; padding-bottom: 30px !important; }
+
+            /* Heading Scale-down for Mobile */
+            .display-4 {
+                font-size: 2.2rem !important;
+                line-height: 1.2 !important;
+                margin-bottom: 1.5rem !important;
+            }
+
+            .display-5 {
+                font-size: 1.8rem !important;
+                line-height: 1.2 !important;
+            }
+
+            h1, .h1 { font-size: 2rem !important; }
+            h2, .h2 { font-size: 1.75rem !important; }
+            h3, .h3 { font-size: 1.5rem !important; }
+
+            .lead {
+                font-size: 1rem !important;
+                margin-bottom: 2rem !important;
+            }
+
+            .container, .container-fluid, .container-xxl {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+
+            .scrolling-features-container {
+                padding: 10px 0;
+                gap: 15px;
+                justify-content: flex-start;
+                display: flex;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .scrolling-feature-card {
+                min-width: 80vw;
+                margin-right: 0;
+                margin-bottom: 5px;
+                padding: 20px;
+                border: 1px solid rgba(0, 168, 107, 0.1);
+            }
+
+            .scrolling-feature-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .scrolling-feature-title {
+                font-size: 1rem;
+            }
+
+            .about-section .row {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .about-image-wrapper {
+                margin-bottom: 30px;
+            }
+
+            .about-title {
+                font-size: 1.8rem !important;
+                text-align: center;
+            }
+
+            .section-label {
+                text-align: center;
+            }
+
+            .about-description, .about-highlight-box {
+                text-align: center;
+            }
+
+            .advanced-tabs {
+                flex-wrap: nowrap !important;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start !important;
+            }
+
+            .advanced-tab-btn {
+                flex: 0 0 auto;
+                width: auto !important;
+                padding: 10px 20px !important;
+                font-size: 0.9rem;
+            }
+
+            .info-card {
+                margin-bottom: 15px;
+            }
+            
+            #pdfPopupModal .modal-header {
+                padding: 1rem !important;
+            }
+            
+            #pdfPopupModal .modal-title {
+                font-size: 1rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .col-md-5 {
+                padding: 1.5rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .col-md-7 {
+                padding: 1.5rem !important;
+            }
+            
+            #pdfPopupModal .modal-body h3 {
+                font-size: 1.1rem !important;
+            }
+            
+            #pdfPopupModal .modal-body p {
+                font-size: 0.9rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .btn {
+                font-size: 0.9rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+
+            /* Product Card Refinement */
+            .pro-card {
+                margin-bottom: 20px !important;
+            }
+
+            .pro-img-wrapper img {
+                height: 180px !important;
+                object-fit: cover;
+            }
+
+            .pro-title {
+                font-size: 1rem !important;
+            }
+
+            /* Facts Section 2x2 Grid */
+            .facts {
+                padding-top: 40px !important;
+                padding-bottom: 40px !important;
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
+            .facts .col-6 {
+                margin-bottom: 20px;
+            }
+
+            .facts i {
+                font-size: 1.5rem !important;
+            }
+
+            .facts h2 {
+                font-size: 1.5rem !important;
+            }
+
+            /* Services Section Mobile Fixes */
+            .service-nav {
+                flex-direction: row !important;
+                overflow-x: auto;
+                flex-wrap: nowrap !important;
+                padding-bottom: 15px;
+                gap: 10px;
+                scrollbar-width: none; /* Hide scrollbar for cleaner look */
+            }
+
+            .service-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .service-nav-item {
+                flex: 0 0 250px !important;
+                margin-bottom: 0 !important;
+                padding: 15px !important;
+            }
+
+            .service-nav-item .service-icon-wrapper {
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px !important;
+            }
+
+            .service-nav-item i {
+                font-size: 1.2rem !important;
+            }
+
+            .service-tab-content {
+                padding: 25px !important;
+            }
+
+            .service-tab-content .row {
+                flex-direction: column-reverse;
+            }
+
+            .service-image-wrapper {
+                margin-bottom: 25px;
+                height: 250px !important;
+            }
+
+            .service-image-wrapper img {
+                height: 250px !important;
+                width: 100%;
+            }
+
+            /* Contact Form Mobile Refinement */
+            .callback .container {
+                padding: 0 !important;
+            }
+
+            .callback .bg-white {
+                padding: 25px 20px !important;
+                border-radius: 15px !important;
+                margin: 0 10px;
+            }
+
+            .callback h1 {
+                font-size: 1.8rem !important;
+            }
+
+            /* Portfolio Section Mobile Refinement */
+            .portfolio .pro-card {
+                margin-bottom: 25px !important;
+            }
+
+            .portfolio h1 {
+                font-size: 1.8rem !important;
+            }
+
+            /* Two cards per row for Products and Projects - No Slider */
+            #notes-section .row,
+            #drones-section .row,
+            .portfolio .row {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                overflow-x: hidden !important;
+                width: 100% !important;
+                margin-left: -5px !important;
+                margin-right: -5px !important;
+            }
+
+            #notes-section .row > div,
+            #drones-section .row > div,
+            .portfolio .row > div {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .pro-card {
+                padding: 4px !important;
+                height: 100% !important;
+            }
+
+            .pro-card-body {
+                padding: 6px !important;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .pro-img-wrapper {
+                height: 105px !important;
+            }
+
+            .pro-img-wrapper img {
+                height: 105px !important;
+            }
+
+            .pro-title {
+                font-size: 0.75rem !important;
+                min-height: 2rem !important;
+                margin-bottom: 3px !important;
+                line-height: 1.2 !important;
+            }
+
+            .pro-category {
+                font-size: 0.5rem !important;
+                margin-bottom: 1px !important;
+            }
+
+            .pro-description {
+                display: none !important; /* Hide description on mobile to save space for 2-card layout */
+            }
+
+            .btn-pro-details {
+                padding: 0 !important;
+                font-size: 0.65rem !important;
+                border: none !important;
+                background: transparent !important;
+                color: #00A86B !important;
+                text-decoration: none !important;
+                font-weight: 700 !important;
+                text-transform: uppercase;
+                letter-spacing: 0.2px;
+                display: inline-block !important;
+                white-space: nowrap !important;
+            }
+
+            .btn-pro-details::after {
+                content: " \2192";
+                font-size: 0.7rem;
+            }
+
+            .pro-price-value {
+                font-size: 0.75rem !important;
+                font-weight: 800 !important;
+                color: #1a1a2e !important;
+                white-space: nowrap !important;
+            }
+
+            .pro-price-label {
+                font-size: 0.45rem !important;
+                margin-bottom: 0 !important;
+                line-height: 1 !important;
+            }
+
+            .pro-card-footer {
+                padding-top: 3px !important;
+                margin-top: 3px !important;
+                border-top: 1px solid rgba(0,0,0,0.05) !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                display: flex !important;
+                width: 100% !important;
+            }
+
+            .pro-price-box {
+                text-align: left !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                flex-shrink: 1 !important;
+            }
+
+            #show-more-btn {
+                width: 100%;
+                padding: 12px 20px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .btn-pro-view-all {
+                width: 100%;
+                padding: 12px 20px !important;
+                font-size: 0.9rem !important;
+                border-radius: 30px !important;
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        /* Global Pro View All Button Style */
+        .btn-pro-view-all {
+            background: linear-gradient(135deg, #00A86B, #00B4D8);
+            color: white !important;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 168, 107, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            padding: 15px 40px;
+        }
+
+        .btn-pro-view-all:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 168, 107, 0.4);
+            background: linear-gradient(135deg, #00B4D8, #00A86B);
+        }
+
+        .btn-pro-view-all i:first-child {
+            transition: transform 0.4s ease;
+        }
+
+        .btn-pro-view-all:hover i:first-child {
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        .btn-pro-view-all i:last-child {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-pro-view-all:hover i:last-child {
+            transform: translateX(8px);
+        }
+        
+        @media (max-width: 576px) {
+            #pdfPopupModal .modal-dialog {
+                margin: 0 auto;
+                max-width: 90vw;
+                max-height: auto;
+                top: 50%;
+                transform: translateY(-50%) !important;
+            }
+            
+            #pdfPopupModal .modal-content {
+                border-radius: 12px;
+                max-height: 90vh;
+                overflow: hidden;
+            }
+            
+            #pdfPopupModal .modal-header {
+                padding: 0.8rem !important;
+            }
+            
+            #pdfPopupModal .modal-title {
+                font-size: 0.85rem !important;
+            }
+            
+            
+            #pdfPopupModal .modal-body .col-md-7 {
+                padding: 1rem !important;
+            }
+            
+            #pdfPopupModal .modal-body i {
+                font-size: 1.5rem !important;
+            }
+            
+            #pdfPopupModal .modal-body h4 {
+                font-size: 0.9rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+            
+            #pdfPopupModal .modal-body p {
+                font-size: 0.85rem !important;
+                margin-bottom: 0.2rem !important;
+            }
+            
+            #pdfPopupModal .modal-body h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .col-md-5 {
+                min-height: 150px !important;
+                height: 150px !important;
+            }
+
+            #pdfPopupModal .modal-body .col-md-5 img {
+                height: 150px !important;
+            }
+
+            #pdfPopupModal .modal-body .col-md-5 .position-absolute {
+                padding: 1rem !important;
+            }
+
+            #pdfPopupModal .modal-body .col-md-5 h5 {
+                font-size: 0.8rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            #pdfPopupModal .modal-body .col-md-5 p {
+                font-size: 0.65rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            #pdfPopupModal .modal-body .col-md-5 h4 {
+                font-size: 0.9rem !important;
+                margin-bottom: 0.1rem !important;
+            }
+
+            #pdfPopupModal .modal-body .col-6 {
+                flex: 0 0 50% !important;
+                padding: 0.2rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .d-flex {
+                padding: 0.4rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .d-flex i {
+                font-size: 1rem !important;
+            }
+            
+            #pdfPopupModal .modal-body .d-flex h6 {
+                font-size: 0.75rem !important;
+                margin-bottom: 0 !important;
+            }
+            
+            #pdfPopupModal .modal-footer {
+                padding: 0.8rem !important;
+            }
+            
+            #pdfPopupModal .modal-footer .btn {
+                font-size: 0.8rem !important;
+                padding: 0.6rem 0.4rem !important;
+                margin: 0 !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    </style>
+
+    <!-- Popup Script -->
+    <script>
+        // Show popup on page load if not dismissed before
+        /* // Temporarily disabled popup as requested
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if popup was shown in this session
+            if (!sessionStorage.getItem('pdfPopupShown')) {
+                setTimeout(function() {
+                    var popupModal = new bootstrap.Modal(document.getElementById('pdfPopupModal'));
+                    popupModal.show();
+                    sessionStorage.setItem('pdfPopupShown', 'true');
+                }, 2000); // Show after 2 seconds
+            }
+        });
+        */
+
+        /*
+        // Clear sessionStorage on page refresh (F5 or Ctrl+R)
+        window.addEventListener('beforeunload', function() {
+            sessionStorage.removeItem('pdfPopupShown');
+        });
+        */
+
+        // Portfolio Show More/Less functionality
+        document.getElementById('show-more-btn').addEventListener('click', function() {
+            const isExpanded = this.getAttribute('data-expanded') === 'true';
+            const cardIds = ['portfolio-card-4', 'portfolio-card-5', 'portfolio-card-6'];
+            
+            if (isExpanded) {
+                // Hide extra cards
+                cardIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+                
+                // Change button back to Show More
+                this.innerHTML = '<i class="fas fa-plus-circle me-2"></i>Show More Projects';
+                this.style.background = 'linear-gradient(135deg, #FF6B6B, #FF7F50)';
+                this.setAttribute('data-expanded', 'false');
+            } else {
+                // Show hidden cards
+                cardIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'block';
+                });
+                
+                // Change button to Show Less
+                this.innerHTML = '<i class="fas fa-minus-circle me-2"></i>Show Less Projects';
+                this.style.background = 'linear-gradient(135deg, #FF7F50, #FF6B6B)';
+                this.setAttribute('data-expanded', 'true');
+            }
+        });
+
+        // Initialize button state
+        document.getElementById('show-more-btn').setAttribute('data-expanded', 'false');
+
+        // Auto-scrolling functionality for features
+        let autoScrollInterval;
+        let scrollDirection = 'right';
+        let isAutoScrolling = false;
+
+        function startAutoScroll() {
+            if (isAutoScrolling) {
+                stopAutoScroll();
+            } else {
+                isAutoScrolling = true;
+                autoScrollInterval = setInterval(() => {
+                    const container = document.querySelector('.scrolling-features-container');
+                    if (container) {
+                        const maxScroll = container.scrollWidth - container.clientWidth;
+                        if (container.scrollLeft >= maxScroll) {
+                            scrollDirection = 'left';
+                        } else if (container.scrollLeft <= 0) {
+                            scrollDirection = 'right';
+                        }
+                        
+                        if (scrollDirection === 'left') {
+                            container.scrollBy({
+                                left: Math.max(0, container.scrollLeft - 300),
+                                behavior: 'smooth'
+                            });
+                        } else {
+                            container.scrollBy({
+                                left: Math.max(0, container.scrollLeft + 300),
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                }, 3000); // Scroll every 3 seconds
+            }
+        }
+
+        function stopAutoScroll() {
+            isAutoScrolling = false;
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+            }
+        }
+
+        // Start auto-scrolling when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                startAutoScroll();
+            }, 3000); // Start after 3 seconds
+        });
+
+        // Pause auto-scrolling on hover
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.scrolling-features-container');
+            if (container) {
+                container.addEventListener('mouseenter', stopAutoScroll);
+                container.addEventListener('mouseleave', startAutoScroll);
+            }
+        });
+    </script>
+{% endblock %}
+</body>
+</html>

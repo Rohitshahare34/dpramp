@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ drone.name }} - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">{{ drone.name }}</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'notes:drone_list' %}">Drones</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ drone.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Drone Detail Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="drone-detail-card border-0 shadow-sm rounded-3 p-4">
+                    <div class="drone-detail-header mb-4">
+                        <h2 class="mb-3">{{ drone.name }}</h2>
+                        <div class="drone-meta">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Type:</strong> {{ drone.get_drone_type_display }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Category:</strong> {{ drone.category|default:"Professional" }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Brand:</strong> {{ drone.brand|default:"N/A" }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <strong>Model:</strong> {{ drone.model_number|default:"N/A" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="drone-price-info mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h3 class="text-primary">Rs.{{ drone.price }}</h3>
+                                    <p class="text-muted mb-0">Professional Grade</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="status-badge status-{{ drone.status }}">
+                                        {{ drone.get_status_display }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if drone.description %}
+                            <div class="drone-description mb-4">
+                                <h4 class="mb-3">Description</h4>
+                                <p>{{ drone.description|linebreaks }}</p>
+                            </div>
+                        {% endif %}
+                        
+                        {% if drone.specifications %}
+                            <div class="drone-specifications mb-4">
+                                <h4 class="mb-3">Technical Specifications</h4>
+                                <div class="row g-3">
+                                    {% for key, value in drone.specifications.items %}
+                                        <div class="col-md-6">
+                                            <div class="spec-item">
+                                                <strong>{{ key|title }}:</strong> {{ value }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        {% if drone.features %}
+                            <div class="drone-features mb-4">
+                                <h4 class="mb-3">Key Features</h4>
+                                <p>{{ drone.features|linebreaks }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="drone-image-section">
+                    {% if drone.image %}
+                        <img src="{{ drone.image.url }}" alt="{{ drone.name }}" class="img-fluid rounded-3 shadow-sm">
+                    {% else %}
+                        <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="{{ drone.name }}" class="img-fluid rounded-3 shadow-sm">
+                    {% endif %}
+                    
+                    {% if drone.video_url %}
+                        <div class="text-center mt-4">
+                            <a href="{{ drone.video_url }}" target="_blank" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="fas fa-play-circle me-2"></i>Watch Video
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Drone Detail End -->
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.drone-detail-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.drone-detail-header {
+    border-bottom: 2px solid #f8f9fa;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.drone-meta .detail-item {
+    margin-bottom: 10px;
+}
+
+.drone-price-info {
+    background: linear-gradient(135deg, #00A86B, #00B4D8);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-available {
+    background: #28a745;
+    color: white;
+}
+
+.status-out_of_stock {
+    background: #dc3545;
+    color: white;
+}
+
+.drone-specifications .spec-item {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.drone-image-section img {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.drone-description, .drone-features {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.drone-description h4, .drone-features h4 {
+    color: #00A86B;
+    margin-bottom: 15px;
+}
+
+.text-emerald {
+    background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>
+{% endblock %}

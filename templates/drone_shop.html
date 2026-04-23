@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}Drone Shop - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- Drone Shop Hero Section -->
+<div class="container-fluid py-5 overflow-hidden position-relative" style="min-height: 450px; display: flex; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="display-3 mb-4 animated slideInDown">Professional <span class="text-emerald">Drones</span> For Sale</h1>
+            <p class="lead text-muted mb-5">Explore our range of professional drones for agriculture, surveillance, photography, and industrial applications.</p>
+            <img src="{% static 'img/Drone Camera.jpg' %}" class="hero-img-modern" alt="Drone Camera" style="max-height: 400px; object-fit: cover; border-radius: 15px;">
+                <p class="lead text-white-50 mb-5 pe-lg-5">
+                    Professional drones for agriculture, surveillance, photography, and industrial applications. Buy drones with expert training and support.
+                </p>
+                
+                <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <h2 class="text-white mb-1 fw-bold">15+</h2>
+                            <small class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.7rem; letter-spacing: 1px;">Drone Models</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="glass-card text-center h-100">
+                            <h2 class="text-white mb-1 fw-bold">500+</h2>
+                            <small class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.7rem; letter-spacing: 1px;">Units Sold</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 d-none d-md-block">
+                        <div class="glass-card text-center h-100">
+                            <h2 class="text-white mb-1 fw-bold">100%</h2>
+                            <small class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.7rem; letter-spacing: 1px;">Certified</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="position-relative text-center wow fadeInRight" data-wow-delay="0.3s">
+                    <div class="floating-artifact">
+                        <i class="fas fa-helicopter fa-10x text-white" style="opacity: 0.2;"></i>
+                    </div>
+                    <div class="position-absolute top-50 start-50 translate-middle w-100">
+                        <div class="row g-4 rotate-n-15">
+                            <div class="col-6">
+                                <div class="glass-card mb-4 floating-artifact" style="animation-delay: 1s;">
+                                    <i class="fas fa-helicopter fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">Professional</p>
+                                </div>
+                                <div class="glass-card floating-artifact" style="animation-delay: 2s;">
+                                    <i class="fas fa-camera fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">4K Camera</p>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-5">
+                                <div class="glass-card mb-4 floating-artifact" style="animation-delay: 1.5s;">
+                                    <i class="fas fa-map-marked-alt fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">GPS Ready</p>
+                                </div>
+                                <div class="glass-card floating-artifact" style="animation-delay: 2.5s;">
+                                    <i class="fas fa-shield-check fa-3x text-white mb-2"></i>
+                                    <p class="small text-white mb-0">Quality Tested</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Drone Shop Hero Section End -->
+
+<!-- Breadcrumb -->
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'notes:home' %}" class="text-muted">Home</a></li>
+            <li class="breadcrumb-item active text-dark">Drone Shop</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Drone Shop Content -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 650px;">
+            <div class="section-label mb-4">
+                <span class="badge text-white px-4 py-2 rounded-pill fw-semi-bold" style="background: linear-gradient(135deg, #00A86B, #00B4D8);">
+                    <i class="fas fa-helicopter me-2"></i>Drone Shop
+                </span>
+            </div>
+            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #00A86B, #00B4D8, #0077BE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Professional Drones For Sale</h1>
+            <p class="lead text-muted mb-5">Explore our range of professional drones for agriculture, surveillance, photography, and industrial applications. Get expert training and comprehensive support with every purchase.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Dynamic Database Products -->
+        {% for drone in featured_drones|slice:"0:4" %}
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        {% if drone.thumbnail %}
+                            <img src="{{ drone.thumbnail.url }}" alt="{{ drone.title }}">
+                        {% else %}
+                            <img src="{% static 'img/service-1.jpg' %}" alt="{{ drone.title }}">
+                        {% endif %}
+                        <div class="pro-status-badge">
+                            {% if forloop.counter == 1 %}Popular{% elif forloop.counter == 2 %}New{% elif forloop.counter == 3 %}Trending{% else %}Bestseller{% endif %}
+                        </div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">
+                            {% if drone.category %}{{ drone.category.name }}{% else %}Drone{% endif %}
+                        </div>
+                        <h6 class="pro-title">{{ drone.title }}</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">Rs.{{ drone.price }}</span>
+                            </div>
+                            <a href="{% url 'notes:drone_detail' drone.slug %}" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <!-- Fallback static cards if no drones in database -->
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="Agricultural Drone">
+                        <div class="pro-status-badge">Popular</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Agriculture</div>
+                        <h6 class="pro-title">Agricultural Pro Drone</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">Rs.45,000</span>
+                            </div>
+                            <a href="#" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/service-1-9.png' %}" alt="Surveillance Drone">
+                        <div class="pro-status-badge">New</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Surveillance</div>
+                        <h6 class="pro-title">Security Surveillance Drone</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">Rs.35,000</span>
+                            </div>
+                            <a href="#" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/project-img-1.png' %}" alt="Photography Drone">
+                        <div class="pro-status-badge">Trending</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Photography</div>
+                        <h6 class="pro-title">Professional Photography Drone</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">Rs.55,000</span>
+                            </div>
+                            <a href="#" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/service-2-3.png' %}" alt="Industrial Drone">
+                        <div class="pro-status-badge">Bestseller</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Industrial</div>
+                        <h6 class="pro-title">Industrial Inspection Drone</h6>
+                        <div class="pro-card-footer">
+                            <div class="pro-price-box">
+                                <span class="pro-price-label">Price</span>
+                                <span class="pro-price-value">Rs.75,000</span>
+                            </div>
+                            <a href="#" class="btn-pro-details">
+                                Details <i class="fas fa-chevron-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.5s">
+            <a href="#" class="btn btn-lg px-5 py-3 btn-view-all-pdf">
+                <i class="fas fa-helicopter me-2"></i>View All Drones
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <h1>Test Page - CSS Should Be Blue</h1>
+    <p>If this shows in blue color, CSS is working!</p>
+    <div style="color: var(--primary);">
+        This should be cyan blue if CSS variables are working
+    </div>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

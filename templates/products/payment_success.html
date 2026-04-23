@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Success - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="display-3 mb-4 animated slideInDown">Payment Successful</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'product_list' %}">PDF Notes</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Payment Success</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Payment Success Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <div class="success-icon mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h2 class="mb-3">Payment Successful!</h2>
+                    <p class="mb-4">Thank you for your purchase. Your order has been confirmed.</p>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Order Details</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Order ID:</strong> #{{ order.id }}</p>
+                                <p><strong>Name:</strong> {{ order.name }}</p>
+                                <p><strong>Email:</strong> {{ order.email }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Product:</strong> {{ order.product.title }}</p>
+                                <p><strong>Amount Paid:</strong> Rs.{{ order.amount }}</p>
+                                <p><strong>Payment Status:</strong> <span class="badge bg-success">Completed</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info text-center mb-4">
+                    <i class="fas fa-download me-2"></i>
+                    <strong>Your PDF is being downloaded automatically...</strong>
+                    <br>
+                    <small>If the download doesn't start automatically, <a href="{% url 'notes:download_pdf' download_token %}" target="_blank">click here</a> to download manually.</small>
+                </div>
+                
+                <div class="text-center">
+                    <a href="{% url 'notes:home' %}" class="btn btn-outline-primary me-3">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                    <a href="{% url 'notes:product_list' %}" class="btn btn-primary">
+                        <i class="fas fa-book me-2"></i>Browse More PDFs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Payment Success End -->
+
+<style>
+.success-icon {
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-download the PDF
+    setTimeout(function() {
+        const downloadUrl = '{% url "download_pdf" download_token %}';
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success message
+        setTimeout(function() {
+            alert('Your PDF has been downloaded successfully. Check your Downloads folder.');
+        }, 2000);
+    }, 1000); // Start download after 1 second
+});
+</script>
+{% endblock %}
