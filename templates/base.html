@@ -175,6 +175,74 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 168, 107, 0.3);
     }
+
+    /* Shop Modal Styles */
+    .shop-option-card {
+        border: 2px solid #f1f3f5;
+        border-radius: 15px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .shop-option-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 168, 107, 0.15);
+        border-color: #00A86B;
+    }
+
+    .shop-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .shop-option-card:hover .shop-icon {
+        background: #e9ecef;
+        transform: scale(1.1);
+    }
+
+    .modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        min-height: calc(100vh - 1rem);
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+        border-bottom: 2px solid #f1f3f5;
+        background: linear-gradient(135deg, #00B4D8 0%, #00A86B 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-title {
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .btn-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        opacity: 0.8;
+    }
+
+    .btn-close:hover {
+        opacity: 1;
+    }
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -211,10 +279,61 @@
                 <a class="btn btn-square rounded-circle bg-light text-primary me-2" href=""><i class="fab fa-linkedin-in"></i></a>
                 <a class="btn btn-square rounded-circle bg-light text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
             </div>
-            <a href="{% url 'notes:product_list' %}" class="btn btn-primary rounded-pill px-4 ms-lg-4 d-none d-lg-block">Shop Now</a>
+            <button class="btn btn-primary rounded-pill px-4 ms-lg-4 d-none d-lg-block" onclick="showShopModal()">
+    <i class="fas fa-shopping-cart me-2"></i>Shop Now
+</button>
         </div>
     </nav>
     <!-- Navbar End -->
+
+    <!-- Shop Modal -->
+    <div class="modal fade" id="shopModal" tabindex="-1" aria-labelledby="shopModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shopModalLabel">
+                        <i class="fas fa-shopping-bag me-2 text-primary"></i>
+                        Choose What You're Looking For
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="shop-option-card text-center p-4" onclick="goToShop('notes')">
+                                <div class="shop-icon mb-3">
+                                    <i class="fas fa-file-pdf fa-3x text-primary"></i>
+                                </div>
+                                <h6 class="fw-bold">Study Notes</h6>
+                                <p class="text-muted small mb-0">PDFs, PPTs & Study Materials</p>
+                                <span class="badge bg-primary text-white mt-2">6 Products</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="shop-option-card text-center p-4" onclick="goToShop('drones')">
+                                <div class="shop-icon mb-3">
+                                    <i class="fas fa-helicopter fa-3x text-success"></i>
+                                </div>
+                                <h6 class="fw-bold">Drones</h6>
+                                <p class="text-muted small mb-0">Professional Drones & Equipment</p>
+                                <span class="badge bg-success text-white mt-2">5 Products</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="shop-option-card text-center p-4" onclick="goToShop('workshops')">
+                                <div class="shop-icon mb-3">
+                                    <i class="fas fa-chalkboard-teacher fa-3x text-warning"></i>
+                                </div>
+                                <h6 class="fw-bold">Workshops</h6>
+                                <p class="text-muted small mb-0">Live Training & Sessions</p>
+                                <span class="badge bg-warning text-dark mt-2">2 Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% block content %}{% endblock %}
 
@@ -295,6 +414,42 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Shop Modal JavaScript -->
+    <script>
+    function showShopModal() {
+        var shopModal = new bootstrap.Modal(document.getElementById('shopModal'));
+        shopModal.show();
+    }
+
+    function goToShop(shopType) {
+        var shopModal = bootstrap.Modal.getInstance(document.getElementById('shopModal'));
+        shopModal.hide();
+        
+        // Redirect to the appropriate shop
+        switch(shopType) {
+            case 'notes':
+                window.location.href = "{% url 'notes:product_list' %}";
+                break;
+            case 'drones':
+                window.location.href = "{% url 'notes:drone_shop' %}";
+                break;
+            case 'workshops':
+                window.location.href = "{% url 'notes:workshops' %}";
+                break;
+            default:
+                window.location.href = "{% url 'notes:product_list' %}";
+        }
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('shopModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            var shopModal = bootstrap.Modal.getInstance(this);
+            shopModal.hide();
+        }
+    });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>
