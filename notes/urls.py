@@ -13,6 +13,8 @@ urlpatterns = [
     # Drone URLs
     path("drones/", views.drone_list, name="drone_list"),
     path("drones/<slug:slug>/", views.drone_detail, name="drone_detail"),
+    path("drones/<slug:slug>/create-order/", views.create_drone_order, name="create_drone_order"),
+    path("drones/verify-payment/", views.verify_drone_payment, name="verify_drone_payment"),
     path("support/", views.customer_support, name="customer_support"),
     # Payment and Order URLs
     path("order/create/", views.create_order, name="create_order"),
@@ -40,4 +42,8 @@ urlpatterns = [
     path("drone-shop/", views.drone_shop, name="drone_shop"),
     path("workshops/", views.workshops, name="workshops"),
     path("workshops/<slug:slug>/register/", views.workshop_register, name="workshop_register"),
+    path("workshops/<slug:slug>/create-order/", views.create_workshop_order, name="create_workshop_order"),
+    path("workshops/verify-payment/", views.verify_workshop_payment, name="verify_workshop_payment"),
+    path("workshops/registration-success/<int:registration_id>/", views.workshop_registration_success, name="workshop_registration_success"),
+    path("workshops/ticket/<int:registration_id>/", views.download_workshop_ticket, name="download_workshop_ticket"),
 ]

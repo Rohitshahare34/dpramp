@@ -3,12 +3,13 @@
 {% block title %}Contact Us - DPRAMP-TECH SOLUTIONS{% endblock %}
 
 {% block content %}
+{% load static %}
 <!-- Page Header Start -->
-<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
-    <div class="container">
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 55%, rgba(0,0,0,0.45) 100%), url('{% static "img/Shawkat767 photos, images, assets.jpg" %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="container text-center">
         <h1 class="display-3 mb-4 animated slideInDown">Contact</h1>
         <nav aria-label="breadcrumb animated slideInDown">
-            <ol class="breadcrumb mb-0">
+            <ol class="breadcrumb mb-0 justify-content-center">
                 <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Contact</li>
             </ol>
@@ -34,7 +35,7 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h5 class="mb-0">Our Office</h5>
-                        <p class="mb-0">59, Kodamendhi, Aroli, Nagpur, Ramtek, Maharashtra - 441106, India</p>
+                        <p class="mb-0">Office No. 402, Ganga Trueno Business Park, Viman Nagar, Pune, Maharashtra - 411014, India</p>
                     </div>
                 </div>
                 
@@ -47,6 +48,7 @@
                     <div class="flex-grow-1 ms-3">
                         <h5 class="mb-0">Call Us</h5>
                         <p class="mb-0">+91 9359919779</p>
+                        <p class="mb-0">+91 96732 48000</p>
                     </div>
                 </div>
                 
@@ -59,6 +61,7 @@
                     <div class="flex-grow-1 ms-3">
                         <h5 class="mb-0">Email Us</h5>
                         <p class="mb-0">info@dpramp.com</p>
+                        <p class="mb-0">dpramptechsolution@gmail.com</p>
                     </div>
                 </div>
             </div>

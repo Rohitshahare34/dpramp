@@ -15,7 +15,10 @@
 
 /* Premium Mesh Background for Hero */
 .detail-hero {
-    background: linear-gradient(135deg, var(--dark-bg) 0%, #16213e 50%, #0f3460 100%);
+    background-image: url('{% static "img/Digital Marketing Strategist in Palakkad.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     position: relative;
     padding: 100px 0 60px 0;
     overflow: hidden;
@@ -24,13 +27,11 @@
 .detail-hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 30%, rgba(0, 180, 216, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 70% 70%, rgba(0, 168, 107, 0.1) 0%, transparent 40%);
-    animation: meshRotate 20s linear infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1;
 }
 
@@ -195,6 +196,18 @@
     font-size: 12px;
     margin-top: 10px;
 }
+
+/* Mobile-first order: show buy card immediately after hero */
+@media (max-width: 991.98px) {
+    .sticky-sidebar {
+        position: static;
+        top: auto;
+    }
+
+    .mobile-buy-first {
+        margin-bottom: 20px;
+    }
+}
 </style>
 
 <!-- Premium Hero Section -->
@@ -223,7 +236,7 @@
 <div class="container py-5">
     <div class="row g-5">
         <!-- Content Column (Left) -->
-        <div class="col-lg-8">
+        <div class="col-lg-8 order-2 order-lg-1">
             <div class="content-section wow fadeInUp" data-wow-delay="0.1s">
                 <h3 class="fw-bold mb-4 d-flex align-items-center">
                     <span class="bg-primary text-white p-2 rounded-3 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
@@ -297,7 +310,7 @@
         </div>
 
         <!-- Sticky Sidebar (Right) -->
-        <div class="col-lg-4">
+        <div class="col-lg-4 order-1 order-lg-2 mobile-buy-first">
             <div class="sticky-sidebar wow fadeInRight" data-wow-delay="0.4s">
                 <div class="buy-card">
                     <div class="product-thumb-container">

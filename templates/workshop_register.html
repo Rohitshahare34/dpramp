@@ -48,6 +48,10 @@
                             <i class="fas fa-users text-primary me-2"></i>
                             <small><span class="badge bg-success">{{ workshop.max_participants|add:"-"|add:workshop.registrations.count }}</span> seats left</small>
                         </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-rupee-sign text-primary me-2"></i>
+                            <small><strong>Entry Fee:</strong> INR {{ workshop.entry_fee }}</small>
+                        </div>
                     </div>
                     
                     <div class="alert alert-info py-2">
@@ -195,7 +199,7 @@
                         
                         <div class="text-center mt-3">
                             <button type="submit" class="btn btn-primary rounded-pill px-4">
-                                <i class="fas fa-check me-1"></i>Register Now
+                                <i class="fas fa-lock me-1"></i>Pay & Register (INR {{ workshop.entry_fee }})
                             </button>
                         </div>
                     </form>
@@ -236,4 +240,91 @@
     transform: translateY(-2px);
 }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("workshopRegistrationForm");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const submitBtn = form.querySelector("button[type='submit']");
+        const originalHtml = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Processing...';
+
+        const formData = new FormData(form);
+
+        fetch('{% url "notes:create_workshop_order" workshop.slug %}', {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                alert(data.error || "Failed to initialize payment.");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHtml;
+                return;
+            }
+
+            const options = {
+                key: data.key,
+                amount: data.amount,
+                currency: data.currency,
+                name: "DPRAMP-TECH SOLUTIONS",
+                description: "Workshop Registration",
+                order_id: data.razorpay_order_id,
+                handler: function (response) {
+                    fetch('{% url "notes:verify_workshop_payment" %}', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        body: new URLSearchParams({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(vdata => {
+                        if (vdata.success) {
+                            window.location.href = vdata.redirect_url;
+                        } else {
+                            alert(vdata.error || "Payment verification failed.");
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalHtml;
+                        }
+                    });
+                },
+                theme: {
+                    color: "#00A86B"
+                },
+                modal: {
+                    ondismiss: function () {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalHtml;
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(() => {
+            alert("Unable to start payment right now. Please try again.");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalHtml;
+        });
+    });
+});
+</script>
 {% endblock %}

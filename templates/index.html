@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 <!-- Professional White & Green Hero Section Start -->
-<div class="container-fluid hero-white-theme mb-5">
+<div class="container-fluid hero-white-theme mb-3">
     <style>
         .hero-white-theme {
             background-color: #f9fbfb;
@@ -97,6 +97,39 @@ document.addEventListener('DOMContentLoaded', function() {
         .hero-carousel-container {
             position: relative;
             z-index: 2;
+        }
+
+        /* One fixed "white card" per slide (same size) */
+        .hero-slide-card {
+            background: transparent;
+            border-radius: 0;
+            padding: 26px;
+            box-shadow: none;
+            border: none;
+            min-height: 520px; /* keeps box consistent across slides */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .hero-slide-card .row {
+            width: 100%;
+            align-items: center;
+        }
+
+        .hero-slide-card .col-lg-6 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-slide-card .col-lg-6:first-child {
+            align-items: flex-start;
+        }
+
+        .hero-slide-card .col-lg-6:last-child {
+            align-items: center;
         }
 
         .hero-badge-modern {
@@ -185,20 +218,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .hero-img-wrapper-modern {
             position: relative;
-            padding: 20px;
+            padding: 14px;
             width: 100%;
-            max-width: 500px;
+            max-width: 680px;
             margin: 0 auto;
         }
 
         .hero-img-modern {
             width: 100%;
-            height: 500px;
+            height: 420px;
             object-fit: cover;
-            border-radius: 20px;
+            border-radius: 12px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
-            aspect-ratio: 1/1;
+            aspect-ratio: 16/10;
             border: 3px solid rgba(255,255,255,0.8);
         }
 
@@ -278,32 +311,46 @@ document.addEventListener('DOMContentLoaded', function() {
             color: #ffffff;
         }
 
-        /* Ensure continuous smooth carousel rotation */
-        .carousel-item {
-            transition: transform 0.5s ease-in-out;
+        /* Clean, smooth fade transition for hero only */
+        .hero-carousel-container .carousel-fade .carousel-item {
+            opacity: 0;
+            transition: opacity 0.95s ease-in-out !important;
+            transform: none !important;
         }
-
-        .carousel-inner {
-            transition: transform 0.5s ease-in-out;
+        .hero-carousel-container .carousel-fade .carousel-item.active,
+        .hero-carousel-container .carousel-fade .carousel-item-next.carousel-item-start,
+        .hero-carousel-container .carousel-fade .carousel-item-prev.carousel-item-end {
+            opacity: 1;
+            z-index: 1;
         }
-
-        /* Prevent carousel from pausing on hover */
-        .carousel:hover .carousel-item {
-            transition: transform 0.5s ease-in-out;
+        .hero-carousel-container .carousel-fade .active.carousel-item-start,
+        .hero-carousel-container .carousel-fade .active.carousel-item-end {
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.95s ease-in-out !important;
+        }
+        .hero-carousel-container .carousel-inner {
+            background: transparent;
+        }
+        /* Avoid extra per-slide WOW animation jitter inside hero */
+        .hero-carousel-container .wow {
+            animation: none !important;
+            visibility: visible !important;
         }
 
         @media (max-width: 991.98px) {
             .hero-title-modern { font-size: 2.5rem; }
             .hero-white-theme { padding: 30px 15px; }
+            .hero-slide-card { min-height: 520px; padding: 18px; }
             .hero-img-wrapper-modern { 
                 margin-top: 30px;
-                max-width: 400px;
+                max-width: 560px;
                 padding: 10px;
             }
             .hero-img-modern {
-                height: 400px;
+                height: 340px;
                 width: 100%;
-                aspect-ratio: 1/1;
+                aspect-ratio: 16/10;
             }
             .btn-modern-outline { margin-left: 0; margin-top: 15px; width: 100%; text-align: center; }
             .btn-modern-green { width: 100%; text-align: center; }
@@ -318,25 +365,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             .hero-img-wrapper-modern { 
-                max-width: 280px;
-                padding: 1px;
-                margin: 0 auto 15px auto;
+                max-width: 450px;
+                padding: 0;
+                margin: 0 auto 10px auto;
             }
             .hero-img-modern {
-                height: 280px;
+                height: 250px;
                 width: 100%;
-                aspect-ratio: 1/1;
+                aspect-ratio: 16/9;
                 box-shadow: 0 15px 30px rgba(0,0,0,0.12), 0 5px 15px rgba(0,0,0,0.08);
                 border: 2px solid rgba(255,255,255,0.6);
             }
             .hero-white-theme {
-                padding: 100px 25px 30px 25px !important;
+                padding: 95px 15px 25px 15px !important;
                 overflow-x: hidden;
             }
             .hero-carousel-container {
                 padding: 0;
                 margin: 0;
                 width: 100%;
+            }
+            .hero-carousel-container .carousel-inner { min-height: 560px; }
+            .hero-carousel-container .carousel-item { min-height: 560px; }
+            .hero-slide-card { min-height: 560px; padding: 12px 8px; }
+            .carousel-item .container {
+                display: flex;
+                align-items: stretch;
             }
             .container {
                 padding: 0 15px;
@@ -347,6 +401,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .carousel-item .row {
                 flex-direction: column;
                 margin: 0;
+                min-height: 100%;
+                width: 100%;
             }
             
             .carousel-item .col-lg-6:first-child {
@@ -354,6 +410,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 text-align: center;
                 margin-top: 10px;
                 padding: 0 10px;
+                min-height: 250px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
             }
             
             .carousel-item .col-lg-6:last-child {
@@ -361,6 +422,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 text-align: center;
                 padding: 0;
                 margin-bottom: 15px;
+                min-height: 245px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             
             .hero-title-modern {
@@ -378,6 +443,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 max-width: 100%;
                 line-height: 1.4;
                 padding: 0 10px;
+                min-height: 76px;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
             
             .hero-badge-modern {
@@ -405,6 +475,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 width: 80%;
                 margin: 0 auto;
             }
+            .carousel-item .col-lg-6:first-child .d-flex.flex-wrap {
+                margin-top: auto;
+                justify-content: center;
+            }
             
             /* Hide carousel indicators and arrows in mobile for clean view */
             .carousel-indicators, .hero-carousel-arrow {
@@ -414,18 +488,19 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
     <div class="hero-carousel-container">
-        <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false" data-bs-wrap="true">
+        <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="false" data-bs-wrap="true" data-bs-touch="true">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
-                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="3"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
             </div>
-            
+
             <div class="carousel-inner">
                 <!-- Slide 1: Drones -->
                 <div class="carousel-item active">
                     <div class="container">
+                        <div class="hero-slide-card">
                         <div class="row align-items-center">
                             <div class="col-lg-6 wow fadeInLeft">
                                 <span class="hero-badge-modern">Student Projects</span>
@@ -450,14 +525,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Slide 2: Education -->
+                <!-- Slide 2: Study Materials -->
                 <div class="carousel-item">
                     <div class="container">
+                        <div class="hero-slide-card">
                         <div class="row align-items-center">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 wow fadeInLeft">
                                 <span class="hero-badge-modern">Premium Learning</span>
                                 <h1 class="hero-title-modern">Study <span class="text-emerald">Smarter</span>,<br>Not Harder</h1>
                                 <p class="hero-desc-modern">Access premium PDF notes and study materials designed by experts. Master complex topics with our structured guides and placement resources.</p>
@@ -467,18 +544,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 wow fadeInRight">
                                 <div class="hero-img-wrapper-modern">
                                     <img src="{% static 'img/Gemini_Generated_Image_rvt2bnrvt2bnrvt2 (1).png' %}" alt="Study Materials" class="hero-img-modern">
-                                    <div class="floating-badge badge-2">
-                                        <i class="fas fa-star text-warning me-3 fa-2x"></i>
-                                        <div>
-                                            <h6 class="mb-0 fw-bold">4.9/5 Rating</h6>
-                                            <p class="mb-0 small text-muted">Trusted by 10k+ Students</p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -486,22 +557,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 <!-- Slide 3: Workshops -->
                 <div class="carousel-item">
                     <div class="container">
+                        <div class="hero-slide-card">
                         <div class="row align-items-center">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 wow fadeInLeft">
                                 <span class="hero-badge-modern">Practical Learning</span>
-                                <h1 class="hero-title-modern">Workshop On <span class="text-emerald">IoT And</span><br>Practical Learning</h1>
-                                <p class="hero-desc-modern">Join hands-on IoT workshops with practical learning experience. Build real projects and gain industry-ready skills with expert guidance.</p>
+                                <h1 class="hero-title-modern">Workshops With <span class="text-emerald">Hands-on</span><br>Experience</h1>
+                                <p class="hero-desc-modern">Join hands-on workshops with practical learning experience. Build real projects and gain industry-ready skills with expert guidance.</p>
                                 <div class="d-flex flex-wrap">
                                     <a href="{% url 'notes:workshops' %}" class="btn-modern-green">
-                                        Join Now <i class="fas fa-chalkboard-teacher ms-2"></i>
+                                        Explore Workshops <i class="fas fa-chalkboard-teacher ms-2"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 wow fadeInRight">
                                 <div class="hero-img-wrapper-modern">
                                     <img src="{% static 'img/Edit_this_image_202604201333.png' %}" alt="Workshops" class="hero-img-modern">
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -509,35 +582,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 <!-- Slide 4: Innovation -->
                 <div class="carousel-item">
                     <div class="container">
+                        <div class="hero-slide-card">
                         <div class="row align-items-center">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 wow fadeInLeft">
                                 <span class="hero-badge-modern">Next-Gen Tech</span>
                                 <h1 class="hero-title-modern">Future-Ready <span class="text-emerald">Innovation</span><br>Systems</h1>
                                 <p class="hero-desc-modern">Harness the power of high-end technology solutions for digital transformation and enterprise automation.</p>
                                 <div class="d-flex flex-wrap">
-                                    <a href="#services" class="btn-modern-green">
-                                        Get Started <i class="fas fa-rocket ms-2"></i>
+                                    <a href="{% url 'notes:services' %}" class="btn-modern-green">
+                                        Explore Services <i class="fas fa-rocket ms-2"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 wow fadeInRight">
                                 <div class="hero-img-wrapper-modern">
                                     <img src="{% static 'img/🤍.jpg' %}" alt="Innovation" class="hero-img-modern">
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Carousel Navigation Arrows -->
-            <button class="carousel-control-prev hero-carousel-arrow" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
-                <i class="fas fa-chevron-left hero-arrow-icon" aria-hidden="true"></i>
-                <span class="visually-hidden">Previous</span>
+            <button class="carousel-control-prev hero-carousel-arrow" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev" aria-label="Previous slide">
+                <span class="hero-arrow-icon"><i class="fas fa-chevron-left"></i></span>
             </button>
-            <button class="carousel-control-next hero-carousel-arrow" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
-                <i class="fas fa-chevron-right hero-arrow-icon" aria-hidden="true"></i>
-                <span class="visually-hidden">Next</span>
+            <button class="carousel-control-next hero-carousel-arrow" type="button" data-bs-target="#hero-carousel" data-bs-slide="next" aria-label="Next slide">
+                <span class="hero-arrow-icon"><i class="fas fa-chevron-right"></i></span>
             </button>
         </div>
     </div>
@@ -545,29 +617,33 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Professional White & Green Hero Section End -->
 
 <!-- Features Section Start -->
-<div class="container-xxl py-5 features-section">
+<div class="container-xxl pt-3 pb-5 features-section">
     <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="text-primary text-uppercase mb-3">Our Features</h6>
-            <h1 class="display-5 mb-4">What We Offer</h1>
-            <p class="lead text-muted mb-5">Discover our comprehensive range of technology solutions and services designed to transform your business.</p>
+        <div class="text-center mx-auto mb-5 wow fadeInUp features-header" data-wow-delay="0.1s">
+            <h6 class="text-primary text-uppercase mb-3 d-flex align-items-center justify-content-center gap-2 features-kicker">
+                <img src="{% static 'img/feature-radar.svg' %}" alt="Features Icon" class="features-heading-icon">
+                Our Features
+            </h6>
+            <h1 class="display-5 mb-4 features-title">What We Offer</h1>
+            <p class="lead text-muted mb-5 features-subtitle">Quick view of our core services.</p>
         </div>
         
         {% if features %}
             <!-- Scrolling Features Container -->
             <div class="scrolling-features-wrapper">
                 <div class="scrolling-features-container">
-                    {% for feature in features %}
-                        <div class="scrolling-feature-card">
-                            <div class="scrolling-feature-icon">
-                                <i class="{{ feature.icon|default:'fas fa-star' }}"></i>
+                    <div class="scrolling-features-track">
+                        {% for feature in features %}
+                            <div class="scrolling-feature-card">
+                                <div class="scrolling-feature-icon">
+                                    <i class="{{ feature.icon|default:'fas fa-star' }}"></i>
+                                </div>
+                                <div class="scrolling-feature-content">
+                                    <h4 class="scrolling-feature-title">{{ feature.title }}</h4>
+                                </div>
                             </div>
-                            <div class="scrolling-feature-content">
-                                <h4 class="scrolling-feature-title">{{ feature.title }}</h4>
-                                <p class="scrolling-feature-description">{{ feature.description|truncatewords:20 }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
                 
             </div>
@@ -745,6 +821,39 @@ document.addEventListener('DOMContentLoaded', function() {
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
+/* Notes + Drones: keep as static grid (no horizontal slider) */
+#notes-section,
+#drones-section {
+    overflow-x: hidden !important;
+}
+
+#notes-section .row,
+#drones-section .row {
+    overflow-x: hidden !important;
+}
+
+.features-heading-icon {
+    width: 26px;
+    height: 26px;
+    display: inline-block;
+    filter: drop-shadow(0 2px 4px rgba(0, 168, 107, 0.2));
+}
+
+/* Mobile: show only one main heading line */
+@media (max-width: 575.98px) {
+    .features-header { margin-bottom: 18px !important; }
+    .features-title,
+    .features-subtitle { display: none !important; }
+    .features-kicker {
+        font-size: 1.15rem !important;
+        letter-spacing: 0.5px !important;
+        margin-bottom: 0 !important;
+        text-transform: none !important;
+        color: #1a1a2e !important;
+    }
+    .features-heading-icon { width: 22px; height: 22px; }
+}
+
 .feature-card {
     background: white;
     border: none;
@@ -814,10 +923,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="row g-4">
             <!-- Dynamic Database Products -->
             {% for product in featured_notes|slice:"0:4" %}
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
                 <div class="pro-card">
-                    <div class="pro-status-badge">{% if forloop.counter|divisibleby:2 %}HOT{% else %}NEW{% endif %}</div>
-                    <div class="pro-img-wrapper">
+                                        <div class="pro-img-wrapper">
                         {% if product.thumbnail %}
                             <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
                         {% else %}
@@ -841,10 +949,9 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             {% empty %}
             <!-- Fallback static cards if no products in database -->
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="pro-card">
-                    <div class="pro-status-badge">Popular</div>
-                    <div class="pro-img-wrapper">
+                                        <div class="pro-img-wrapper">
                         <img src="{% static 'img/service-1.jpg' %}" alt="PDF Notes">
                     </div>
                     <div class="pro-card-body">
@@ -863,10 +970,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="pro-card">
-                    <div class="pro-status-badge">New</div>
-                    <div class="pro-img-wrapper">
+                                        <div class="pro-img-wrapper">
                         <img src="{% static 'img/service-2.jpg' %}" alt="PDF Notes">
                     </div>
                     <div class="pro-card-body">
@@ -885,10 +991,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="pro-card">
-                    <div class="pro-status-badge">Trending</div>
-                    <div class="pro-img-wrapper">
+                                        <div class="pro-img-wrapper">
                         <img src="{% static 'img/service-3.jpg' %}" alt="PDF Notes">
                     </div>
                     <div class="pro-card-body">
@@ -907,10 +1012,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.4s">
                 <div class="pro-card">
-                    <div class="pro-status-badge">Bestseller</div>
-                    <div class="pro-img-wrapper">
+                                        <div class="pro-img-wrapper">
                         <img src="{% static 'img/service-4.jpg' %}" alt="PDF Notes">
                     </div>
                     <div class="pro-card-body">
@@ -957,13 +1061,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div class="row g-4">
             <!-- Dynamic Drone Products from Database -->
-            {% for drone in featured_drones %}
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+            {% for drone in featured_drones|slice:"0:4" %}
+                <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
                     <div class="pro-card">
-                        {% if drone.featured %}
-                            <div class="pro-status-badge">Featured</div>
-                        {% endif %}
-                        <div class="pro-img-wrapper">
+                                                <div class="pro-img-wrapper">
                             {% if drone.image %}
                                 <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
                             {% else %}
@@ -1476,6 +1577,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+<!-- Portfolio Section Start -->
+<div class="container-xxl py-4 portfolio">
+    <div class="container">
+        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <div class="section-label mb-4">
+                <span class="badge text-white px-4 py-2 rounded-pill fw-semi-bold" style="background: linear-gradient(135deg, #00B4D8, #00A86B);">
+                    <i class="fa fa-briefcase me-2"></i>Our Portfolio
+                </span>
+            </div>
+            <h1 class="display-5 mb-2 fw-bold" style="font-size: 2rem;">Delivering <span class="text-emerald">Innovation</span> Through Projects</h1>
+            <p class="text-muted mb-4" style="font-size: 0.9rem;">We have built reliable digital solutions trusted by clients across various industries and technologies.</p>
+        </div>
+
+        <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
+            {% for project in featured_projects|slice:":4" %}
+            <div class="col-lg-3 col-md-6">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                        {% else %}
+                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="{{ project.title }}">
+                        {% endif %}
+                        <div class="pro-status-badge">{{ project.get_project_type_display }}</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">{{ project.client_name|default:"Project" }}</div>
+                        <h6 class="pro-title">{{ project.title }}</h6>
+                        <p class="text-muted small mb-3">{{ project.description|truncatewords:10 }}</p>
+                        <div class="pro-card-footer mt-auto">
+                           <a href="{% if project.case_study_link %}{{ project.case_study_link }}{% else %}{% url 'notes:project_detail' project.slug %}{% endif %}" class="btn-pro-details w-100 text-center" {% if project.case_study_link %}target="_blank" rel="noopener"{% endif %}>
+                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-lg-3 col-md-6">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Project">
+                        <div class="pro-status-badge">Project</div>
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Portfolio</div>
+                        <h6 class="pro-title">Project Portfolio Item</h6>
+                        <p class="text-muted small mb-3">Add featured projects in admin to show real project cards here.</p>
+                        <div class="pro-card-footer mt-auto">
+                           <a href="{% url 'notes:projects' %}" class="btn-pro-details w-100 text-center">
+                                View Projects <i class="fa fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Explore More Button -->
+        <div class="text-center mt-5">
+            <a href="{% url 'notes:projects' %}" class="btn btn-lg px-5 py-3 btn-pro-view-all">
+                <i class="fas fa-briefcase me-2"></i>Explore More Projects
+                <i class="fas fa-arrow-right ms-3"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Portfolio End -->
+
+
 <!-- Contact Section Start -->
 <div class="container-fluid callback my-5 pt-5">
     <div class="container pt-5">
@@ -1545,140 +1717,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 <!-- Contact Section End -->
-<div class="container-xxl py-4">
-    <div class="container">
-        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-            <div class="section-label mb-4">
-                <span class="badge text-white px-4 py-2 rounded-pill fw-semi-bold" style="background: linear-gradient(135deg, #00B4D8, #00A86B);">
-                    <i class="fa fa-briefcase me-2"></i>Our Portfolio
-                </span>
-            </div>
-            <h1 class="display-5 mb-2 fw-bold" style="font-size: 2rem;">Delivering <span class="text-emerald">Innovation</span> Through Projects</h1>
-            <p class="text-muted mb-4" style="font-size: 0.9rem;">We have built reliable digital solutions trusted by clients across various industries and technologies.</p>
-        </div>
-
-        <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
-            <!-- Web Development Project -->
-            <div class="col-lg-4 col-md-6">
-                <div class="pro-card">
-                    <div class="pro-img-wrapper">
-                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Web Development">
-                        <div class="pro-status-badge">Web Tech</div>
-                    </div>
-                    <div class="pro-card-body">
-                        <div class="pro-category">Web Development</div>
-                        <h6 class="pro-title">Corporate Business Website</h6>
-                        <p class="text-muted small mb-4">Professional corporate website with modern design and responsive layout.</p>
-                        <div class="pro-card-footer mt-auto">
-                           <a href="{% url 'notes:services' %}#web-development" class="btn-pro-details w-100 text-center">
-                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VR Training Platform -->
-            <div class="col-lg-4 col-md-6">
-                <div class="pro-card">
-                    <div class="pro-img-wrapper">
-                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="VR Training Platform">
-                        <div class="pro-status-badge">AR/VR Development</div>
-                    </div>
-                    <div class="pro-card-body">
-                        <div class="pro-category">EduTech Industries</div>
-                        <h6 class="pro-title">VR Training Platform</h6>
-                        <p class="text-muted small mb-4">Immersive virtual reality platform for industrial training and education. Features realistic simulations and progress tracking.</p>
-                        <div class="pro-card-footer mt-auto">
-                           <a href="{% url 'notes:services' %}#vr-development" class="btn-pro-details w-100 text-center">
-                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Industrial Drone Monitoring -->
-            <div class="col-lg-4 col-md-6">
-                <div class="pro-card">
-                    <div class="pro-img-wrapper">
-                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Industrial Drone Monitoring">
-                        <div class="pro-status-badge">Drone Technology</div>
-                    </div>
-                    <div class="pro-card-body">
-                        <div class="pro-category">AgriTech Solutions</div>
-                        <h6 class="pro-title">Industrial Drone Monitoring</h6>
-                        <p class="text-muted small mb-4">Agricultural drone system for crop monitoring and precision farming. Includes real-time video streaming and data analytics.</p>
-                        <div class="pro-card-footer mt-auto">
-                           <a href="{% url 'notes:services' %}#drone-technology" class="btn-pro-details w-100 text-center">
-                                View Case Study <i class="fa fa-external-link-alt ms-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Smart Home Automation -->
-            <div class="col-lg-4 col-md-6">
-                <div class="pro-card">
-                    <div class="pro-img-wrapper">
-                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Smart Home Automation">
-                        <div class="pro-status-badge">IoT Solutions</div>
-                    </div>
-                    <div class="pro-card-body">
-                        <div class="pro-category">SmartLiving Inc</div>
-                        <h6 class="pro-title">Smart Home & Automation System</h6>
-                        <p class="text-muted small mb-4">Complete IoT solution for home automation with smart controls and sensors. Features voice control, mobile app integration, and energy monitoring.</p>
-                        <div class="pro-card-footer mt-auto">
-                           <a href="{% url 'notes:services' %}#iot-solutions" class="btn-pro-details w-100 text-center">
-                                View <i class="fa fa-external-link-alt ms-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {% for project in featured_projects %}
-                <div class="col-lg-4 col-md-6" {% if forloop.counter > 4 %}id="portfolio-card-{{ forloop.counter }}" style="display: none;"{% endif %}>
-                    <div class="pro-card">
-                        <div class="pro-img-wrapper">
-                            {% if project.image %}
-                                <img src="{{ project.image.url }}" alt="{{ project.title }}">
-                            {% else %}
-                                <img src="{% static 'img/rough imgs/pro2.png' %}" alt="{{ project.title }}">
-                            {% endif %}
-                            <div class="pro-status-badge">{{ project.get_project_type_display|default:"Project" }}</div>
-                        </div>
-                        <div class="pro-card-body">
-                            <div class="pro-category">{{ project.client_name|default:"Client Project" }}</div>
-                            <h6 class="pro-title">{{ project.title }}</h6>
-                            <p class="text-muted small mb-4">{{ project.description|truncatewords:20 }}</p>
-                            <div class="pro-card-footer mt-auto">
-                                <a href="{% if project.case_study_link %}{{ project.case_study_link }}{% else %}{% url 'notes:project_detail' project.slug %}{% endif %}" class="btn-pro-details w-100 text-center">
-                                    View Case Study <i class="fa fa-external-link-alt ms-2"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <div class="col-12 text-center py-5">
-                    <p class="text-muted">No projects found. Check back later!</p>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Show More Button -->
-        <div class="text-center mt-5">
-            <button id="show-more-btn" class="btn btn-lg px-5 py-3" style="background: linear-gradient(135deg, #FF6B6B, #FF7F50); color: white; border: none; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);">
-                <i class="fas fa-plus-circle me-2"></i>Show More Projects
-            </button>
-        </div>
-    </div>
-</div>
-<!-- Portfolio End -->
-
-
 
 
 
@@ -1936,14 +1974,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         .scrolling-features-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 10px 0;
+        }
+
+        .scrolling-features-track {
             display: flex;
             gap: 20px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: proximity;
-            scrollbar-width: thin;
-            padding: 10px 0;
+            width: max-content;
+            will-change: transform;
+            animation: featureMarquee var(--feature-marquee-duration, 22s) linear infinite;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .scrolling-features-container.is-paused .scrolling-features-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes featureMarquee {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(calc(-1 * var(--feature-marquee-distance, 600px)), 0, 0); }
         }
 
         .scrolling-feature-card {
@@ -1956,7 +2007,7 @@ document.addEventListener('DOMContentLoaded', function() {
             flex: 0 0 auto;
             flex-direction: column;
             margin-bottom: 20px;
-            padding: 25px;
+            padding: 20px 18px;
             text-align: center;
         }
 
@@ -1966,31 +2017,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         .scrolling-feature-icon {
-            width: 60px;
-            height: 60px;
+            width: 72px;
+            height: 72px;
             background: linear-gradient(135deg, #00A86B 0%, #00B4D8 100%);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 24px;
+            margin: 0 auto 12px;
+            font-size: 28px;
             transition: all 0.3s ease;
         }
 
         .scrolling-feature-title {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.08rem;
+            font-weight: 800;
             color: #1a1a2e;
-            margin-bottom: 10px;
-        }
-
-        .scrolling-feature-description {
-            font-size: 0.9rem;
-            line-height: 1.4;
-            color: #6c757d;
-            margin-bottom: 15px;
+            margin-bottom: 2px;
         }
 
         .scrolling-features-scroll-btn {
@@ -2032,6 +2076,21 @@ document.addEventListener('DOMContentLoaded', function() {
             background: linear-gradient(135deg, #008B5A, #0096C7);
         }
 
+        /* Continuous auto-scroll: keep it clean */
+        .scrolling-features-wrapper .scrolling-features-container {
+            scroll-snap-type: none;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            user-select: none;
+            cursor: grab;
+        }
+        .scrolling-features-wrapper .scrolling-features-container:active {
+            cursor: grabbing;
+        }
+        .scrolling-features-wrapper .scrolling-features-container::-webkit-scrollbar {
+            display: none;
+        }
+
         /* Mobile responsive layout fixes */
         @media (max-width: 768px) {
             html, body {
@@ -2062,17 +2121,90 @@ document.addEventListener('DOMContentLoaded', function() {
                 margin-bottom: 0 !important;
             }
 
-            /* Fix excessive horizontal gutters on mobile */
-            .row {
-                margin-left: -10px !important;
-                margin-right: -10px !important;
+            /* Notes + Drones only: avoid negative margins (no horizontal slider) */
+            #notes-section .row,
+            #drones-section .row {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
                 --bs-gutter-x: 20px !important;
             }
             
-            .row > * {
+            #notes-section .row > *,
+            #drones-section .row > * {
                 padding-left: 10px !important;
                 padding-right: 10px !important;
                 margin-top: 15px !important; /* Standardize vertical gap between stacked columns */
+            }
+
+            /* HARD FIX: never allow Notes/Drone sections to horizontally overflow */
+            #notes-section,
+            #drones-section,
+            #notes-section .container,
+            #drones-section .container,
+            #notes-section .row,
+            #drones-section .row {
+                overflow-x: hidden !important;
+            }
+
+            #notes-section img,
+            #drones-section img,
+            #notes-section .pro-card,
+            #drones-section .pro-card {
+                max-width: 100% !important;
+            }
+
+            /* Notes + Drones: remove row negative margins that create side-scroll */
+            #notes-section .container,
+            #drones-section .container {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                max-width: 100% !important;
+            }
+
+            #notes-section .row,
+            #drones-section .row {
+                /* Force a true non-scroll layout on mobile */
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                column-gap: 10px !important;
+                row-gap: 10px !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+            }
+
+            #notes-section .row > *,
+            #drones-section .row > * {
+                max-width: 100% !important;
+                /* In grid mode, Bootstrap .col-6 width makes cards narrow (50% of 50%). */
+                width: auto !important;
+                flex: initial !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                overflow: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            /* Remove internal card scrollbars in Notes + Drones */
+            #notes-section .pro-card,
+            #drones-section .pro-card,
+            #notes-section .pro-card-body,
+            #drones-section .pro-card-body {
+                overflow: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            #notes-section .row > *::-webkit-scrollbar,
+            #drones-section .row > *::-webkit-scrollbar,
+            #notes-section .pro-card::-webkit-scrollbar,
+            #drones-section .pro-card::-webkit-scrollbar,
+            #notes-section .pro-card-body::-webkit-scrollbar,
+            #drones-section .pro-card-body::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
             }
 
             /* Ensure content is not hidden by WOW animations or overflow */
@@ -2082,8 +2214,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 animation-name: none !important;
             }
             
+            /* Prevent horizontal "slider" / scrollbar on mobile */
             section, div:not(.scrolling-features-container):not(.service-nav):not(.advanced-tabs) {
-                overflow-x: visible !important;
+                overflow-x: hidden !important;
             }
 
             .scrolling-features-container, .service-nav, .advanced-tabs {
@@ -2124,15 +2257,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             .scrolling-features-container {
                 padding: 10px 0;
+                overflow: hidden;
+            }
+
+            .scrolling-features-track {
                 gap: 15px;
-                justify-content: flex-start;
                 display: flex;
                 flex-wrap: nowrap;
-                -webkit-overflow-scrolling: touch;
+                padding-left: 15px;
+                padding-right: 15px;
             }
 
             .scrolling-feature-card {
-                min-width: 80vw;
+                min-width: 78vw;
                 margin-right: 0;
                 margin-bottom: 5px;
                 padding: 20px;
@@ -2171,6 +2308,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 text-align: center;
             }
 
+            /* Features Section Mobile 2x2 Grid */
+            .feature .row.g-4 {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 15px !important;
+            }
+
+            .feature .col-md-6 {
+                flex: 0 0 calc(50% - 7.5px) !important;
+                max-width: calc(50% - 7.5px) !important;
+                margin-bottom: 15px !important;
+            }
+
+            .feature .feature-box {
+                height: 100% !important;
+                padding: 20px !important;
+                text-align: center !important;
+            }
+
+            .feature .feature-box i {
+                font-size: 2rem !important;
+                margin-bottom: 15px !important;
+            }
+
+            .feature .feature-box h4 {
+                font-size: 1rem !important;
+                margin-bottom: 10px !important;
+                line-height: 1.3 !important;
+            }
+
+            .feature .feature-box p {
+                font-size: 0.85rem !important;
+                margin-bottom: 0 !important;
+                line-height: 1.4 !important;
+            }
+
             .advanced-tabs {
                 flex-wrap: nowrap !important;
                 overflow-x: auto;
@@ -2187,6 +2360,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
             .info-card {
                 margin-bottom: 15px;
+            }
+
+            /* About section only: remove vertical/internal sliders */
+            .about-section .advanced-tabs-wrapper,
+            .about-section .tab-content,
+            .about-section .tab-pane,
+            .about-section .info-card,
+            .about-section .mission-content,
+            .about-section .vision-content {
+                overflow-y: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .about-section .advanced-tabs-wrapper::-webkit-scrollbar,
+            .about-section .tab-content::-webkit-scrollbar,
+            .about-section .tab-pane::-webkit-scrollbar,
+            .about-section .info-card::-webkit-scrollbar,
+            .about-section .mission-content::-webkit-scrollbar,
+            .about-section .vision-content::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
             }
             
             #pdfPopupModal .modal-header {
@@ -2320,24 +2516,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 margin-bottom: 25px !important;
             }
 
+            /* Portfolio only: remove internal vertical scrollbars on mobile */
+            .portfolio .row > div,
+            .portfolio .pro-card,
+            .portfolio .pro-card-body {
+                overflow: hidden !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            .portfolio .row > div::-webkit-scrollbar,
+            .portfolio .pro-card::-webkit-scrollbar,
+            .portfolio .pro-card-body::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+
+            /* Portfolio only: show less text on card in mobile */
+            .portfolio .pro-category {
+                font-size: 0.55rem !important;
+                margin-bottom: 2px !important;
+            }
+
+            .portfolio .pro-title {
+                font-size: 0.8rem !important;
+                line-height: 1.2 !important;
+                min-height: auto !important;
+                margin-bottom: 2px !important;
+                -webkit-line-clamp: 1 !important;
+                line-clamp: 1;
+            }
+
+            .portfolio .pro-card-body p.text-muted.small {
+                display: none !important;
+            }
+
+            .portfolio .pro-status-badge {
+                display: none !important;
+            }
+
             .portfolio h1 {
                 font-size: 1.8rem !important;
             }
 
-            /* Two cards per row for Products and Projects - No Slider */
-            #notes-section .row,
-            #drones-section .row,
+            /* Two cards per row for Portfolio (keep only here) */
             .portfolio .row {
                 display: flex !important;
                 flex-wrap: wrap !important;
                 overflow-x: hidden !important;
                 width: 100% !important;
-                margin-left: -5px !important;
-                margin-right: -5px !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
             }
 
-            #notes-section .row > div,
-            #drones-section .row > div,
             .portfolio .row > div {
                 flex: 0 0 50% !important;
                 max-width: 50% !important;
@@ -2383,17 +2615,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             .btn-pro-details {
-                padding: 0 !important;
-                font-size: 0.65rem !important;
+                padding: 2px 4px !important;
+                font-size: 0.55rem !important;
                 border: none !important;
                 background: transparent !important;
                 color: #00A86B !important;
                 text-decoration: none !important;
-                font-weight: 700 !important;
+                font-weight: 600 !important;
                 text-transform: uppercase;
-                letter-spacing: 0.2px;
+                letter-spacing: 0.1px;
                 display: inline-block !important;
                 white-space: nowrap !important;
+                line-height: 1.2 !important;
             }
 
             .btn-pro-details::after {
@@ -2622,95 +2855,71 @@ document.addEventListener('DOMContentLoaded', function() {
         */
 
         // Portfolio Show More/Less functionality
-        document.getElementById('show-more-btn').addEventListener('click', function() {
-            const isExpanded = this.getAttribute('data-expanded') === 'true';
-            const cardIds = ['portfolio-card-4', 'portfolio-card-5', 'portfolio-card-6'];
-            
-            if (isExpanded) {
-                // Hide extra cards
-                cardIds.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.style.display = 'none';
-                });
+        const showMoreBtn = document.getElementById('show-more-btn');
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', function() {
+                const isExpanded = this.getAttribute('data-expanded') === 'true';
+                const cardIds = ['portfolio-card-4', 'portfolio-card-5', 'portfolio-card-6'];
                 
-                // Change button back to Show More
-                this.innerHTML = '<i class="fas fa-plus-circle me-2"></i>Show More Projects';
-                this.style.background = 'linear-gradient(135deg, #FF6B6B, #FF7F50)';
-                this.setAttribute('data-expanded', 'false');
-            } else {
-                // Show hidden cards
-                cardIds.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.style.display = 'block';
-                });
-                
-                // Change button to Show Less
-                this.innerHTML = '<i class="fas fa-minus-circle me-2"></i>Show Less Projects';
-                this.style.background = 'linear-gradient(135deg, #FF7F50, #FF6B6B)';
-                this.setAttribute('data-expanded', 'true');
-            }
-        });
+                if (isExpanded) {
+                    // Hide extra cards
+                    cardIds.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.style.display = 'none';
+                    });
+                    
+                    // Change button back to Show More
+                    this.innerHTML = '<i class="fas fa-plus-circle me-2"></i>Show More Projects';
+                    this.style.background = 'linear-gradient(135deg, #FF6B6B, #FF7F50)';
+                    this.setAttribute('data-expanded', 'false');
+                } else {
+                    // Show hidden cards
+                    cardIds.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.style.display = 'block';
+                    });
+                    
+                    // Change button to Show Less
+                    this.innerHTML = '<i class="fas fa-minus-circle me-2"></i>Show Less Projects';
+                    this.style.background = 'linear-gradient(135deg, #FF7F50, #FF6B6B)';
+                    this.setAttribute('data-expanded', 'true');
+                }
+            });
 
-        // Initialize button state
-        document.getElementById('show-more-btn').setAttribute('data-expanded', 'false');
-
-        // Auto-scrolling functionality for features
-        let autoScrollInterval;
-        let scrollDirection = 'right';
-        let isAutoScrolling = false;
-
-        function startAutoScroll() {
-            if (isAutoScrolling) {
-                stopAutoScroll();
-            } else {
-                isAutoScrolling = true;
-                autoScrollInterval = setInterval(() => {
-                    const container = document.querySelector('.scrolling-features-container');
-                    if (container) {
-                        const maxScroll = container.scrollWidth - container.clientWidth;
-                        if (container.scrollLeft >= maxScroll) {
-                            scrollDirection = 'left';
-                        } else if (container.scrollLeft <= 0) {
-                            scrollDirection = 'right';
-                        }
-                        
-                        if (scrollDirection === 'left') {
-                            container.scrollBy({
-                                left: Math.max(0, container.scrollLeft - 300),
-                                behavior: 'smooth'
-                            });
-                        } else {
-                            container.scrollBy({
-                                left: Math.max(0, container.scrollLeft + 300),
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                }, 3000); // Scroll every 3 seconds
-            }
+            // Initialize button state
+            showMoreBtn.setAttribute('data-expanded', 'false');
         }
 
-        function stopAutoScroll() {
-            isAutoScrolling = false;
-            if (autoScrollInterval) {
-                clearInterval(autoScrollInterval);
-            }
-        }
-
-        // Start auto-scrolling when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                startAutoScroll();
-            }, 3000); // Start after 3 seconds
-        });
-
-        // Pause auto-scrolling on hover
-        document.addEventListener('DOMContentLoaded', function() {
+        // Continuous auto-scrolling (CSS marquee) for features
+        document.addEventListener('DOMContentLoaded', function () {
             const container = document.querySelector('.scrolling-features-container');
-            if (container) {
-                container.addEventListener('mouseenter', stopAutoScroll);
-                container.addEventListener('mouseleave', startAutoScroll);
+            const track = container?.querySelector('.scrolling-features-track');
+            if (!container || !track) return;
+
+            const baseCards = Array.from(track.children);
+            if (baseCards.length < 2) return;
+
+            // Duplicate once for seamless loop
+            if (!track.dataset.loopReady) {
+                baseCards.forEach((card) => track.appendChild(card.cloneNode(true)));
+                track.dataset.loopReady = 'true';
             }
+
+            // Measure and set CSS vars for perfect looping distance + duration
+            const halfWidth = Math.floor(track.scrollWidth / 2);
+            const pxPerSecond = 65; // speed (faster)
+            const duration = Math.max(8, Math.round(halfWidth / pxPerSecond));
+            track.style.setProperty('--feature-marquee-distance', `${halfWidth}px`);
+            track.style.setProperty('--feature-marquee-duration', `${duration}s`);
+
+            // Pause on interaction
+            const pause = () => container.classList.add('is-paused');
+            const resume = () => container.classList.remove('is-paused');
+
+            container.addEventListener('mouseenter', pause);
+            container.addEventListener('mouseleave', resume);
+            container.addEventListener('touchstart', pause, { passive: true });
+            container.addEventListener('touchend', resume, { passive: true });
         });
     </script>
 {% endblock %}

@@ -7,7 +7,7 @@
 
 <!-- Services Premium Hero Section -->
 <div class="container-fluid py-5 overflow-hidden position-relative" style="min-height: 500px; display: flex; align-items: center;">
-    <div class="mesh-bg"></div>
+    <div class="mesh-bg services-hero-bg"></div>
     
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center g-5">
@@ -69,6 +69,18 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Ensure hero background image is visible (mesh-bg was opaque gradient). */
+.services-hero-bg {
+    background-image:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0.72) 100%),
+        url('{% static "img/PennWest.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+</style>
 
 <!-- Breadcrumb -->
 <div class="container mt-4">
@@ -282,6 +294,63 @@
     </div>
 </div>
 
+<!-- Quick navigation cards (Notes / Drone Shop / Workshops) just above footer -->
+<div class="container-xxl pb-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="text-center mx-auto mb-4" style="max-width: 720px;">
+            <h5 class="fw-bold mb-2">Explore More</h5>
+            <p class="text-muted mb-0 small">Quickly jump to our popular sections.</p>
+        </div>
+        <div class="row g-3 justify-content-center">
+            <div class="col-12 col-md-4">
+                <a href="{% url 'notes:product_list' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-primary">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Notes <span class="quick-nav-badge">Premium</span></div>
+                        <div class="quick-nav-sub">PDF • PPT • Docs</div>
+                        <div class="quick-nav-meta">Curated study material + project guides.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-4">
+                <a href="{% url 'notes:drone_shop' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-success">
+                        <i class="fas fa-helicopter"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Drone Shop <span class="quick-nav-badge">New</span></div>
+                        <div class="quick-nav-sub">Browse drones</div>
+                        <div class="quick-nav-meta">Professional drones with transparent pricing.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-4">
+                <a href="{% url 'notes:workshops' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-dark">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Workshops <span class="quick-nav-badge">Live</span></div>
+                        <div class="quick-nav-sub">Register & learn</div>
+                        <div class="quick-nav-meta">Hands-on sessions with registration support.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
 .icon-box-modern {
     width: 65px;
@@ -315,6 +384,154 @@
 
 .bg-gradient-primary {
     background: var(--primary-gradient);
+}
+
+/* Premium compact redirect cards */
+.quick-nav-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, rgba(0, 180, 216, 0.35), rgba(0, 168, 107, 0.35)) border-box;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-nav-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at 0% 0%, rgba(0, 180, 216, 0.10), transparent 45%),
+                radial-gradient(600px circle at 100% 100%, rgba(0, 168, 107, 0.10), transparent 45%);
+    opacity: 0.9;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.quick-nav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 22px 52px rgba(15, 23, 42, 0.16);
+    filter: saturate(1.02);
+}
+
+.quick-nav-card:hover::after {
+    opacity: 1;
+}
+
+.quick-nav-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.20), 0 22px 52px rgba(15, 23, 42, 0.16);
+}
+
+.quick-nav-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex: 0 0 auto;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.10);
+}
+
+.quick-nav-icon.bg-primary {
+    background: linear-gradient(135deg, #00B4D8 0%, #0077BE 100%) !important;
+}
+
+.quick-nav-icon.bg-success {
+    background: linear-gradient(135deg, #00A86B 0%, #008050 100%) !important;
+}
+
+.quick-nav-icon.bg-dark {
+    background: linear-gradient(135deg, #111827 0%, #374151 100%) !important;
+}
+
+.quick-nav-icon i {
+    font-size: 16px;
+}
+
+.quick-nav-text {
+    min-width: 0;
+    flex: 1 1 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.quick-nav-title {
+    font-weight: 900;
+    letter-spacing: 0.2px;
+    color: #0f172a;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quick-nav-sub {
+    font-size: 0.80rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.quick-nav-meta {
+    font-size: 0.78rem;
+    color: #475569;
+    margin-top: 6px;
+}
+
+.quick-nav-badge {
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #0f172a;
+    background: rgba(0, 180, 216, 0.12);
+    border: 1px solid rgba(0, 180, 216, 0.25);
+}
+
+.quick-nav-arrow {
+    color: #94a3b8;
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.quick-nav-card:hover .quick-nav-arrow {
+    transform: translateX(3px);
+    color: #00A86B;
+}
+
+@media (max-width: 575.98px) {
+    .quick-nav-card {
+        padding: 14px 14px;
+        border-radius: 16px;
+        gap: 12px;
+    }
+    .quick-nav-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 13px;
+    }
+    .quick-nav-title {
+        font-size: 0.98rem;
+    }
+    .quick-nav-sub {
+        font-size: 0.76rem;
+    }
+    .quick-nav-meta {
+        font-size: 0.74rem;
+    }
 }
 </style>
 

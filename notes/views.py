@@ -6,9 +6,13 @@ from django.utils import timezone
 from django.core.files import File
 from django.conf import settings
 from django.contrib import messages
+from decimal import Decimal
+from io import BytesIO
 import razorpay
 import uuid
 import os
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup
 
 
@@ -16,7 +20,12 @@ def home(request):
     """Home page view"""
     featured_notes = Product.objects.all()[:6]  # Get first 6 products as featured
     features = Feature.objects.filter(active=True)  # Get all active features
-    featured_drones = Drone.objects.filter(active=True, featured=True)[:4]  # Get featured drones for home page
+    # Always show 4 drones on home page (featured first, then latest)
+    featured_drones = (
+        Drone.objects.filter(active=True)
+        .order_by("-featured", "-created_at")
+        [:4]
+    )
     featured_projects = Project.objects.filter(active=True).order_by('-created_at')[:6]  # Get latest projects
     
     # Get active popup/poster
@@ -41,6 +50,106 @@ def drone_detail(request, slug):
     """Drone detail page view"""
     drone = get_object_or_404(Drone, slug=slug, active=True)
     return render(request, "drone_detail.html", {"drone": drone})
+
+
+@require_http_methods(["POST"])
+def create_drone_order(request, slug):
+    """Create Razorpay order for drone purchase."""
+    drone = get_object_or_404(Drone, slug=slug, active=True)
+
+    user_name = request.POST.get("name", "").strip()
+    user_email = request.POST.get("email", "").strip().lower()
+    user_phone = request.POST.get("phone", "").strip()
+    shipping_address = request.POST.get("shipping_address", "").strip()
+
+    if not user_name or not user_email or not user_phone:
+        return JsonResponse({"error": "Name, email and phone are required."}, status=400)
+
+    order_id = f"DRN-{uuid.uuid4().hex[:10].upper()}"
+    amount = drone.price
+
+    order = Order.objects.create(
+        order_id=order_id,
+        user_name=user_name,
+        user_email=user_email,
+        user_phone=user_phone,
+        order_type="drone",
+        drone=drone,
+        amount=amount,
+        shipping_address=shipping_address,
+        payment_status="pending",
+        order_status="pending",
+    )
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    try:
+        rp_order = client.order.create(
+            {
+                "amount": int(amount * 100),
+                "currency": "INR",
+                "receipt": order.order_id,
+                "payment_capture": 1,
+            }
+        )
+    except Exception as exc:
+        order.payment_status = "failed"
+        order.save(update_fields=["payment_status"])
+        return JsonResponse({"error": f"Payment gateway error: {str(exc)}"}, status=500)
+
+    order.razorpay_order_id = rp_order["id"]
+    order.save(update_fields=["razorpay_order_id"])
+
+    return JsonResponse(
+        {
+            "success": True,
+            "key": settings.RAZORPAY_KEY_ID,
+            "razorpay_order_id": rp_order["id"],
+            "amount": rp_order["amount"],
+            "currency": rp_order["currency"],
+            "order_ref": order.order_id,
+            "drone_name": drone.name,
+        }
+    )
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def verify_drone_payment(request):
+    """Verify drone payment and confirm order."""
+    razorpay_order_id = request.POST.get("razorpay_order_id")
+    razorpay_payment_id = request.POST.get("razorpay_payment_id")
+    razorpay_signature = request.POST.get("razorpay_signature")
+
+    if not all([razorpay_order_id, razorpay_payment_id, razorpay_signature]):
+        return JsonResponse({"error": "Missing payment details."}, status=400)
+
+    order = get_object_or_404(Order, razorpay_order_id=razorpay_order_id, order_type="drone")
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    try:
+        client.utility.verify_payment_signature(
+            {
+                "razorpay_order_id": razorpay_order_id,
+                "razorpay_payment_id": razorpay_payment_id,
+                "razorpay_signature": razorpay_signature,
+            }
+        )
+    except razorpay.errors.SignatureVerificationError:
+        order.payment_status = "failed"
+        order.save(update_fields=["payment_status"])
+        return JsonResponse({"error": "Payment signature verification failed."}, status=400)
+
+    order.payment_status = "paid"
+    order.order_status = "confirmed"
+    order.razorpay_payment_id = razorpay_payment_id
+    order.save(update_fields=["payment_status", "order_status", "razorpay_payment_id"])
+
+    return JsonResponse(
+        {
+            "success": True,
+            "redirect_url": f"/order/success/{order.order_id}/",
+        }
+    )
 
 
 def customer_support(request):
@@ -322,7 +431,8 @@ def testimonial(request):
 
 def drone_shop(request):
     """Drone shop page view"""
-    return render(request, "drone_shop.html")
+    drones = Drone.objects.filter(active=True).order_by("-featured", "-created_at")
+    return render(request, "drone_shop.html", {"drones": drones})
 
 def workshops(request):
     """Workshops page view"""
@@ -331,7 +441,7 @@ def workshops(request):
 
 
 def workshop_register(request, slug):
-    """Workshop registration view"""
+    """Workshop registration page (payment initiated via AJAX)."""
     workshop = get_object_or_404(Workshop, slug=slug, active=True)
     
     # Check if registration is still open
@@ -344,54 +454,199 @@ def workshop_register(request, slug):
         messages.error(request, "This workshop is fully booked.")
         return redirect('notes:workshops')
     
-    form_fields = workshop.form_fields.all().order_by('order')
-    
-    if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        email = request.POST.get('email', '').strip()
-        mobile = request.POST.get('mobile', '').strip()
-        
-        if name and email and mobile:
-            try:
-                # Check if already registered
-                if WorkshopRegistration.objects.filter(workshop=workshop, email=email).exists():
-                    messages.error(request, "You have already registered for this workshop.")
-                    return render(request, "workshop_register.html", {
-                        "workshop": workshop,
-                        "form_fields": form_fields
-                    })
-                
-                # Collect form data
-                form_data = {}
-                for field in form_fields:
-                    field_name = field.field_name
-                    if field.field_type in ['checkbox']:
-                        # Handle multiple checkbox values
-                        form_data[field_name] = request.POST.getlist(field_name)
-                    else:
-                        form_data[field_name] = request.POST.get(field_name, '')
-                
-                # Create registration
-                registration = WorkshopRegistration.objects.create(
-                    workshop=workshop,
-                    name=name,
-                    email=email,
-                    mobile=mobile,
-                    form_data=form_data
-                )
-                
-                messages.success(request, f"Successfully registered for {workshop.title}! Check your email for confirmation.")
-                return redirect('notes:workshops')
-                
-            except Exception as e:
-                messages.error(request, "Registration failed. Please try again.")
-        else:
-            messages.error(request, "Please fill in all required fields.")
-    
+    form_fields = workshop.form_fields.all().order_by("order")
+
     return render(request, "workshop_register.html", {
         "workshop": workshop,
         "form_fields": form_fields
     })
+
+
+@require_http_methods(["POST"])
+def create_workshop_order(request, slug):
+    """Create Razorpay order for workshop registration."""
+    workshop = get_object_or_404(Workshop, slug=slug, active=True)
+
+    if timezone.now() > workshop.registration_deadline:
+        return JsonResponse({"error": "Registration for this workshop has closed."}, status=400)
+    if workshop.registrations.count() >= workshop.max_participants:
+        return JsonResponse({"error": "This workshop is fully booked."}, status=400)
+
+    name = request.POST.get("name", "").strip()
+    email = request.POST.get("email", "").strip().lower()
+    mobile = request.POST.get("mobile", "").strip()
+    if not name or not email or not mobile:
+        return JsonResponse({"error": "Name, email, and mobile are required."}, status=400)
+
+    if WorkshopRegistration.objects.filter(workshop=workshop, email=email).exists():
+        return JsonResponse({"error": "You have already registered for this workshop."}, status=400)
+
+    form_data = {}
+    for field in workshop.form_fields.all().order_by("order"):
+        if field.field_type == "checkbox":
+            form_data[field.field_name] = request.POST.getlist(field.field_name)
+        else:
+            form_data[field.field_name] = request.POST.get(field.field_name, "")
+
+    amount = workshop.entry_fee if workshop.entry_fee else Decimal("0.00")
+    if amount <= 0:
+        return JsonResponse({"error": "Workshop entry fee is not set. Please contact support."}, status=400)
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    try:
+        rp_order = client.order.create(
+            {
+                "amount": int(amount * 100),
+                "currency": "INR",
+                "receipt": f"workshop_{uuid.uuid4().hex[:10]}",
+                "payment_capture": 1,
+            }
+        )
+    except Exception as exc:
+        return JsonResponse({"error": f"Payment gateway error: {str(exc)}"}, status=500)
+
+    pending = request.session.get("pending_workshop_registrations", {})
+    pending[rp_order["id"]] = {
+        "workshop_id": workshop.id,
+        "name": name,
+        "email": email,
+        "mobile": mobile,
+        "amount": str(amount),
+        "form_data": form_data,
+    }
+    request.session["pending_workshop_registrations"] = pending
+    request.session.modified = True
+
+    return JsonResponse(
+        {
+            "success": True,
+            "key": settings.RAZORPAY_KEY_ID,
+            "razorpay_order_id": rp_order["id"],
+            "amount": rp_order["amount"],
+            "currency": rp_order["currency"],
+            "workshop_title": workshop.title,
+        }
+    )
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def verify_workshop_payment(request):
+    """Verify Razorpay payment and finalize registration."""
+    razorpay_order_id = request.POST.get("razorpay_order_id")
+    razorpay_payment_id = request.POST.get("razorpay_payment_id")
+    razorpay_signature = request.POST.get("razorpay_signature")
+
+    if not all([razorpay_order_id, razorpay_payment_id, razorpay_signature]):
+        return JsonResponse({"error": "Missing payment details."}, status=400)
+
+    pending = request.session.get("pending_workshop_registrations", {})
+    payload = pending.get(razorpay_order_id)
+    if not payload:
+        return JsonResponse({"error": "Session expired. Please register again."}, status=400)
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    try:
+        client.utility.verify_payment_signature(
+            {
+                "razorpay_order_id": razorpay_order_id,
+                "razorpay_payment_id": razorpay_payment_id,
+                "razorpay_signature": razorpay_signature,
+            }
+        )
+    except razorpay.errors.SignatureVerificationError:
+        return JsonResponse({"error": "Payment signature verification failed."}, status=400)
+
+    workshop = get_object_or_404(Workshop, id=payload["workshop_id"], active=True)
+
+    registration, created = WorkshopRegistration.objects.get_or_create(
+        workshop=workshop,
+        email=payload["email"],
+        defaults={
+            "name": payload["name"],
+            "mobile": payload["mobile"],
+            "form_data": payload["form_data"],
+            "payment_status": "paid",
+            "amount_paid": Decimal(payload["amount"]),
+            "razorpay_order_id": razorpay_order_id,
+            "razorpay_payment_id": razorpay_payment_id,
+        },
+    )
+    if not created:
+        registration.payment_status = "paid"
+        registration.amount_paid = Decimal(payload["amount"])
+        registration.razorpay_order_id = razorpay_order_id
+        registration.razorpay_payment_id = razorpay_payment_id
+        registration.save()
+
+    pending.pop(razorpay_order_id, None)
+    request.session["pending_workshop_registrations"] = pending
+    request.session.modified = True
+
+    return JsonResponse(
+        {
+            "success": True,
+            "redirect_url": f"/workshops/registration-success/{registration.id}/",
+        }
+    )
+
+
+def workshop_registration_success(request, registration_id):
+    registration = get_object_or_404(
+        WorkshopRegistration, id=registration_id, payment_status="paid"
+    )
+    return render(
+        request,
+        "workshop_registration_success.html",
+        {"registration": registration},
+    )
+
+
+def download_workshop_ticket(request, registration_id):
+    registration = get_object_or_404(
+        WorkshopRegistration, id=registration_id, payment_status="paid"
+    )
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+    y = height - 70
+
+    p.setFont("Helvetica-Bold", 20)
+    p.drawString(60, y, "DPRAMP Workshop Entry Ticket")
+    y -= 30
+    p.setFont("Helvetica", 12)
+    p.drawString(60, y, f"Ticket ID: {registration.ticket_id}")
+    y -= 35
+
+    lines = [
+        f"Name: {registration.name}",
+        f"Email: {registration.email}",
+        f"Mobile: {registration.mobile}",
+        f"Workshop: {registration.workshop.title}",
+        f"Date: {registration.workshop.date.strftime('%d %b %Y, %I:%M %p')}",
+        f"Location: {registration.workshop.location}",
+        f"Instructor: {registration.workshop.instructor}",
+        f"Entry Fee Paid: INR {registration.amount_paid}",
+        f"Payment ID: {registration.razorpay_payment_id}",
+    ]
+    for line in lines:
+        p.drawString(60, y, line)
+        y -= 22
+
+    p.setFont("Helvetica-Oblique", 10)
+    p.drawString(60, 90, "Please carry this ticket at entry gate.")
+    p.drawString(60, 74, "Generated by DPRAMP workshop registration system.")
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+
+    response = HttpResponse(buffer.getvalue(), content_type="application/pdf")
+    response["Content-Disposition"] = (
+        f'attachment; filename="workshop-ticket-{registration.ticket_id}.pdf"'
+    )
+    return response
 
 
 def workshops_conducted(request):
@@ -401,7 +656,7 @@ def workshops_conducted(request):
 
 def product_list(request):
     """Product listing page - show all PDFs category-wise"""
-    categories = Category.objects.prefetch_related("products").all()
+    categories = Category.objects.all()
     return render(request, "products/product_list.html", {"categories": categories})
 
 

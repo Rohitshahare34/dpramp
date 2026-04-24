@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Workshop Registration Success - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-check-circle text-success" style="font-size: 64px;"></i>
+                    </div>
+                    <h2 class="fw-bold mb-2">Registration Confirmed!</h2>
+                    <p class="text-muted mb-4">Payment successful. Your workshop seat is confirmed.</p>
+
+                    <div class="text-start bg-light rounded-4 p-4 mb-4">
+                        <div class="row g-3">
+                            <div class="col-md-6"><strong>Name:</strong> {{ registration.name }}</div>
+                            <div class="col-md-6"><strong>Ticket ID:</strong> {{ registration.ticket_id }}</div>
+                            <div class="col-md-6"><strong>Workshop:</strong> {{ registration.workshop.title }}</div>
+                            <div class="col-md-6"><strong>Date:</strong> {{ registration.workshop.date|date:"d M Y, h:i A" }}</div>
+                            <div class="col-md-6"><strong>Location:</strong> {{ registration.workshop.location }}</div>
+                            <div class="col-md-6"><strong>Paid:</strong> INR {{ registration.amount_paid }}</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="{% url 'notes:download_workshop_ticket' registration.id %}" class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-file-pdf me-2"></i>Download Gate Entry Ticket (PDF)
+                        </a>
+                        <a href="{% url 'notes:workshops' %}" class="btn btn-outline-secondary rounded-pill px-4">
+                            Back to Workshops
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

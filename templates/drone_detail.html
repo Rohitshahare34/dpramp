@@ -5,9 +5,9 @@
 {% block content %}
 {% load static %}
 <!-- Page Header Start -->
-<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.26) 55%, rgba(0,0,0,0.48) 100%), url('{% if drone.image %}{{ drone.image.url }}{% else %}{% static "img/rough imgs/service-2-5.png" %}{% endif %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="container">
-        <h1 class="display-3 mb-4 animated slideInDown">{{ drone.name }}</h1>
+        <h1 class="display-4 mb-3 animated slideInDown">{{ drone.name }}</h1>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
@@ -23,97 +23,121 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-5">
-            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="drone-detail-card border-0 shadow-sm rounded-3 p-4">
-                    <div class="drone-detail-header mb-4">
-                        <h2 class="mb-3">{{ drone.name }}</h2>
-                        <div class="drone-meta">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="detail-item">
-                                        <strong>Type:</strong> {{ drone.get_drone_type_display }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="detail-item">
-                                        <strong>Category:</strong> {{ drone.category|default:"Professional" }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="detail-item">
-                                        <strong>Brand:</strong> {{ drone.brand|default:"N/A" }}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="detail-item">
-                                        <strong>Model:</strong> {{ drone.model_number|default:"N/A" }}
-                                    </div>
-                                </div>
+            <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="main-product-image-card">
+                    {% if drone.image %}
+                        <img src="{{ drone.image.url }}" alt="{{ drone.name }}" class="img-fluid w-100 main-product-image">
+                    {% else %}
+                        <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="{{ drone.name }}" class="img-fluid w-100 main-product-image">
+                    {% endif %}
+
+                    <div class="image-tags">
+                        <span class="soft-pill"><i class="fas fa-drone me-1"></i>{{ drone.get_drone_type_display }}</span>
+                        <span class="soft-pill"><i class="fas fa-tag me-1"></i>{{ drone.category|default:"Professional" }}</span>
+                    </div>
+                </div>
+
+                {% if drone.description %}
+                <div class="content-card mt-4">
+                    <h5 class="section-title">Description</h5>
+                    <div class="text-muted">{{ drone.description|linebreaks }}</div>
+                </div>
+                {% endif %}
+
+                {% if drone.specifications %}
+                <div class="content-card mt-4">
+                    <h5 class="section-title">Technical Specifications</h5>
+                    <div class="row g-3">
+                        {% for key, value in drone.specifications.items %}
+                        <div class="col-md-6">
+                            <div class="spec-chip">
+                                <span class="spec-key">{{ key|title }}</span>
+                                <span class="spec-value">{{ value }}</span>
                             </div>
                         </div>
-                        
-                        <div class="drone-price-info mb-4">
-                            <div class="row align-items-center">
-                                <div class="col-md-6">
-                                    <h3 class="text-primary">Rs.{{ drone.price }}</h3>
-                                    <p class="text-muted mb-0">Professional Grade</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="status-badge status-{{ drone.status }}">
-                                        {{ drone.get_status_display }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        {% if drone.description %}
-                            <div class="drone-description mb-4">
-                                <h4 class="mb-3">Description</h4>
-                                <p>{{ drone.description|linebreaks }}</p>
-                            </div>
-                        {% endif %}
-                        
-                        {% if drone.specifications %}
-                            <div class="drone-specifications mb-4">
-                                <h4 class="mb-3">Technical Specifications</h4>
-                                <div class="row g-3">
-                                    {% for key, value in drone.specifications.items %}
-                                        <div class="col-md-6">
-                                            <div class="spec-item">
-                                                <strong>{{ key|title }}:</strong> {{ value }}
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                        
-                        {% if drone.features %}
-                            <div class="drone-features mb-4">
-                                <h4 class="mb-3">Key Features</h4>
-                                <p>{{ drone.features|linebreaks }}</p>
-                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if drone.features %}
+                <div class="content-card mt-4">
+                    <h5 class="section-title">Key Features</h5>
+                    <div class="text-muted">{{ drone.features|linebreaks }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="summary-card">
+                    <h2 class="mb-2">{{ drone.name }}</h2>
+                    <p class="mb-3 text-muted small">Product-focused professional drone profile</p>
+
+                    <div class="price-wrap mb-3">
+                        <div class="price">Rs.{{ drone.price }}</div>
+                        <div class="status-badge status-{{ drone.status }}">{{ drone.get_status_display }}</div>
+                    </div>
+
+                    <ul class="meta-list mb-4">
+                        <li><span>Type</span><strong>{{ drone.get_drone_type_display }}</strong></li>
+                        <li><span>Category</span><strong>{{ drone.category|default:"Professional" }}</strong></li>
+                        <li><span>Brand</span><strong>{{ drone.brand|default:"N/A" }}</strong></li>
+                        <li><span>Model</span><strong>{{ drone.model_number|default:"N/A" }}</strong></li>
+                    </ul>
+
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary rounded-pill py-2" id="buyNowBtn">
+                            <i class="fas fa-shopping-cart me-2"></i>Buy Now
+                        </button>
+                        <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%20I%20want%20to%20enquire%20about%20{{ drone.name|urlencode }}%20(Price%3A%20Rs.{{ drone.price|urlencode }})" target="_blank" class="btn btn-success rounded-pill py-2">
+                            <i class="fab fa-whatsapp me-2"></i>WhatsApp Enquiry
+                        </a>
+                        {% if drone.video_url %}
+                        <a href="{{ drone.video_url }}" target="_blank" class="btn btn-dark rounded-pill py-2">
+                            <i class="fas fa-play-circle me-2"></i>Watch Product Video
+                        </a>
                         {% endif %}
                     </div>
                 </div>
             </div>
-            
-            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="drone-image-section">
-                    {% if drone.image %}
-                        <img src="{{ drone.image.url }}" alt="{{ drone.name }}" class="img-fluid rounded-3 shadow-sm">
-                    {% else %}
-                        <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="{{ drone.name }}" class="img-fluid rounded-3 shadow-sm">
-                    {% endif %}
-                    
-                    {% if drone.video_url %}
-                        <div class="text-center mt-4">
-                            <a href="{{ drone.video_url }}" target="_blank" class="btn btn-primary btn-lg rounded-pill">
-                                <i class="fas fa-play-circle me-2"></i>Watch Video
-                            </a>
-                        </div>
-                    {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Buy Now Modal -->
+<div class="modal fade" id="droneBuyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Buy {{ drone.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <div class="alert alert-light border mb-3">
+                    <strong>Amount:</strong> Rs.{{ drone.price }}<br>
+                    <small class="text-muted">Secure payment via Razorpay</small>
                 </div>
+                <form id="droneCheckoutForm">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email *</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone *</label>
+                        <input type="tel" class="form-control" name="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Shipping Address</label>
+                        <textarea class="form-control" name="shipping_address" rows="2" placeholder="Optional"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-2" id="payDroneBtn">
+                        <i class="fas fa-lock me-2"></i>Pay & Place Order
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -123,76 +147,228 @@
 
 {% block extra_css %}
 <style>
-.drone-detail-card {
-    background: white;
+.main-product-image-card {
+    position: relative;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+}
+
+.main-product-image {
+    height: 440px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.image-tags {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.soft-pill {
+    background: rgba(255, 255, 255, 0.92);
+    color: #0f172a;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.8);
+}
+
+.summary-card {
+    background: #fff;
+    border: 1px solid rgba(15,23,42,0.06);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    position: sticky;
+    top: 95px;
+}
+
+.price-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.price {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #00A86B;
+}
+
+.meta-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.meta-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 0.95rem;
+}
+
+.meta-list li:last-child { border-bottom: none; }
+.meta-list li span { color: #64748b; }
+
+.content-card {
+    background: #fff;
+    border: 1px solid rgba(15,23,42,0.06);
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
-
-.drone-detail-header {
-    border-bottom: 2px solid #f8f9fa;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-}
-
-.drone-meta .detail-item {
-    margin-bottom: 10px;
-}
-
-.drone-price-info {
-    background: linear-gradient(135deg, #00A86B, #00B4D8);
-    color: white;
     padding: 20px;
+    box-shadow: 0 8px 24px rgba(15,23,42,0.06);
+}
+
+.section-title {
+    color: #00A86B;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.spec-chip {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
-    text-align: center;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.spec-key {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.spec-value {
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 2px;
 }
 
 .status-badge {
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.78rem;
 }
 
-.status-available {
-    background: #28a745;
-    color: white;
+.status-available { background: #16a34a; color: #fff; }
+.status-out_of_stock { background: #dc2626; color: #fff; }
+.status-pre_order { background: #f59e0b; color: #111827; }
+.status-discontinued { background: #6b7280; color: #fff; }
+
+@media (max-width: 991.98px) {
+    .summary-card { position: static; top: auto; }
+    .main-product-image { height: 320px; }
 }
 
-.status-out_of_stock {
-    background: #dc3545;
-    color: white;
-}
-
-.drone-specifications .spec-item {
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-.drone-image-section img {
-    max-height: 400px;
-    object-fit: cover;
-}
-
-.drone-description, .drone-features {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.drone-description h4, .drone-features h4 {
-    color: #00A86B;
-    margin-bottom: 15px;
-}
-
-.text-emerald {
-    background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+@media (max-width: 575.98px) {
+    .main-product-image { height: 260px; }
+    .price { font-size: 1.45rem; }
+    .summary-card { padding: 18px; border-radius: 16px; }
+    .content-card { padding: 16px; border-radius: 14px; }
 }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const buyBtn = document.getElementById("buyNowBtn");
+    const modalEl = document.getElementById("droneBuyModal");
+    const form = document.getElementById("droneCheckoutForm");
+    const payBtn = document.getElementById("payDroneBtn");
+    if (!buyBtn || !modalEl || !form) return;
+
+    const modal = new bootstrap.Modal(modalEl);
+    buyBtn.addEventListener("click", function () { modal.show(); });
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const original = payBtn.innerHTML;
+        payBtn.disabled = true;
+        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+
+        const formData = new FormData(form);
+        fetch('/drones/{{ drone.slug }}/create-order/', {
+            method: "POST",
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                alert(data.error || "Unable to start payment.");
+                payBtn.disabled = false;
+                payBtn.innerHTML = original;
+                return;
+            }
+
+            const options = {
+                key: data.key,
+                amount: data.amount,
+                currency: data.currency,
+                name: "DPRAMP-TECH SOLUTIONS",
+                description: data.drone_name,
+                order_id: data.razorpay_order_id,
+                theme: { color: "#00A86B" },
+                handler: function (response) {
+                    fetch('/drones/verify-payment/', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        body: new URLSearchParams({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(v => {
+                        if (v.success && v.redirect_url) {
+                            window.location.href = v.redirect_url;
+                        } else {
+                            alert(v.error || "Payment verification failed.");
+                            payBtn.disabled = false;
+                            payBtn.innerHTML = original;
+                        }
+                    });
+                },
+                modal: {
+                    ondismiss: function () {
+                        payBtn.disabled = false;
+                        payBtn.innerHTML = original;
+                    }
+                }
+            };
+
+            modal.hide();
+            const rzp = new Razorpay(options);
+            rzp.open();
+        })
+        .catch(() => {
+            alert("Something went wrong. Please try again.");
+            payBtn.disabled = false;
+            payBtn.innerHTML = original;
+        });
+    });
+});
+</script>
 {% endblock %}

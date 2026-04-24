@@ -1,30 +1,88 @@
 (function ($) {
     "use strict";
 
+    // Keep the same scroll position after page refresh
+    var scrollStorageKey = "dpramp_scroll_position";
+    var currentPath = window.location.pathname + window.location.search;
+
+    try {
+        if ("scrollRestoration" in window.history) {
+            window.history.scrollRestoration = "manual";
+        }
+
+        var savedScroll = sessionStorage.getItem(scrollStorageKey);
+        if (savedScroll) {
+            var parsed = JSON.parse(savedScroll);
+            if (parsed && parsed.path === currentPath) {
+                window.requestAnimationFrame(function () {
+                    window.scrollTo(0, parsed.y || 0);
+                });
+            }
+        }
+
+        var saveScrollPosition = function () {
+            sessionStorage.setItem(
+                scrollStorageKey,
+                JSON.stringify({ path: currentPath, y: window.scrollY || window.pageYOffset || 0 })
+            );
+        };
+
+        window.addEventListener("beforeunload", saveScrollPosition);
+        window.addEventListener("pagehide", saveScrollPosition);
+    } catch (e) {
+        // Ignore storage/restore errors safely
+    }
+
         
     
-    // Initiate the wowjs
-    new WOW().init();
+    // Initiate wowjs (disable on small screens / reduced-motion for smoother scrolling)
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var isSmallScreen = window.innerWidth < 768;
+    if (!reduceMotion && !isSmallScreen) {
+        new WOW().init();
+    }
 
+    // Optimized scroll handling (single passive listener + rAF)
+    var lastScrollY = window.scrollY || 0;
+    var ticking = false;
+    var backToTopVisible = false;
+    var navbarScrolled = false;
 
-    // Fixed Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.navbar').addClass('navbar-scrolled shadow-sm');
-        } else {
-            $('.navbar').removeClass('navbar-scrolled shadow-sm');
+    var updateOnScroll = function () {
+        var scrollY = lastScrollY;
+
+        // Navbar shadow toggle
+        var shouldNavbarScroll = scrollY > 100;
+        if (shouldNavbarScroll !== navbarScrolled) {
+            navbarScrolled = shouldNavbarScroll;
+            $('.navbar').toggleClass('navbar-scrolled shadow-sm', shouldNavbarScroll);
         }
-    });
-    
-    
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
+
+        // Back-to-top visibility toggle (avoid repeated animations every scroll tick)
+        var shouldShowBackToTop = scrollY > 300;
+        if (shouldShowBackToTop !== backToTopVisible) {
+            backToTopVisible = shouldShowBackToTop;
+            if (shouldShowBackToTop) {
+                $('.back-to-top').stop(true, true).fadeIn(180);
+            } else {
+                $('.back-to-top').stop(true, true).fadeOut(180);
+            }
         }
-    });
+
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', function () {
+        lastScrollY = window.scrollY || window.pageYOffset || 0;
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(updateOnScroll);
+        }
+    }, { passive: true });
+
+    // Run once on load for correct initial UI state
+    updateOnScroll();
+
     $('.back-to-top').click(function () {
         $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
         return false;
@@ -132,7 +190,7 @@
         var body = encodeURIComponent(emailBody);
         
         // Create mailto link with recipient email
-        var recipientEmail = 'info@dpramp.com';
+        var recipientEmail = 'info@dpramp.com,dpramptechsolution@gmail.com';
         var mailtoLink = 'mailto:' + recipientEmail + '?subject=' + subject + '&body=' + body;
         
         // Open email client

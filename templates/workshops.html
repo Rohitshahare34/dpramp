@@ -5,9 +5,10 @@
 {% block content %}
 {% load static %}
 <!-- Page Header Start -->
-<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="background: linear-gradient(rgba(0,0,0,0.30), rgba(0,0,0,0.30)), url('{% static "img/Edit_this_image_202604201333.png" %}') center center / cover no-repeat;">
     <div class="container">
-        <h1 class="display-3 mb-4 animated slideInDown">Workshops</h1>
+        <h1 class="display-3 mb-3 animated slideInDown workshop-hero-title">Workshops That Build Your Future</h1>
+        <p class="lead text-white mb-4 workshop-hero-subtitle">Learn by doing, create real projects, and grow industry-ready skills with expert mentors.</p>
         <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{% url 'notes:home' %}">Home</a></li>
@@ -58,6 +59,9 @@
                                     <span class="badge bg-info rounded-pill px-3 py-2 ms-2">
                                         <i class="fas fa-users me-1"></i>{{ workshop.registrations.count }}/{{ workshop.max_participants }}
                                     </span>
+                                    <span class="badge bg-warning text-dark rounded-pill px-3 py-2 ms-2">
+                                        <i class="fas fa-rupee-sign me-1"></i>{{ workshop.entry_fee }}
+                                    </span>
                                 </div>
                                 
                                 <p class="mb-4">{{ workshop.description|truncatewords:20 }}</p>
@@ -87,6 +91,83 @@
     </div>
 </div>
 <!-- Workshops End -->
+
+<!-- Explore More (Notes / Drone Shop / Services / Projects) just above footer -->
+<div class="container-xxl pb-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="text-center mx-auto mb-4" style="max-width: 780px;">
+            <h5 class="fw-bold mb-2">Explore More</h5>
+            <p class="text-muted mb-0 small">Quickly jump to other sections.</p>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <a href="{% url 'notes:product_list' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-primary">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Notes <span class="quick-nav-badge">Premium</span></div>
+                        <div class="quick-nav-sub">PDF • PPT • Docs</div>
+                        <div class="quick-nav-meta">Curated study material + project guides.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <a href="{% url 'notes:drone_shop' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-success">
+                        <i class="fas fa-helicopter"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Drone Shop <span class="quick-nav-badge">New</span></div>
+                        <div class="quick-nav-sub">Browse drones</div>
+                        <div class="quick-nav-meta">Professional drones with transparent pricing.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <a href="{% url 'notes:services' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-dark">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Services <span class="quick-nav-badge">Tech</span></div>
+                        <div class="quick-nav-sub">IoT • Software • AR/VR</div>
+                        <div class="quick-nav-meta">Future-ready solutions for your business.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <a href="{% url 'notes:projects' %}" class="quick-nav-card">
+                    <div class="quick-nav-icon bg-secondary">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="quick-nav-text">
+                        <div class="quick-nav-title">Projects <span class="quick-nav-badge">Case</span></div>
+                        <div class="quick-nav-sub">Case studies</div>
+                        <div class="quick-nav-meta">See what we built and how we delivered.</div>
+                    </div>
+                    <div class="quick-nav-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_css %}
@@ -106,6 +187,182 @@
 
 .workshop-meta div {
     font-size: 0.9rem;
+}
+
+.workshop-hero-title {
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    animation: heroGlowPulse 2.8s ease-in-out infinite;
+    font-size: 2.35rem;
+    line-height: 1.18;
+}
+
+.workshop-hero-subtitle {
+    max-width: 760px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: heroSubtitleRise 0.9s ease-out;
+    font-size: 1rem;
+}
+
+@keyframes heroGlowPulse {
+    0%, 100% { text-shadow: 0 4px 16px rgba(0, 0, 0, 0.35); }
+    50% { text-shadow: 0 6px 20px rgba(0, 168, 107, 0.35); }
+}
+
+@keyframes heroSubtitleRise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Premium quick-nav cards (reused on workshops page) */
+.quick-nav-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, rgba(0, 180, 216, 0.35), rgba(0, 168, 107, 0.35)) border-box;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-nav-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at 0% 0%, rgba(0, 180, 216, 0.10), transparent 45%),
+                radial-gradient(600px circle at 100% 100%, rgba(0, 168, 107, 0.10), transparent 45%);
+    opacity: 0.9;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.quick-nav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 22px 52px rgba(15, 23, 42, 0.16);
+    filter: saturate(1.02);
+}
+
+.quick-nav-card:hover::after {
+    opacity: 1;
+}
+
+.quick-nav-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex: 0 0 auto;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.10);
+}
+
+.quick-nav-icon.bg-primary {
+    background: linear-gradient(135deg, #00B4D8 0%, #0077BE 100%) !important;
+}
+
+.quick-nav-icon.bg-success {
+    background: linear-gradient(135deg, #00A86B 0%, #008050 100%) !important;
+}
+
+.quick-nav-icon.bg-dark {
+    background: linear-gradient(135deg, #111827 0%, #374151 100%) !important;
+}
+
+.quick-nav-icon.bg-secondary {
+    background: linear-gradient(135deg, #64748b 0%, #334155 100%) !important;
+}
+
+.quick-nav-icon i { font-size: 16px; }
+
+.quick-nav-text {
+    min-width: 0;
+    flex: 1 1 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.quick-nav-title {
+    font-weight: 900;
+    letter-spacing: 0.2px;
+    color: #0f172a;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quick-nav-sub {
+    font-size: 0.80rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.quick-nav-meta {
+    font-size: 0.78rem;
+    color: #475569;
+    margin-top: 6px;
+}
+
+.quick-nav-badge {
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #0f172a;
+    background: rgba(0, 180, 216, 0.12);
+    border: 1px solid rgba(0, 180, 216, 0.25);
+}
+
+.quick-nav-arrow {
+    color: #94a3b8;
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.quick-nav-card:hover .quick-nav-arrow {
+    transform: translateX(3px);
+    color: #00A86B;
+}
+
+@media (max-width: 575.98px) {
+    .workshop-hero-title {
+        font-size: 1.6rem;
+        line-height: 1.25;
+        margin-bottom: 0.75rem !important;
+    }
+    .workshop-hero-subtitle {
+        font-size: 0.92rem;
+        margin-bottom: 1rem !important;
+    }
+    .page-header .breadcrumb {
+        font-size: 0.86rem;
+    }
+
+    .quick-nav-card {
+        padding: 14px 14px;
+        border-radius: 16px;
+        gap: 12px;
+    }
+    .quick-nav-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 13px;
+    }
+    .quick-nav-title { font-size: 0.98rem; }
+    .quick-nav-sub { font-size: 0.76rem; }
+    .quick-nav-meta { font-size: 0.74rem; }
 }
 </style>
 {% endblock %}

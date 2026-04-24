@@ -199,6 +199,7 @@ class Workshop(models.Model):
     date = models.DateTimeField()
     location = models.CharField(max_length=200)
     instructor = models.CharField(max_length=100)
+    entry_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     max_participants = models.PositiveIntegerField(default=50)
     registration_deadline = models.DateTimeField()
     active = models.BooleanField(default=True)
@@ -259,6 +260,15 @@ class WorkshopRegistration(models.Model):
     email = models.EmailField()
     mobile = models.CharField(max_length=20)
     form_data = models.JSONField(default=dict)
+    ticket_id = models.CharField(max_length=32, blank=True, db_index=True)
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[("pending", "Pending"), ("paid", "Paid"), ("failed", "Failed")],
+        default="pending",
+    )
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    razorpay_order_id = models.CharField(max_length=100, blank=True, default="")
+    razorpay_payment_id = models.CharField(max_length=100, blank=True, default="")
     registered_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -269,6 +279,11 @@ class WorkshopRegistration(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.workshop.title}"
+
+    def save(self, *args, **kwargs):
+        if not self.ticket_id:
+            self.ticket_id = f"WS-{uuid.uuid4().hex[:10].upper()}"
+        super().save(*args, **kwargs)
 
 
 class Feature(models.Model):

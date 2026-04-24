@@ -312,7 +312,7 @@ class DroneAdmin(admin.ModelAdmin):
             "fields": ("price", "status", "featured", "active")
         }),
         ("Media", {
-            "fields": ("image", "gallery_images", "video_url")
+            "fields": ("image", "video_url")
         }),
         ("Technical Details", {
             "fields": ("specifications", "features")
