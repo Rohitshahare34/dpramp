@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 {% load static %}
 
     <!-- Favicon -->
-    <link href="{% static 'logos/logo.png' %}" rel="icon" type="image/png">
+    <link href="{% static 'img/logo.png' %}" rel="icon" type="image/png">
 
 
     <!-- Google Web Fonts -->
@@ -667,7 +667,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="about-image-wrapper position-relative d-flex align-items-center justify-content-center">
                     <div class="iot-spinner-wrapper">
                         <img 
-                            src="{% static 'img/rough imgs/img1.png' %}" 
+                            src="{% static 'img/rough_imgs/img1.png' %}" 
                             alt="Internet of Things" 
                             class="img-fluid advanced-iot-spinner"
                             role="img"
@@ -1068,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             {% if drone.image %}
                                 <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
                             {% else %}
-                                <img src="{% static 'img/rough imgs/service-2-5.png' %}" alt="{{ drone.name }}">
+                                <img src="{% static 'img/rough_imgs/service-2-5.png' %}" alt="{{ drone.name }}">
                             {% endif %}
                         </div>
                         <div class="pro-card-body">
@@ -1598,7 +1598,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         {% if project.image %}
                         <img src="{{ project.image.url }}" alt="{{ project.title }}">
                         {% else %}
-                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="{{ project.title }}">
+                        <img src="{% static 'img/rough_imgs/pro2.png' %}" alt="{{ project.title }}">
                         {% endif %}
                         <div class="pro-status-badge">{{ project.get_project_type_display }}</div>
                     </div>
@@ -1618,7 +1618,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="col-lg-3 col-md-6">
                 <div class="pro-card">
                     <div class="pro-img-wrapper">
-                        <img src="{% static 'img/rough imgs/pro2.png' %}" alt="Project">
+                        <img src="{% static 'img/rough_imgs/pro2.png' %}" alt="Project">
                         <div class="pro-status-badge">Project</div>
                     </div>
                     <div class="pro-card-body">

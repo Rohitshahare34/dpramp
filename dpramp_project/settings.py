@@ -26,7 +26,7 @@ SECRET_KEY = '30S3NrN9ccGFjHU6CDSPPHTwxbgl8nVPjT4y0LpQHjDm9Yf-MyXqkkoO3aI3NAqUhE
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dpramp.com', 'www.dpramp.com']
+ALLOWED_HOSTS = ['dpramp.com', 'www.dpramp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
