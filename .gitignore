@@ -1,6 +1,5 @@
 # Static files and build outputs
 staticfiles/
-static/
 media/
 
 # Database
