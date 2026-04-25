@@ -36,14 +36,7 @@ Thumbs.db
 *.tmp
 *.temp
 
-# Large media files
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.webp
-*.avif
-*.svg
+# Large media files (excluding project images)
 *.mp4
 *.avi
 *.mov
