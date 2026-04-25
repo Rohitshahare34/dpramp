@@ -1,8 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Simple CSS Test</title>
-    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <style>
         .test-box {
             background: linear-gradient(135deg, #00B4D8 0%, #00A86B 100%);
