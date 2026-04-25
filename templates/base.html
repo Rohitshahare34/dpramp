@@ -157,23 +157,23 @@
     }
 
     .btn-pro-details {
-        background: #ffffff;
-        border: 2px solid #00A86B;
-        border-radius: 25px;
-        padding: 8px 18px;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
         color: #00A86B;
         font-weight: 700;
         font-size: 0.8rem;
-        transition: all 0.3s ease;
+        transition: none;
         text-decoration: none;
         display: inline-block;
     }
 
     .btn-pro-details:hover {
-        background: #00A86B;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 168, 107, 0.3);
+        background: transparent;
+        color: #00A86B;
+        transform: none;
+        box-shadow: none;
     }
 
     /* Shop Modal Styles */
@@ -316,6 +316,8 @@
         </div>
     </nav>
     <!-- Navbar End -->
+
+    {% block below_nav %}{% endblock %}
 
     <!-- Shop Modal -->
     <div class="modal fade" id="shopModal" tabindex="-1" aria-labelledby="shopModalLabel" aria-hidden="true">
@@ -479,5 +481,7 @@
     </script>
 
     {% block extra_js %}{% endblock %}
+
+    {% block mobile_quick_nav %}{% endblock %}
 </body>
 </html>

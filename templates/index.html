@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 border: 2px solid rgba(255,255,255,0.6);
             }
             .hero-white-theme {
-                padding: 95px 15px 25px 15px !important;
+                padding: 10px 15px 22px 15px !important;
                 overflow-x: hidden;
             }
             .hero-carousel-container {
@@ -1742,7 +1742,52 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
 
-    <!-- PDF Notes Promotional Popup -->
+    {% if active_popup %}
+        {% if active_popup.popup_type == 'banner' %}
+            <!-- DB Popup: Banner/Poster -->
+            <div class="modal fade" id="dbPopupModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                        <button type="button" class="btn-close position-absolute end-0 top-0 m-3 bg-white rounded-circle p-2"
+                                data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+                        {% if active_popup.action_link %}
+                            <a href="{{ active_popup.action_link }}" {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
+                                <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100" style="display:block; object-fit: cover;">
+                            </a>
+                        {% else %}
+                            <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100" style="display:block; object-fit: cover;">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- DB Popup: Modal HTML -->
+            <div class="modal fade" id="dbPopupModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                        <div class="modal-header border-0" style="background: linear-gradient(135deg, #00A86B 0%, #008050 100%);">
+                            <h5 class="modal-title fw-bold mb-0 text-white">{{ active_popup.title }}</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{ active_popup.modal_content|safe }}
+                        </div>
+                        {% if active_popup.action_link %}
+                            <div class="modal-footer border-0 bg-light">
+                                <a href="{{ active_popup.action_link }}" class="btn btn-gradient-emerald text-white w-100"
+                                   {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
+                                    {{ active_popup.action_text|default:"Learn More" }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% if not active_popup %}
+    <!-- Legacy hardcoded popup (default fallback) -->
     <div class="modal fade" id="pdfPopupModal" tabindex="-1" aria-labelledby="pdfPopupModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg">
@@ -2830,29 +2875,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     </style>
+    {% endif %}
 
-    <!-- Popup Script -->
+    <!-- Popup Script (DB-driven) -->
     <script>
-        // Show popup on page load if not dismissed before
-        /* // Temporarily disabled popup as requested
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if popup was shown in this session
-            if (!sessionStorage.getItem('pdfPopupShown')) {
-                setTimeout(function() {
-                    var popupModal = new bootstrap.Modal(document.getElementById('pdfPopupModal'));
-                    popupModal.show();
-                    sessionStorage.setItem('pdfPopupShown', 'true');
-                }, 2000); // Show after 2 seconds
-            }
-        });
-        */
+            // Prefer DB popup; fallback to static popup
+            const modalEl = document.getElementById('dbPopupModal') || document.getElementById('pdfPopupModal');
+            if (!modalEl) return;
 
-        /*
-        // Clear sessionStorage on page refresh (F5 or Ctrl+R)
-        window.addEventListener('beforeunload', function() {
-            sessionStorage.removeItem('pdfPopupShown');
+            const popupId = "{{ active_popup.id|default:'' }}";
+            const showOnce = "{% if active_popup %}{{ active_popup.show_once_per_session|yesno:'1,0' }}{% else %}0{% endif %}";
+            const delayMs = parseInt("{% if active_popup %}{{ active_popup.display_delay|default:2000 }}{% else %}2000{% endif %}", 10) || 2000;
+            const storageKey = popupId ? `dbPopupShown:${popupId}` : (modalEl.id === 'pdfPopupModal' ? 'staticPopupShown' : 'dbPopupShown');
+
+            // Always show after refresh: clear flag on unload
+            window.addEventListener('beforeunload', function() {
+                sessionStorage.removeItem(storageKey);
+            });
+
+            if (showOnce === "1" && sessionStorage.getItem(storageKey)) return;
+
+            setTimeout(function() {
+                const popupModal = new bootstrap.Modal(modalEl);
+                popupModal.show();
+                if (showOnce === "1") sessionStorage.setItem(storageKey, "true");
+            }, delayMs);
         });
-        */
 
         // Portfolio Show More/Less functionality
         const showMoreBtn = document.getElementById('show-more-btn');
@@ -2922,6 +2971,183 @@ document.addEventListener('DOMContentLoaded', function() {
             container.addEventListener('touchend', resume, { passive: true });
         });
     </script>
+{% endblock %}
+
+{% block below_nav %}
+<!-- Mobile Quick Links (below navbar, equal top/bottom gap) -->
+<div class="container d-lg-none" id="homeTopQuickLinks" style="padding-top: 86px; padding-bottom: 10px;">
+    <div class="d-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;">
+        <a class="mobile-quick-link" href="{% url 'notes:product_list' %}">Notes</a>
+        <a class="mobile-quick-link" href="{% url 'notes:drone_shop' %}">Drones</a>
+        <a class="mobile-quick-link" href="{% url 'notes:workshops' %}">Workshops</a>
+    </div>
+</div>
+
+<style>
+    .mobile-quick-link{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height: 36px;
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.04);
+        border: none;
+        color: #00A86B;
+        font-weight: 800;
+        font-size: 0.82rem;
+        letter-spacing: 0.15px;
+        text-decoration:none;
+        box-shadow: 0 6px 14px rgba(15, 23, 42, 0.04);
+        -webkit-tap-highlight-color: transparent;
+    }
+    .mobile-quick-link:active{ transform: scale(0.98); }
+</style>
+{% endblock %}
+
+{% block mobile_quick_nav %}
+<!-- Mobile Sticky Bottom Quick Nav -->
+<nav class="mobile-bottom-quicknav d-lg-none is-hidden" id="mobileBottomQuickNav" aria-label="Quick navigation">
+    <a class="mbq-link" href="{% url 'notes:product_list' %}" aria-label="Notes">
+        <span class="mbq-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 4h11a2 2 0 0 1 2 2v13H8a3 3 0 0 0-3 3V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M8 19h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        </span>
+        <span class="mbq-tx">Notes</span>
+    </a>
+    <a class="mbq-link" href="{% url 'notes:drone_shop' %}" aria-label="Drones">
+        <span class="mbq-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 8h10M3 12h18M7 16h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M9 12l-2 6M15 12l2 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        </span>
+        <span class="mbq-tx">Drones</span>
+    </a>
+    <a class="mbq-link" href="{% url 'notes:workshops' %}" aria-label="Workshops">
+        <span class="mbq-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6h16v10H4V6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M8 18h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M9 10h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+        </span>
+        <span class="mbq-tx">Workshops</span>
+    </a>
+    <a class="mbq-link mbq-wa" href="https://wa.me/919359919779?text=Hello%2C%20I%20want%20to%20build%20or%20upgrade%20my%20website.%20Please%20share%20pricing%2C%20timeline%2C%20and%20next%20steps."
+       target="_blank" rel="noopener" aria-label="WhatsApp">
+        <span class="mbq-ic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21a9 9 0 1 0-7.8-4.5L3 21l4.7-1.2A8.95 8.95 0 0 0 12 21Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M9.2 9.3c.2-.5.3-.6.6-.6h.5c.1 0 .3 0 .4.3l.7 1.6c.1.2.1.4 0 .5l-.3.4c-.1.2-.2.3-.1.5.2.4.6 1 1.2 1.5.6.5 1.2.8 1.6.9.2.1.4 0 .5-.1l.5-.6c.1-.2.3-.2.5-.1l1.6.7c.3.1.3.2.3.4v.5c0 .3-.1.4-.4.6-.4.3-1 .5-1.6.4-1.1-.1-2.5-.7-3.9-2-1.3-1.2-2.1-2.7-2.2-3.8-.1-.6.1-1.2.4-1.6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+    </a>
+</nav>
+
+<style>
+    /* Keep content visible above bottom bar */
+    @media (max-width: 991.98px) {
+        body { padding-bottom: 80px; }
+    }
+    .mobile-bottom-quicknav{
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 2000;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        padding: 8px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.96);
+        border: none;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.10);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .mobile-bottom-quicknav.is-hidden{
+        opacity: 0;
+        transform: translateY(18px);
+        pointer-events: none;
+    }
+    .mbq-link{
+        display:flex;
+        flex-direction: column;
+        align-items:center;
+        justify-content:center;
+        gap: 2px;
+        height: 44px;
+        border-radius: 14px;
+        background: transparent;
+        border: none;
+        color: #00A86B;
+        text-decoration:none;
+        font-weight: 900;
+        font-size: 0.62rem;
+        letter-spacing: 0.2px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .mbq-link:hover{ color: #008050; }
+    .mbq-link:active{ transform: scale(0.98); }
+    .mbq-ic{ display:inline-flex; }
+    .mbq-wa{ gap: 0; }
+    .mbq-wa .mbq-ic svg{ width: 20px; height: 20px; }
+
+    /* Hide floating WhatsApp on mobile (use bottom bar instead) */
+    @media (max-width: 991.98px) {
+        .whatsapp-float { display: none !important; }
+    }
+</style>
+
+<script>
+    // Show bottom bar only after scrolling past top quick links (mobile only)
+    document.addEventListener('DOMContentLoaded', function () {
+        const bottom = document.getElementById('mobileBottomQuickNav');
+        const topLinks = document.getElementById('homeTopQuickLinks');
+        if (!bottom || !topLinks) return;
+
+        const isMobile = () => window.matchMedia('(max-width: 991.98px)').matches;
+
+        const setHidden = (hidden) => {
+            bottom.classList.toggle('is-hidden', hidden);
+        };
+
+        // Default: hidden at page top
+        setHidden(true);
+
+        // If IntersectionObserver not supported, fallback to scroll position check
+        if (!('IntersectionObserver' in window)) {
+            const onScroll = () => {
+                if (!isMobile()) return setHidden(true);
+                const rect = topLinks.getBoundingClientRect();
+                const visible = rect.bottom > 0 && rect.top < window.innerHeight;
+                setHidden(visible);
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            onScroll();
+            return;
+        }
+
+        const io = new IntersectionObserver(
+            (entries) => {
+                if (!isMobile()) return setHidden(true);
+                const entry = entries[0];
+                setHidden(entry && entry.isIntersecting);
+            },
+            { threshold: 0.15 }
+        );
+
+        io.observe(topLinks);
+        window.addEventListener('resize', () => {
+            if (!isMobile()) setHidden(true);
+        });
+    });
+</script>
 {% endblock %}
 </body>
 </html>
