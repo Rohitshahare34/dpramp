@@ -182,32 +182,74 @@ def customer_support(request):
     return render(request, 'customer_support.html')
 
 
-def create_order(request):
-    """Create order for drone/study material/workshop"""
+def create_order(request, product_id=None):
+    """Create order for study materials with Razorpay integration"""
     if request.method == 'POST':
-        order_type = request.POST.get('order_type')
-        
-        # Generate unique order ID
-        order_id = f"ORD-{uuid.uuid4().hex[:8].upper()}"
-        
-        # Get user information
-        user_name = request.POST.get('user_name', '')
-        user_email = request.POST.get('user_email', '')
-        user_phone = request.POST.get('user_phone', '')
-        
-        # Create order
-        order = Order.objects.create(
-            order_id=order_id,
-            user_name=user_name,
-            user_email=user_email,
-            user_phone=user_phone,
-            order_type=order_type
-        )
-        
-        # Redirect to payment page
-        return redirect('notes:payment', order_id=order.order_id)
+        try:
+            # Get product if product_id is provided
+            if product_id:
+                product = get_object_or_404(Product, id=product_id)
+                amount = float(product.price)
+                order_type = 'study_material'
+            else:
+                # Generic order creation
+                order_type = request.POST.get('order_type', 'study_material')
+                amount = float(request.POST.get('amount', 1))
+            
+            # Generate unique order ID
+            order_id = f"ORD-{uuid.uuid4().hex[:8].upper()}"
+            
+            # Get user information
+            user_name = request.POST.get('user_name', '')
+            user_email = request.POST.get('user_email', '')
+            user_phone = request.POST.get('user_phone', '')
+            
+            # Create order
+            order = Order.objects.create(
+                order_id=order_id,
+                user_name=user_name,
+                user_email=user_email,
+                user_phone=user_phone,
+                order_type=order_type,
+                amount=amount
+            )
+            
+            # Set product if provided
+            if product_id:
+                order.study_material = product
+            
+            order.save()
+            
+            # Initialize Razorpay client
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            
+            # Create Razorpay order
+            razorpay_order = client.order.create({
+                'amount': int(amount * 100),  # Convert to paise
+                'currency': 'INR',
+                'receipt': order_id,
+                'notes': f'Order for {order_type}',
+                'payment_capture': '1'
+            })
+            
+            # Save Razorpay order ID
+            order.razorpay_order_id = razorpay_order['id']
+            order.save()
+            
+            return JsonResponse({
+                'success': True,
+                'key': settings.RAZORPAY_KEY_ID,
+                'razorpay_order_id': razorpay_order['id'],
+                'amount': razorpay_order['amount'],
+                'currency': razorpay_order['currency'],
+                'order_ref': order_id,
+                'product_name': product.title if product_id else 'Study Material'
+            })
+            
+        except Exception as e:
+            return JsonResponse({'error': f'Failed to create order: {str(e)}'}, status=500)
     
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
 def create_order_generic(request):

@@ -436,10 +436,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRFToken': '{{ csrf_token }}'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.error) {
-                alert(data.error);
+                alert('Error: ' + data.error);
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            if (!data.success) {
+                alert('Failed to create order. Please try again.');
                 submitBtn.innerHTML = originalContent;
                 submitBtn.disabled = false;
                 return;
