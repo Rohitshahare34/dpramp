@@ -261,8 +261,11 @@ def payment_view(request, order_id):
     if request.method == 'POST':
         # Process payment
         try:
+            # Initialize Razorpay client
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            
             # Create Razorpay order
-            razorpay_order = razorpay.client.order.create({
+            razorpay_order = client.order.create({
                 'amount': int(order.amount * 100),  # Convert to paise
                 'currency': 'INR',
                 'receipt': order.order_id,
@@ -291,8 +294,11 @@ def payment_callback(request):
     """Razorpay payment callback"""
     if request.method == 'POST':
         try:
+            # Initialize Razorpay client
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            
             # Verify payment
-            razorpay_order = razorpay.client.order.fetch(request.POST.get('razorpay_order_id'))
+            razorpay_order = client.order.fetch(request.POST.get('razorpay_order_id'))
             
             if razorpay_order['status'] == 'captured':
                 # Payment successful
