@@ -354,7 +354,7 @@ body {
 
 #header-carousel .carousel-item {
     padding: 40px 0;
-    background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+    background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -368,7 +368,7 @@ body {
 
 /* Ensure second carousel item uses same image */
 #header-carousel .carousel-item:nth-child(2) {
-    background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+    background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -379,11 +379,11 @@ body {
 @media (max-width: 991.98px) {
     #header-carousel .carousel-item {
         background-attachment: scroll;
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     }
     
     #header-carousel .carousel-item:nth-child(2) {
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
         background-attachment: scroll;
         background-size: cover;
         background-position: center center;
@@ -633,11 +633,11 @@ body {
         background-repeat: no-repeat;
         display: flex;
         align-items: center;
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     }
     
     #header-carousel .carousel-item:nth-child(2) {
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
         background-size: cover;
         background-position: center center;
         background-attachment: scroll;
@@ -729,11 +729,11 @@ body {
         background-position: center center;
         display: flex;
         align-items: center;
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     }
     
     #header-carousel .carousel-item:nth-child(2) {
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
         background-size: cover;
         background-position: center center;
         background-attachment: scroll;
@@ -805,11 +805,11 @@ body {
         background-repeat: no-repeat;
         display: flex;
         align-items: center;
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     }
     
     #header-carousel .carousel-item:nth-child(2) {
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
         background-size: cover;
         background-position: center center;
         background-attachment: scroll;
@@ -866,11 +866,11 @@ body {
         background-size: cover;
         min-height: 100vh;
         background-position: center center;
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
     }
     
     #header-carousel .carousel-item:nth-child(2) {
-        background-image: url("../img/rough imgs/Smart-Home-Automation.jpg");
+        background-image: url("../img/rough_imgs/Smart-Home-Automation.jpg");
         background-size: cover;
         background-position: center center;
         background-attachment: fixed;
@@ -932,7 +932,7 @@ body {
 .page-header {
     padding-top: 12rem;
     padding-bottom: 6rem;
-    background-image: url("../img/rough imgs/blog-single-2.jpg");
+    background-image: url("../img/rough_imgs/blog-single-2.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -982,7 +982,7 @@ body {
 /* ========== About section ========== */
 .about-section {
     position: relative;
-    background-image: url("../img/rough imgs/footer-page-bg-2.png");
+    background-image: url("../img/rough_imgs/footer-page-bg-2.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -2057,7 +2057,7 @@ body {
 
 /* ========== Footer ========== */
 .footer {
-    background-image: url("../img/rough imgs/footer-bg-shape-1-1.png");
+    background-image: url("../img/rough_imgs/footer-bg-shape-1-1.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils import timezone
 from django.core.files import File
+from django.core.files.storage import default_storage
 from django.conf import settings
 from django.contrib import messages
 from decimal import Decimal
@@ -229,11 +230,11 @@ def create_order(request, product_id=None):
                 amount = 1.0  # Default amount
             
             razorpay_order = client.order.create({
-                'amount': int(float(amount) * 100),  # Convert to paise
-                'currency': 'INR',
-                'receipt': order_id,
-                'notes': f'Order for {order_type}',
-                'payment_capture': '1'
+                "amount": int(float(amount) * 100),  # Convert to paise
+                "currency": "INR",
+                "receipt": order_id,
+                "notes": {"order_type": order_type},
+                "payment_capture": 1,
             })
             
             # Save Razorpay order ID
@@ -325,11 +326,11 @@ def payment_view(request, order_id):
             
             # Create Razorpay order
             razorpay_order = client.order.create({
-                'amount': int(order.amount * 100),  # Convert to paise
-                'currency': 'INR',
-                'receipt': order.order_id,
-                'notes': f'Order for {order.order_type}',
-                'payment_capture': '1'
+                "amount": int(order.amount * 100),  # Convert to paise
+                "currency": "INR",
+                "receipt": order.order_id,
+                "notes": {"order_type": order.order_type},
+                "payment_capture": 1,
             })
             
             # Save Razorpay IDs
@@ -731,7 +732,12 @@ def product_list(request):
 def product_detail(request, slug):
     """Product detail page - show individual PDF details"""
     product = get_object_or_404(Product, slug=slug)
-    preview_images = product.preview_images.all().order_by("order")
+    # Only render images that really exist in storage to avoid 404s.
+    preview_images = [
+        image
+        for image in product.preview_images.all().order_by("order")
+        if image.image and default_storage.exists(image.image.name)
+    ]
     return render(
         request,
         "products/product_detail.html",

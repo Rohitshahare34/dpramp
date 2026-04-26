@@ -157,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .text-emerald {
             background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
-            background-clip: text; -webkit-background-clip: text;
-            -webkit-background-clip: text; -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -445,6 +445,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 padding: 0 10px;
                 min-height: 76px;
                 display: -webkit-box;
+                line-clamp: 3;
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
@@ -811,8 +812,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <style>
     .text-emerald {
         background: linear-gradient(135deg, #00A86B 0%, #0077BE 100%);
-        background-clip: text; -webkit-background-clip: text;
-        -webkit-background-clip: text; -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
@@ -916,7 +917,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fas fa-file-pdf me-2"></i>PDF Notes
                 </span>
             </div>
-            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; -webkit-background-clip: text;">Premium Study Materials</h1>
+            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Premium Study Materials</h1>
             <p class="lead text-muted mb-5">Access high-quality PDF notes for Data Science, Programming, Web Development, Placement & Interview Prep, and more. Get company test papers, previous year questions (PYQ), and expertly crafted study materials to boost your career.</p>
         </div>
 
@@ -1068,7 +1069,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             {% if drone.image %}
                                 <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
                             {% else %}
-                                <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="{{ drone.name }}">
+                                <img src="{% static 'img/rough_imgs/service-2-5.png' %}" alt="{{ drone.name }}">
                             {% endif %}
                         </div>
                         <div class="pro-card-body">
@@ -1198,7 +1199,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fa fa-cogs me-2"></i>Our Services
                 </span>
             </div>
-            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; -webkit-background-clip: text;">Innovative IT & IoT Solutions For Modern Businesses</h1>
+            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Innovative IT & IoT Solutions For Modern Businesses</h1>
             <p class="lead text-muted mb-5">With 10+ years of expertise, we deliver cutting-edge technology services that transform ideas into powerful and scalable solutions.</p>
         </div>
 

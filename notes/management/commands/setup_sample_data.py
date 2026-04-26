@@ -51,42 +51,42 @@ class Command(BaseCommand):
                 "description": "Comprehensive Python programming guide covering basics to advanced concepts including OOP, data structures, algorithms, and practical projects.",
                 "price": 299.00,
                 "category": "Programming",
-                "thumbnail": "img/rough imgs/python.png",
+                "thumbnail": "img/rough_imgs/python.png",
             },
             {
                 "title": "JavaScript Modern Development",
                 "description": "Learn modern JavaScript including ES6+, async programming, DOM manipulation, and popular frameworks like React and Vue.",
                 "price": 349.00,
                 "category": "Web Development",
-                "thumbnail": "img/rough imgs/service-1-1.png",
+                "thumbnail": "img/rough_imgs/service-1-1.png",
             },
             {
                 "title": "Machine Learning Fundamentals",
                 "description": "Introduction to machine learning algorithms, supervised and unsupervised learning, neural networks, and practical implementations.",
                 "price": 499.00,
                 "category": "Data Science",
-                "thumbnail": "img/rough imgs/NLP.png",
+                "thumbnail": "img/rough_imgs/NLP.png",
             },
             {
                 "title": "React Native Mobile Apps",
                 "description": "Build cross-platform mobile applications using React Native. Learn components, navigation, state management, and deployment.",
                 "price": 399.00,
                 "category": "Mobile Development",
-                "thumbnail": "img/rough imgs/mobile-application-development-on-laptop-screen-concept-background-app-coding-and-web-development-cross-platform-devices-smartphone-tablet-and-computer-vector.jpg",
+                "thumbnail": "img/rough_imgs/mobile-application-development-on-laptop-screen-concept-background-app-coding-and-web-development-cross-platform-devices-smartphone-tablet-and-computer-vector.jpg",
             },
             {
                 "title": "Data Structures and Algorithms",
                 "description": "Master essential data structures and algorithms with detailed explanations, code examples, and interview preparation tips.",
                 "price": 449.00,
                 "category": "Programming",
-                "thumbnail": "img/rough imgs/DataAn.png",
+                "thumbnail": "img/rough_imgs/DataAn.png",
             },
             {
                 "title": "Django Web Development",
                 "description": "Complete guide to Django framework including models, views, templates, authentication, APIs, and deployment strategies.",
                 "price": 379.00,
                 "category": "Web Development",
-                "thumbnail": "img/rough imgs/service-2-1.png",
+                "thumbnail": "img/rough_imgs/service-2-1.png",
             },
         ]
 
@@ -111,9 +111,9 @@ class Command(BaseCommand):
 
                 # Add preview images (placeholder)
                 preview_images = [
-                    "img/rough imgs/service-1-2.png",
-                    "img/rough imgs/service-1-3.png",
-                    "img/rough imgs/service-1-4.png",
+                    "img/rough_imgs/service-1-2.png",
+                    "img/rough_imgs/service-1-3.png",
+                    "img/rough_imgs/service-1-4.png",
                 ]
 
                 for i, img_path in enumerate(preview_images):

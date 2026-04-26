@@ -464,8 +464,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 amount: data.amount,
                 currency: data.currency,
                 name: 'DPRAMP-TECH SOLUTIONS',
-                description: '{{ product.title }}',
-                order_id: data.razorpay_order_id,  # This should be razorpay_order_id from server
+                description: '{{ product.title|escapejs }}',
+                order_id: data.razorpay_order_id, // Razorpay order id from server
                 theme: {
                     color: "#00B4D8"
                 },
