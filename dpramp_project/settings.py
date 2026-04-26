@@ -26,7 +26,7 @@ SECRET_KEY = '30S3NrN9ccGFjHU6CDSPPHTwxbgl8nVPjT4y0LpQHjDm9Yf-MyXqkkoO3aI3NAqUhE
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dpramp.com', 'www.dpramp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['dpramp.com', 'www.dpramp.com', '127.0.0.1', 'localhost', 'testserver']
 
 
 # Application definition
@@ -133,9 +133,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # File Upload Settings - No Size Limits
-FILE_UPLOAD_MAX_MEMORY_SIZE = None  # No memory limit
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1073741824  # 1GB limit (None causes comparison error)
 FILE_UPLOAD_TEMP_DIR = None  # Use system default
-DATA_UPLOAD_MAX_MEMORY_SIZE = None  # No memory limit for data uploads
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1073741824  # 1GB limit for data uploads
 
 # File size validation - Disabled (no limits)
 FILE_UPLOAD_HANDLERS = [

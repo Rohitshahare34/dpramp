@@ -189,12 +189,13 @@ def create_order(request, product_id=None):
             # Get product if product_id is provided
             if product_id:
                 product = get_object_or_404(Product, id=product_id)
-                amount = float(product.price)
+                amount = float(product.price) if product.price else 1.0
                 order_type = 'study_material'
             else:
                 # Generic order creation
                 order_type = request.POST.get('order_type', 'study_material')
-                amount = float(request.POST.get('amount', 1))
+                amount_str = request.POST.get('amount', '1')
+                amount = float(amount_str) if amount_str else 1.0
             
             # Generate unique order ID
             order_id = f"ORD-{uuid.uuid4().hex[:8].upper()}"
@@ -224,8 +225,11 @@ def create_order(request, product_id=None):
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
             
             # Create Razorpay order
+            if amount is None:
+                amount = 1.0  # Default amount
+            
             razorpay_order = client.order.create({
-                'amount': int(amount * 100),  # Convert to paise
+                'amount': int(float(amount) * 100),  # Convert to paise
                 'currency': 'INR',
                 'receipt': order_id,
                 'notes': f'Order for {order_type}',
