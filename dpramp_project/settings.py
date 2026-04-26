@@ -132,6 +132,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# File Upload Settings - No Size Limits
+FILE_UPLOAD_MAX_MEMORY_SIZE = None  # No memory limit
+FILE_UPLOAD_TEMP_DIR = None  # Use system default
+DATA_UPLOAD_MAX_MEMORY_SIZE = None  # No memory limit for data uploads
+
+# File size validation - Disabled (no limits)
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
+
 # Razorpay Configuration
 # Import from razorpay_config.py
 from .razorpay_config import (
