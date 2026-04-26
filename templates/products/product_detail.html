@@ -47,7 +47,7 @@
 
 .text-gradient-white {
     background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
-    -webkit-background-clip: text;
+    -webkit-background-clip: text; -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -465,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currency: data.currency,
                 name: 'DPRAMP-TECH SOLUTIONS',
                 description: '{{ product.title }}',
-                order_id: data.razorpay_order_id,
+                order_id: data.razorpay_order_id,  # This should be razorpay_order_id from server
                 theme: {
                     color: "#00B4D8"
                 },

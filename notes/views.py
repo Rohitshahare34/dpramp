@@ -305,7 +305,20 @@ def payment_view(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
     
     if request.method == 'POST':
-        # Process payment
+        # Check if Razorpay order already exists
+        if order.razorpay_order_id:
+            # Return existing order details
+            return JsonResponse({
+                'success': True,
+                'key': settings.RAZORPAY_KEY_ID,
+                'razorpay_order_id': order.razorpay_order_id,
+                'amount': int(order.amount * 100),  # Already in paise
+                'currency': 'INR',
+                'order_ref': order.order_id,
+                'product_name': order.study_material.title if order.study_material else 'Study Material'
+            })
+        
+        # Process payment - create new Razorpay order only if doesn't exist
         try:
             # Initialize Razorpay client
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
@@ -325,9 +338,12 @@ def payment_view(request, order_id):
             
             return JsonResponse({
                 'success': True,
-                'order_id': razorpay_order['id'],
-                'amount': order.amount,
-                'currency': 'INR'
+                'key': settings.RAZORPAY_KEY_ID,
+                'razorpay_order_id': razorpay_order['id'],
+                'amount': razorpay_order['amount'],
+                'currency': razorpay_order['currency'],
+                'order_ref': order.order_id,
+                'product_name': order.study_material.title if order.study_material else 'Study Material'
             })
             
         except Exception as e:
