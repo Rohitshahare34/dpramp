@@ -1,6 +1,3 @@
-# Static files and build outputs
-staticfiles/
-media/
 
 # Database
 db.sqlite3
