@@ -498,29 +498,29 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <div class="carousel-inner">
-                <!-- Slide 1: Drones -->
+                <!-- Slide 1: Educational Services -->
                 <div class="carousel-item active">
                     <div class="container">
                         <div class="hero-slide-card">
                         <div class="row align-items-center">
                             <div class="col-lg-6 wow fadeInLeft">
-                                <span class="hero-badge-modern">Student Projects</span>
-                                <h1 class="hero-title-modern">Drone For <span class="text-emerald">Student</span><br>Projects</h1>
-                                <p class="hero-desc-modern">Complete drone solutions for student projects with expert guidance. Learn drone technology with hands-on training and practical implementation.</p>
+                                <span class="hero-badge-modern">Educational Excellence</span>
+                                <h1 class="hero-title-modern">Academic <span class="text-emerald">Support</span><br>Services</h1>
+                                <p class="hero-desc-modern">Comprehensive educational support services including study materials, project guidance, and academic consultation provided directly by our expert team.</p>
                                 <div class="d-flex flex-wrap">
-                                    <a href="{% url 'notes:drone_shop' %}" class="btn-modern-green">
-                                        Explore Drones <i class="fas fa-helicopter ms-2"></i>
+                                    <a href="{% url 'notes:product_list' %}" class="btn-modern-green">
+                                        Get Study Materials <i class="fas fa-book me-2"></i>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-6 wow fadeInRight">
                                 <div class="hero-img-wrapper-modern">
-                                    <img src="{% static 'img/Drone met Camera.jpg' %}" alt="Drone Solutions" class="hero-img-modern">
+                                    <img src="{% static 'img/Gemini_Generated_Image_rvt2bnrvt2bnrvt2 (1).png' %}" alt="Educational Services" class="hero-img-modern">
                                     <div class="floating-badge badge-1">
                                         <i class="fas fa-award text-emerald me-3 fa-2x"></i>
                                         <div>
-                                            <h6 class="mb-0 fw-bold">Certified Lab</h6>
-                                            <p class="mb-0 small text-muted">Advanced Aerial Tech</p>
+                                            <h6 class="mb-0 fw-bold">Expert Guidance</h6>
+                                            <p class="mb-0 small text-muted">Professional Support</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1046,60 +1046,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 <!-- PDF Notes Section End -->
-
-<!-- Drone Shop Section Start -->
-<div class="container-xxl py-5" id="drones-section">
-    <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 650px;">
-            <div class="section-label mb-4">
-                <span class="badge text-white px-4 py-2 rounded-pill fw-semi-bold" style="background: linear-gradient(135deg, #00A86B, #00B4D8);">
-                    <i class="fas fa-helicopter me-2"></i>Drone Shop
-                </span>
-            </div>
-            <h1 class="display-4 fw-bold mb-4">Educational <span class="text-emerald">Drone Kits</span> For Students</h1>
-            <p class="lead text-muted mb-5">Explore our range of educational IoT-based drone kits for student projects, hands-on learning, and technical skill development.</p>
-        </div>
-
-        <div class="row g-4">
-            <!-- Dynamic Drone Products from Database -->
-            {% for drone in featured_drones|slice:"0:4" %}
-                <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
-                    <div class="pro-card">
-                                                <div class="pro-img-wrapper">
-                            {% if drone.image %}
-                                <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
-                            {% else %}
-                                <img src="{% static 'img/rough_imgs/service-2-5.png' %}" alt="{{ drone.name }}">
-                            {% endif %}
-                        </div>
-                        <div class="pro-card-body">
-                            <div class="pro-category">{{ drone.category|default:"Drone" }}</div>
-                            <h6 class="pro-title">{{ drone.name }}</h6>
-                            <div class="pro-card-footer">
-                                <div class="pro-price-box">
-                                    <span class="pro-price-label">Price</span>
-                                    <span class="pro-price-value">Rs.{{ drone.price|floatformat:0 }}</span>
-                                </div>
-                                <a href="{% url 'notes:drone_detail' drone.slug %}" class="btn-pro-details">
-                                    Details <i class="fas fa-chevron-right ms-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- View All Button -->
-        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.5s">
-            <a href="{% url 'notes:drone_shop' %}" class="btn-pro-view-all" style="background: linear-gradient(135deg, #2A2A2A, #4A4A4A); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                <i class="fas fa-helicopter me-2"></i>View All Drones
-                <i class="fas fa-arrow-right ms-3"></i>
-            </a>
-        </div>
-    </div>
-</div>
-<!-- Drone Shop Section End -->
 
 
 

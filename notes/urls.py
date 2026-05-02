@@ -24,6 +24,9 @@ urlpatterns = [
     path("my-orders/", views.my_orders, name="my_orders"),
     path("features/", views.features, name="features"),
     path("contact/", views.contact, name="contact"),
+    path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
+    path("terms-conditions/", views.terms_conditions, name="terms_conditions"),
+    path("refund-policy/", views.refund_policy, name="refund_policy"),
     path("team/", views.team, name="team"),
     path("testimonial/", views.testimonial, name="testimonial"),
     # Test pages

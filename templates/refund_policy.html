@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Refund Policy - DPRAMP-TECH SOLUTIONS{% endblock %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid page-header mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+        <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white">Refund Policy</h4>
+        <div class="d-inline-flex text-white">
+            <p class="m-0"><a class="text-white" href="{% url 'notes:home' %}">Home</a></p>
+            <p class="m-0 px-2">/</p>
+            <p class="m-0">Refund Policy</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Refund Policy Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg-light rounded">
+                    <div class="p-4 p-lg-5">
+                        <h1 class="mb-4">Refund Policy</h1>
+                        <p class="mb-4"><strong>Last Updated:</strong> {{ "now"|date:"F d, Y" }}</p>
+                        <p class="mb-4">At DPRAMP-TECH SOLUTIONS LLP, we strive to provide high-quality educational services. This Refund Policy outlines the conditions under which refunds may be issued.</p>
+                        
+                        <h3 class="mt-5 mb-3">1. Digital Study Materials</h3>
+                        <h5 class="mb-2">Non-Refundable Items:</h5>
+                        <ul class="mb-4">
+                            <li>PDF study materials and notes</li>
+                            <li>Downloadable resources</li>
+                            <li>Online course content</li>
+                            <li>Digital templates and guides</li>
+                        </ul>
+                        
+                        <h5 class="mb-2">Exceptions:</h5>
+                        <ul class="mb-4">
+                            <li>Technical issues preventing download (within 24 hours)</li>
+                            <li>Incorrect or damaged files (verified within 48 hours)</li>
+                            <li>Duplicate charges (verified immediately)</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">2. Educational Workshops</h3>
+                        <h5 class="mb-2">Refund Conditions:</h5>
+                        <ul class="mb-4">
+                            <li><strong>7+ days before workshop:</strong> Full refund minus 10% processing fee</li>
+                            <li><strong>3-6 days before workshop:</strong> 50% refund</li>
+                            <li><strong>Less than 3 days before workshop:</strong> No refund</li>
+                            <li><strong>Workshop cancellation by us:</strong> Full refund</li>
+                        </ul>
+                        
+                        <h5 class="mb-2">Rescheduling:</h5>
+                        <ul class="mb-4">
+                            <li>Workshop dates can be rescheduled up to 3 days before</li>
+                            <li>Subject to availability of future sessions</li>
+                            <li>No additional cost for first reschedule</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">3. Project Guidance Services</h3>
+                        <h5 class="mb-2">Refund Policy:</h5>
+                        <ul class="mb-4">
+                            <li>Before project commencement: 80% refund</li>
+                            <li>After initial consultation: No refund</li>
+                            <li>If service quality is disputed: Partial refund after review</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">4. Technical Services</h3>
+                        <h5 class="mb-2">Refund Conditions:</h5>
+                        <ul class="mb-4">
+                            <li>Service not delivered within agreed timeline: Full refund</li>
+                            <li>Service quality issues: Partial refund after assessment</li>
+                            <li>Client cancellation: No refund after work begins</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">5. Refund Process</h3>
+                        <h5 class="mb-2">How to Request a Refund:</h5>
+                        <ol class="mb-4">
+                            <li>Send email to info@dpramp.com with subject "Refund Request"</li>
+                            <li>Include order details and reason for refund</li>
+                            <li>Provide supporting documentation if applicable</li>
+                            <li>Wait for our response within 5-7 business days</li>
+                        </ol>
+                        
+                        <h5 class="mb-2">Refund Processing:</h5>
+                        <ul class="mb-4">
+                            <li>Approved refunds processed within 7-10 business days</li>
+                            <li>Refunds issued to original payment method</li>
+                            <li>Bank processing times may vary (3-7 additional days)</li>
+                            <li>You will receive confirmation email once processed</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">6. Non-Refundable Situations</h3>
+                        <p>No refunds will be provided for:</p>
+                        <ul class="mb-4">
+                            <li>Change of mind after digital delivery</li>
+                            <li>Failure to attend scheduled workshops</li>
+                            <li>Incomplete or incorrect information provided by client</li>
+                            <li>Force majeure events</li>
+                            <li>Services already rendered satisfactorily</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">7. Dispute Resolution</h3>
+                        <p>If you disagree with our refund decision:</p>
+                        <ol class="mb-4">
+                            <li>Contact our support team within 7 days of decision</li>
+                            <li>Provide additional evidence or clarification</li>
+                            <li>Request review by senior management</li>
+                            <li>Final decision will be communicated within 3 business days</li>
+                        </ol>
+                        
+                        <h3 class="mt-5 mb-3">8. Special Circumstances</h3>
+                        <p>We may consider exceptions for:</p>
+                        <ul class="mb-4">
+                            <li>Medical emergencies (with documentation)</li>
+                            <li>Technical issues on our end</li>
+                            <li>Service delivery failures</li>
+                            <li>Other exceptional circumstances at our discretion</li>
+                        </ul>
+                        
+                        <h3 class="mt-5 mb-3">9. Contact Information</h3>
+                        <p>For refund-related inquiries:</p>
+                        <ul class="mb-4">
+                            <li>Email: info@dpramp.com</li>
+                            <li>Phone: +91 9359919779</li>
+                            <li>Support hours: Monday-Saturday, 10:00 AM - 7:00 PM</li>
+                        </ul>
+                        
+                        <div class="alert alert-info mt-5">
+                            <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Important Notes:</h5>
+                            <ul class="mb-0">
+                                <li>This policy applies to all payments made through our website</li>
+                                <li>Refund requests must be made within 30 days of service delivery</li>
+                                <li>We reserve the right to modify this policy with prior notice</li>
+                                <li>Final refund decisions are at the discretion of DPRAMP-TECH SOLUTIONS LLP</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="alert alert-success mt-4">
+                            <h5 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Our Commitment:</h5>
+                            <p class="mb-0">We are committed to fair and transparent refund practices. If you have any concerns about our services, please contact us immediately so we can address them appropriately.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Refund Policy End -->
+{% endblock %}

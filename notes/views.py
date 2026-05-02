@@ -489,6 +489,21 @@ def contact(request):
     return render(request, "contact.html")
 
 
+def privacy_policy(request):
+    """Privacy Policy page view"""
+    return render(request, "privacy_policy.html")
+
+
+def terms_conditions(request):
+    """Terms & Conditions page view"""
+    return render(request, "terms_conditions.html")
+
+
+def refund_policy(request):
+    """Refund Policy page view"""
+    return render(request, "refund_policy.html")
+
+
 def team(request):
     """Team page view"""
     return render(request, "team.html")
