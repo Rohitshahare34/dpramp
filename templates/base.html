@@ -311,7 +311,7 @@
                 <a class="btn btn-square rounded-circle bg-light text-primary me-2" href=""><i class="fab fa-linkedin-in"></i></a>
                 <a class="btn btn-square rounded-circle bg-light text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
             </div>
-            <button class="btn btn-primary rounded-pill px-4 ms-lg-4 d-none d-lg-block" onclick="window.location.href='{% url 'notes:product_list' %}'">
+            <button class="btn btn-primary rounded-pill px-4 ms-lg-4 d-none d-lg-block" data-url="{% url 'notes:product_list' %}" onclick="window.location.href=this.dataset.url">
                 <i class="fas fa-shopping-cart me-2"></i>Shop Now
             </button>
         </div>

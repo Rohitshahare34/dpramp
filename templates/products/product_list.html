@@ -263,8 +263,13 @@
                                     <span class="pro-price-label">Price</span>
                                     <span class="pro-price-value">Rs.{{ product.price|floatformat:0 }}</span>
                                 </div>
-                                <a href="{% url 'notes:payment_success' product.id %}" class="btn-pro-details">
+                                <!-- TEMPORARILY DISABLED PAYMENT GATEWAY FOR WHATSAPP INQUIRY - DO NOT DELETE -->
+                                <!-- <a href="{% url 'notes:payment_success' product.id %}" class="btn-pro-details">
                                     <i class="fas fa-shopping-cart me-1"></i>Buy Now
+                                </a> -->
+                                <!-- END TEMPORARILY DISABLED SECTION -->
+                                <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ category.name|urlencode }}%0AImage%3A%20{% if product.thumbnail %}{{ product.thumbnail.url|urlencode }}{% else %}{{ request.build_absolute_uri|urlencode }}{% static 'img/service-1.jpg'|urlencode }}{% endif %}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn-pro-details" style="background-color: #25D366; border-color: #25D366;">
+                                    <i class="fab fa-whatsapp me-1"></i>WhatsApp
                                 </a>
                             </div>
                                         </div>
