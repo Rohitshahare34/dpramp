@@ -332,11 +332,19 @@
                                 </span>
                             </div>
                         </div>
-                        <button class="btn btn-buy-now mb-3" id="buyNowBtn">
+                        <!-- TEMPORARILY DISABLED PAYMENT GATEWAY FOR WHATSAPP INQUIRY - DO NOT DELETE -->
+                        <!-- <button class="btn btn-buy-now mb-3" id="buyNowBtn">
                             <i class="fas fa-shopping-cart me-2"></i> Buy Full Access
                         </button>
                         <p class="text-center text-muted small mb-0">
                             <i class="fas fa-shield-alt me-1"></i> Secure Payment by Razorpay
+                        </p> -->
+                        <!-- END TEMPORARILY DISABLED SECTION -->
+                        <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%20I%20want%20to%20enquire%20about%20{{ product.title|urlencode }}%20(Price%3A%20Rs.{{ product.price|urlencode }})" target="_blank" class="btn btn-buy-now mb-3" style="background-color: #25D366; border-color: #25D366;">
+                            <i class="fab fa-whatsapp me-2"></i> WhatsApp Inquiry
+                        </a>
+                        <p class="text-center text-muted small mb-0">
+                            <i class="fab fa-whatsapp me-1"></i> Direct WhatsApp Support
                         </p>
                     </div>
                     <div class="p-4 border-top">

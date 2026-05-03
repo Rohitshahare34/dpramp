@@ -72,8 +72,13 @@
                                             Registration Deadline: {{ workshop.registration_deadline|date:"F d, Y" }}
                                         </small>
                                     </div>
-                                    <a href="{% url 'notes:workshop_register' workshop.slug %}" class="btn btn-primary rounded-pill">
+                                    <!-- TEMPORARILY DISABLED PAYMENT GATEWAY FOR WHATSAPP INQUIRY - DO NOT DELETE -->
+                                    <!-- <a href="{% url 'notes:workshop_register' workshop.slug %}" class="btn btn-primary rounded-pill">
                                         Register Now
+                                    </a> -->
+                                    <!-- END TEMPORARILY DISABLED SECTION -->
+                                    <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%20I%20want%20to%20enquire%20about%20{{ workshop.title|urlencode }}%20(Price%3A%20Rs.{{ workshop.price|urlencode }})" target="_blank" class="btn btn-primary rounded-pill" style="background-color: #25D366; border-color: #25D366;">
+                                        <i class="fab fa-whatsapp me-1"></i> WhatsApp Inquiry
                                     </a>
                                 </div>
                             </div>
