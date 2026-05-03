@@ -86,11 +86,11 @@
                     </ul>
 
                     <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-primary rounded-pill py-2" id="buyNowBtn">
-                            <i class="fas fa-shopping-cart me-2"></i>Buy Now
-                        </button>
                         <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%20I%20want%20to%20enquire%20about%20{{ drone.name|urlencode }}%20(Price%3A%20Rs.{{ drone.price|urlencode }})" target="_blank" class="btn btn-success rounded-pill py-2">
                             <i class="fab fa-whatsapp me-2"></i>WhatsApp Enquiry
+                        </a>
+                        <a href="tel:+919359919779" class="btn btn-primary rounded-pill py-2">
+                            <i class="fas fa-phone me-2"></i>Call Us
                         </a>
                         {% if drone.video_url %}
                         <a href="{{ drone.video_url }}" target="_blank" class="btn btn-dark rounded-pill py-2">
@@ -104,44 +104,6 @@
     </div>
 </div>
 
-<!-- Buy Now Modal -->
-<div class="modal fade" id="droneBuyModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow-lg">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold">Buy {{ drone.name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body pt-2">
-                <div class="alert alert-light border mb-3">
-                    <strong>Amount:</strong> Rs.{{ drone.price }}<br>
-                    <small class="text-muted">Secure payment via Razorpay</small>
-                </div>
-                <form id="droneCheckoutForm">
-                    <div class="mb-3">
-                        <label class="form-label">Full Name *</label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email *</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone *</label>
-                        <input type="tel" class="form-control" name="phone" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Shipping Address</label>
-                        <textarea class="form-control" name="shipping_address" rows="2" placeholder="Optional"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-2" id="payDroneBtn">
-                        <i class="fas fa-lock me-2"></i>Pay & Place Order
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Drone Detail End -->
 {% endblock %}
 
@@ -286,89 +248,4 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const buyBtn = document.getElementById("buyNowBtn");
-    const modalEl = document.getElementById("droneBuyModal");
-    const form = document.getElementById("droneCheckoutForm");
-    const payBtn = document.getElementById("payDroneBtn");
-    if (!buyBtn || !modalEl || !form) return;
-
-    const modal = new bootstrap.Modal(modalEl);
-    buyBtn.addEventListener("click", function () { modal.show(); });
-
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const original = payBtn.innerHTML;
-        payBtn.disabled = true;
-        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-
-        const formData = new FormData(form);
-        fetch('/drones/{{ drone.slug }}/create-order/', {
-            method: "POST",
-            headers: { "X-CSRFToken": "{{ csrf_token }}" },
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (!data.success) {
-                alert(data.error || "Unable to start payment.");
-                payBtn.disabled = false;
-                payBtn.innerHTML = original;
-                return;
-            }
-
-            const options = {
-                key: data.key,
-                amount: data.amount,
-                currency: data.currency,
-                name: "DPRAMP-TECH SOLUTIONS",
-                description: data.drone_name,
-                order_id: data.razorpay_order_id,
-                theme: { color: "#00A86B" },
-                handler: function (response) {
-                    fetch('/drones/verify-payment/', {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
-                            "X-CSRFToken": "{{ csrf_token }}"
-                        },
-                        body: new URLSearchParams({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(v => {
-                        if (v.success && v.redirect_url) {
-                            window.location.href = v.redirect_url;
-                        } else {
-                            alert(v.error || "Payment verification failed.");
-                            payBtn.disabled = false;
-                            payBtn.innerHTML = original;
-                        }
-                    });
-                },
-                modal: {
-                    ondismiss: function () {
-                        payBtn.disabled = false;
-                        payBtn.innerHTML = original;
-                    }
-                }
-            };
-
-            modal.hide();
-            const rzp = new Razorpay(options);
-            rzp.open();
-        })
-        .catch(() => {
-            alert("Something went wrong. Please try again.");
-            payBtn.disabled = false;
-            payBtn.innerHTML = original;
-        });
-    });
-});
-</script>
 {% endblock %}
