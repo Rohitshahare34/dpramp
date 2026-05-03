@@ -1116,6 +1116,178 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- PDF Notes Section End -->
 
 
+<!-- Drone Shop Section Start -->
+<div class="container-xxl py-5" id="drones-section">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <span class="position-relative d-inline-flex align-items-center justify-content-center mb-3">
+                <span class="position-absolute start-0 top-50 translate-middle-y bg-primary rounded-pill" style="width: 80px; height: 3px;"></span>
+                <span class="bg-white px-4">
+                    <i class="fas fa-helicopter me-2"></i>Drone Shop
+                </span>
+                <span class="position-absolute end-0 top-50 translate-middle-y bg-primary rounded-pill" style="width: 80px; height: 3px;"></span>
+            </span>
+            <h1 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #1a1a2e 0%, #00B4D8 30%, #00A86B 70%, #008050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Educational Drone Kits</h1>
+            <p class="lead text-muted mb-5">Browse educational drone kits with transparent pricing and key details. Perfect for student projects and hands-on technical training.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Dynamic Database Drones -->
+            {% for drone in featured_drones|slice:"0:4" %}
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                <div class="pro-card">
+                    <a href="#" class="text-decoration-none text-dark" onclick="alert('Drone details coming soon!'); return false;">
+                        <div class="pro-img-wrapper">
+                            {% if drone.image %}
+                                <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
+                            {% else %}
+                                <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="{{ drone.name }}">
+                            {% endif %}
+                            {% if drone.featured %}
+                                <div class="pro-status-badge">Featured</div>
+                            {% endif %}
+                        </div>
+                        <div class="pro-card-body">
+                            <div class="pro-category">{{ drone.category|default:"Drone" }}</div>
+                            <h6 class="pro-title">{{ drone.name }}</h6>
+                        </div>
+                    </a>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">Rs.{{ drone.price|floatformat:0 }}</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:'Drone'|urlencode }}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Fallback static drones if no drones in database -->
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="Educational Drone">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">IoT Drone</div>
+                        <h6 class="pro-title">Basic Learning Drone</h6>
+                    </div>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">₹8,999</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="Advanced Drone">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Advanced Drone</div>
+                        <h6 class="pro-title">Professional Training Drone</h6>
+                    </div>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">₹15,999</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="IoT Drone">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">IoT Drone</div>
+                        <h6 class="pro-title">IoT-Enabled Smart Drone</h6>
+                    </div>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">₹22,999</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="pro-card">
+                    <div class="pro-img-wrapper">
+                        <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="Research Drone">
+                    </div>
+                    <div class="pro-card-body">
+                        <div class="pro-category">Research Drone</div>
+                        <h6 class="pro-title">Research & Development Drone</h6>
+                    </div>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">₹35,999</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- View All Button -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.5s">
+            <a href="{% url 'notes:drone_shop' %}" class="btn-pro-view-all">
+                <i class="fas fa-helicopter me-2"></i>View All Drones
+                <i class="fas fa-arrow-right ms-3"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Drone Shop Section End -->
+
+
 
     <!-- Facts Start -->
     <div class="container-fluid facts my-3 py-3" style="overflow: hidden;">
