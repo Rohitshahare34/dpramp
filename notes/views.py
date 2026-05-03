@@ -29,13 +29,20 @@ def home(request):
         title__icontains='Drone'
     )
     # END TEMPORARILY DISABLED SECTION
+    # TEMPORARILY DISABLE DRONE PROJECTS FOR RAZORPAY APPROVAL - DO NOT DELETE
     # Always show 4 drones on home page (featured first, then latest)
-    featured_drones = (
-        Drone.objects.filter(active=True)
-        .order_by("-featured", "-created_at")
-        [:4]
-    )
-    featured_projects = Project.objects.filter(active=True).order_by('-created_at')[:6]  # Get latest projects
+    # featured_drones = (
+    #     Drone.objects.filter(active=True)
+    #     .order_by("-featured", "-created_at")
+    #     [:4]
+    # )
+    # Filter out drone-related projects for Razorpay compliance
+    featured_projects = Project.objects.filter(active=True).exclude(
+        title__icontains='drone'
+    ).exclude(
+        title__icontains='Drone'
+    ).order_by('-created_at')[:6]  # Get latest projects
+    # END TEMPORARILY DISABLED SECTION
     
     # Get active popup/poster
     active_popup = WebsitePopup.objects.filter(is_active=True).first()
@@ -43,9 +50,11 @@ def home(request):
     return render(request, "index.html", {
         "featured_notes": featured_notes,
         "features": features,
-        "featured_drones": featured_drones,
+        # TEMPORARILY DISABLE DRONE CONTEXT FOR RAZORPAY APPROVAL - DO NOT DELETE
+        # "featured_drones": featured_drones,
         "featured_projects": featured_projects,
         "active_popup": active_popup
+        # END TEMPORARILY DISABLED SECTION
     })
 
 
@@ -527,8 +536,16 @@ def drone_shop(request):
     return render(request, "drone_shop.html", {"drones": drones})
 
 def workshops(request):
-    """Workshops page view"""
+    """Workshops listing page view"""
     workshops = Workshop.objects.filter(active=True)
+    # TEMPORARILY DISABLE DRONE WORKSHOPS FOR RAZORPAY APPROVAL - DO NOT DELETE
+    # Filter out drone-related workshops for Razorpay compliance
+    workshops = workshops.exclude(
+        title__icontains='drone'
+    ).exclude(
+        title__icontains='Drone'
+    )
+    # END TEMPORARILY DISABLED SECTION
     return render(request, "workshops.html", {"workshops": workshops})
 
 
