@@ -276,11 +276,21 @@
 </div>
 {% endif %}
 
+{% block extra_css %}
+<style>
+.cta-overlay {
+    background-image: url('{% static "img/overlay.png" %}');
+    background-size: cover;
+    background-position: center;
+}
+</style>
+{% endblock %}
+
 <!-- CTA Section -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
         <div class="bg-gradient-primary rounded-5 p-5 text-center text-white shadow-lg overflow-hidden position-relative">
-            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25" style="background-image: url('{% static 'img/overlay.png' %}'); background-size: cover; background-position: center;"></div>
+            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25 cta-overlay"></div>
             <div class="position-relative" style="z-index: 2;">
                 <h2 class="display-5 fw-bold mb-4 text-white">Let's Build the Future Together</h2>
                 <p class="lead mb-5 mx-auto opacity-75" style="max-width: 700px;">Have a complex technical requirement? Our team of engineers is ready to help you architect and deploy your next big idea.</p>
