@@ -31,36 +31,38 @@
         <div class="row g-4" id="droneShopGrid">
             {% for drone in drones %}
             <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
-                <a href="#" class="pro-card text-decoration-none text-dark" onclick="alert('Drone details coming soon!'); return false;">
-                    <div class="pro-img-wrapper">
-                        {% if drone.image %}
-                        <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
-                        {% else %}
-                        <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="{{ drone.name }}">
-                        {% endif %}
-                        {% if drone.featured %}
-                        <div class="pro-status-badge">Featured</div>
-                        {% endif %}
-                    </div>
-                    <div class="pro-card-body">
-                        <div class="pro-category">{{ drone.category|default:"Drone" }}</div>
-                        <h6 class="pro-title">{{ drone.name }}</h6>
-                        <div class="pro-card-footer d-flex justify-content-between align-items-center">
-                            <div class="pro-price-box">
-                                <span class="pro-price-label">Price</span>
-                                <span class="pro-price-value">Rs.{{ drone.price|floatformat:0 }}</span>
-                            </div>
-                            <div class="d-flex gap-1">
-                                <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="event.stopPropagation(); alert('Drone details coming soon!'); return false;">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                                <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:'Drone'|urlencode }}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry" onclick="event.stopPropagation();">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            </div>
+                <div class="pro-card">
+                    <a href="#" class="text-decoration-none text-dark" onclick="alert('Drone details coming soon!'); return false;">
+                        <div class="pro-img-wrapper">
+                            {% if drone.image %}
+                            <img src="{{ drone.image.url }}" alt="{{ drone.name }}">
+                            {% else %}
+                            <img src="{% static 'img/rough_imgs/service-2-2.png' %}" alt="{{ drone.name }}">
+                            {% endif %}
+                            {% if drone.featured %}
+                            <div class="pro-status-badge">Featured</div>
+                            {% endif %}
+                        </div>
+                        <div class="pro-card-body">
+                            <div class="pro-category">{{ drone.category|default:"Drone" }}</div>
+                            <h6 class="pro-title">{{ drone.name }}</h6>
+                        </div>
+                    </a>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">Rs.{{ drone.price|floatformat:0 }}</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:'Drone'|urlencode }}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
             {% endfor %}
         </div>

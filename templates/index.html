@@ -966,33 +966,35 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- Dynamic Database Products -->
             {% for product in featured_notes|slice:"0:4" %}
             <div class="col-6 col-md-6 col-lg-3 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
-                <a href="{% url 'notes:product_detail' product.slug %}" class="pro-card text-decoration-none text-dark">
-                    <div class="pro-img-wrapper">
-                        {% if product.thumbnail %}
-                            <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
-                        {% else %}
-                            <img src="{% static 'img/service-1.jpg' %}" alt="{{ product.title }}">
-                        {% endif %}
-                    </div>
-                    <div class="pro-card-body">
-                        <div class="pro-category">{{ product.category.name|default:"PDF NOTES" }}</div>
-                        <h6 class="pro-title">{{ product.title }}</h6>
-                        <div class="pro-card-footer d-flex justify-content-between align-items-center">
-                            <div class="pro-price-box">
-                                <span class="pro-price-label">Price</span>
-                                <span class="pro-price-value">₹{{ product.price|floatformat:0 }}</span>
-                            </div>
-                            <div class="d-flex gap-1">
-                                <a href="{% url 'notes:product_detail' product.slug %}" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="event.stopPropagation();">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                                <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ product.category.name|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry" onclick="event.stopPropagation();">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            </div>
+                <div class="pro-card">
+                    <a href="{% url 'notes:product_detail' product.slug %}" class="text-decoration-none text-dark">
+                        <div class="pro-img-wrapper">
+                            {% if product.thumbnail %}
+                                <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'img/service-1.jpg' %}" alt="{{ product.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="pro-card-body">
+                            <div class="pro-category">{{ product.category.name|default:"PDF NOTES" }}</div>
+                            <h6 class="pro-title">{{ product.title }}</h6>
+                        </div>
+                    </a>
+                    <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                        <div class="pro-price-box">
+                            <span class="pro-price-label">Price</span>
+                            <span class="pro-price-value">₹{{ product.price|floatformat:0 }}</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <a href="{% url 'notes:product_detail' product.slug %}" class="btn btn-primary btn-sm rounded-pill" title="View Details">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ product.category.name|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
             {% empty %}
             <!-- Fallback static cards if no products in database -->

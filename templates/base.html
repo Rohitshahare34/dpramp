@@ -37,10 +37,9 @@
     <style>
     .pro-card {
         background: #ffffff;
-        border-radius: 20px;
+        border-radius: 0px;
         border: 1px solid rgba(0, 0, 0, 0.05);
         overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -49,48 +48,47 @@
     }
 
     .pro-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 168, 107, 0.15);
-        border-color: #00A86B;
+        transform: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.05);
     }
 
     .pro-img-wrapper {
         position: relative;
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        background: #f8fafb;
         overflow: hidden;
+        border-radius: 0px;
+        aspect-ratio: 16 / 9;
+        background: #f8f9fa;
     }
 
     .pro-img-wrapper img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.6s ease;
+        transition: none;
     }
 
     .pro-card:hover .pro-img-wrapper img {
-        transform: scale(1.1);
+        transform: none;
     }
 
     .pro-status-badge {
         position: absolute;
-        top: -5px;
-        right: -5px;
-        z-index: 100;
-        background: #00A86B;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(135deg, #00A86B, #00B4D8);
         color: white;
         padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.65rem;
-        font-weight: 700;
-        letter-spacing: 0.8px;
+        border-radius: 0px;
+        font-size: 11px;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
         box-shadow: 0 4px 10px rgba(0, 168, 107, 0.3);
     }
 
     .pro-card-body {
-        padding: 20px;
+        padding: 25px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -136,8 +134,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-top: 15px;
-        border-top: 1px solid #f1f3f5;
+        padding: 15px 25px;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        background: #f8f9fa;
     }
 
     .pro-price-box {
@@ -156,6 +155,32 @@
         font-size: 1.15rem;
         font-weight: 800;
         color: #00A86B;
+    }
+
+    /* Make buttons and icons larger */
+    .pro-card-footer .btn {
+        padding: 8px 12px;
+        font-size: 14px;
+        min-width: 36px;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .pro-card-footer .btn i {
+        font-size: 16px;
+    }
+    
+    .pro-card-footer .btn-sm {
+        padding: 6px 10px;
+        font-size: 13px;
+        min-width: 32px;
+        min-height: 32px;
+    }
+    
+    .pro-card-footer .btn-sm i {
+        font-size: 14px;
     }
 
     .btn-pro-details {
