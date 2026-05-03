@@ -20,7 +20,15 @@ from .models import Category, Product, Order, DownloadToken, ProductImage, Conta
 def home(request):
     """Home page view"""
     featured_notes = Product.objects.all()[:6]  # Get first 6 products as featured
-    features = Feature.objects.filter(active=True)  # Get all active features
+    # TEMPORARILY DISABLE DRONE FEATURES FOR RAZORPAY APPROVAL - DO NOT DELETE
+    # features = Feature.objects.filter(active=True)  # Get all active features
+    # Filter out drone-related features for Razorpay compliance
+    features = Feature.objects.filter(active=True).exclude(
+        title__icontains='drone'
+    ).exclude(
+        title__icontains='Drone'
+    )
+    # END TEMPORARILY DISABLED SECTION
     # Always show 4 drones on home page (featured first, then latest)
     featured_drones = (
         Drone.objects.filter(active=True)
