@@ -60,7 +60,7 @@
                         </div>
                     {% endif %}
                     
-                    {% if order.order_type == 'drone' %}
+                    {% if order.order_type == 'product' %}
                         <div class="shipping-info mt-4 p-3 bg-light rounded-3">
                             <h6 class="mb-2">Shipping Information</h6>
                             <p class="mb-0"><strong>Shipping Address:</strong> {{ order.shipping_address|default:"Will be notified soon" }}</p>
