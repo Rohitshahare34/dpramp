@@ -60,15 +60,12 @@
                         </div>
                     {% endif %}
                     
-                    <!-- TEMPORARILY DISABLED FOR RAZORPAY APPROVAL - DO NOT DELETE -->
-                    <!-- {% if order.order_type == 'drone' %}
+                    {% if order.order_type == 'drone' %}
                         <div class="shipping-info mt-4 p-3 bg-light rounded-3">
                             <h6 class="mb-2">Shipping Information</h6>
                             <p class="mb-0"><strong>Shipping Address:</strong> {{ order.shipping_address|default:"Will be notified soon" }}</p>
-                            <p class="mb-0"><strong>Billing Address:</strong> {{ order.billing_address|default:"Will be notified soon" }}</p>
                         </div>
-                    {% endif %} -->
-                    <!-- END TEMPORARILY DISABLED SECTION -->
+                    {% endif %}
                     
                     <div class="actions mt-4">
                         <a href="{% url 'notes:home' %}" class="btn btn-primary me-2">
