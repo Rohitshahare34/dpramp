@@ -246,7 +246,7 @@
                                      data-category="{{ category.name }}" 
                                      data-price="{{ product.price }}" 
                                      data-name="{{ product.title|lower }}">
-                                    <div class="pro-card">
+                                    <a href="{% url 'notes:product_detail' product.id %}" class="pro-card text-decoration-none text-dark">
                                         <div class="pro-img-wrapper">
                                             {% if product.thumbnail %}
                                                 <img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
@@ -258,22 +258,27 @@
                                         <div class="pro-card-body">
                                             <div class="pro-category">{{ category.name }}</div>
                                             <h6 class="pro-title">{{ product.title }}</h6>
-                                            <div class="pro-card-footer">
+                                            <div class="pro-card-footer d-flex justify-content-between align-items-center">
                                 <div class="pro-price-box">
                                     <span class="pro-price-label">Price</span>
                                     <span class="pro-price-value">Rs.{{ product.price|floatformat:0 }}</span>
                                 </div>
-                                <!-- TEMPORARILY DISABLED PAYMENT GATEWAY FOR WHATSAPP INQUIRY - DO NOT DELETE -->
-                                <!-- <a href="{% url 'notes:payment_success' product.id %}" class="btn-pro-details">
-                                    <i class="fas fa-shopping-cart me-1"></i>Buy Now
-                                </a> -->
-                                <!-- END TEMPORARILY DISABLED SECTION -->
-                                <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ category.name|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn-pro-details" style="background-color: #25D366; border-color: #25D366;">
-                                    <i class="fab fa-whatsapp me-1"></i>WhatsApp
-                                </a>
+                                <div class="d-flex gap-1">
+                                    <!-- TEMPORARILY DISABLED PAYMENT GATEWAY FOR WHATSAPP INQUIRY - DO NOT DELETE -->
+                                    <!-- <a href="{% url 'notes:payment_success' product.id %}" class="btn-pro-details">
+                                        <i class="fas fa-shopping-cart me-1"></i>Buy Now
+                                    </a> -->
+                                    <!-- END TEMPORARILY DISABLED SECTION -->
+                                    <a href="{% url 'notes:product_detail' product.id %}" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="event.stopPropagation();">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ category.name|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry" onclick="event.stopPropagation();">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </div>
                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                                 {% endfor %}
                             {% else %}

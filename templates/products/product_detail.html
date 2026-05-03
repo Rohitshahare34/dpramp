@@ -341,7 +341,7 @@
                             <i class="fas fa-shield-alt me-1"></i> Secure Payment by Razorpay
                         </p> -->
                         <!-- END TEMPORARILY DISABLED SECTION -->
-                        <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ product.file_extension|default:"PDF"|urlencode }}%0ADescription%3A%20{{ product.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn btn-buy-now mb-3" style="background-color: #25D366; border-color: #25D366;">
+                        <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProduct%3A%20{{ product.title|urlencode }}%0APrice%3A%20Rs.{{ product.price|urlencode }}%0ACategory%3A%20{{ product.file_extension|default:'PDF'|urlencode }}%0ADescription%3A%20{{ product.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20product.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-lg rounded-pill mb-3">
                             <i class="fab fa-whatsapp me-2"></i> WhatsApp Inquiry
                         </a>
                         <p class="text-center text-muted small mb-0">
