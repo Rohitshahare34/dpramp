@@ -304,7 +304,6 @@
                 <a href="{% url 'notes:services' %}" class="nav-item nav-link{% if current == 'services' %} active{% endif %}">Services</a>
                 <a href="{% url 'notes:projects' %}" class="nav-item nav-link{% if current == 'projects' or current == 'project_detail' %} active{% endif %}">Projects</a>
                 <a href="{% url 'notes:contact' %}" class="nav-item nav-link{% if current == 'contact' %} active{% endif %}">Contact</a>
-                <a href="{% url 'notes:customer_support' %}" class="nav-item nav-link{% if current == 'customer_support' %} active{% endif %}">Support</a>
             </div>
             {% endwith %}
             <div class="h-100 d-lg-inline-flex align-items-center d-none ms-4">
@@ -313,7 +312,7 @@
                 <a class="btn btn-square rounded-circle bg-light text-primary me-0" href=""><i class="fab fa-instagram"></i></a>
             </div>
             <button class="btn btn-primary rounded-pill px-4 ms-lg-4 d-none d-lg-block" onclick="window.location.href='{% url 'notes:product_list' %}'">
-                <i class="fas fa-book me-2"></i>Get Study Materials
+                <i class="fas fa-shopping-cart me-2"></i>Shop Now
             </button>
         </div>
     </nav>
@@ -331,7 +330,7 @@
                         Choose Your Service
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
+                        &times;
                     </button>
                 </div>
                 <div class="modal-body">

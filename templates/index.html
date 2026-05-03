@@ -669,12 +669,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="scrolling-features-track">
                         {% for feature in features %}
                             <div class="scrolling-feature-card">
-                                <div class="scrolling-feature-icon">
-                                    <i class="{{ feature.icon|default:'fas fa-star' }}"></i>
-                                </div>
-                                <div class="scrolling-feature-content">
-                                    <h4 class="scrolling-feature-title">{{ feature.title }}</h4>
-                                </div>
+                                <a href="{% if 'Study' in feature.title or 'Notes' in feature.title or 'PDF' in feature.title %}{% url 'notes:product_list' %}
+                                {% elif 'Drone' in feature.title or 'drone' in feature.title %}{% url 'notes:drone_shop' %}
+                                {% elif 'Workshop' in feature.title or 'Training' in feature.title %}{% url 'notes:workshops' %}
+                                {% elif 'Service' in feature.title or 'IoT' in feature.title or 'AR/VR' in feature.title %}{% url 'notes:services' %}
+                                {% elif 'Project' in feature.title %}{% url 'notes:projects' %}
+                                {% else %}{% url 'notes:contact' %}{% endif %}" 
+                                   class="text-decoration-none text-dark">
+                                    <div class="scrolling-feature-icon">
+                                        <i class="{{ feature.icon|default:'fas fa-star' }}"></i>
+                                    </div>
+                                    <div class="scrolling-feature-content">
+                                        <h4 class="scrolling-feature-title">{{ feature.title }}</h4>
+                                    </div>
+                                </a>
                             </div>
                         {% endfor %}
                     </div>
