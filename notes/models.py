@@ -154,6 +154,9 @@ class Contact(models.Model):
 
 class Project(models.Model):
     PROJECT_TYPE_CHOICES = [
+        ('phd', 'PhD Projects'),
+        ('mtech', 'M.Tech Projects'),
+        ('btech', 'B.Tech Projects'),
         ('web', 'Web Development'),
         ('app', 'App Development'),
         ('iot', 'IoT Solutions'),

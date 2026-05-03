@@ -47,10 +47,19 @@
                                 <div class="pro-category">{{ project.get_project_type_display }}</div>
                                 <h4 class="pro-title">{{ project.title }}</h4>
                                 <p class="pro-description">{{ project.description|truncatewords:15 }}</p>
-                                <div class="pro-card-footer mt-auto">
-                                   <a href="{% url 'notes:project_detail' project.slug %}" class="btn-pro-details w-100 text-center">
-                                        View Case Study <i class="fa fa-external-link-alt ms-2"></i>
-                                    </a>
+                                <div class="pro-card-footer d-flex justify-content-between align-items-center">
+                                    <div class="pro-price-box">
+                                        <span class="pro-price-label">Type</span>
+                                        <span class="pro-price-value">{{ project.get_project_type_display }}</span>
+                                    </div>
+                                    <div class="d-flex gap-1">
+                                        <a href="{% url 'notes:project_detail' project.slug %}" class="btn btn-primary btn-sm rounded-pill" title="View Details">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AProject%3A%20{{ project.title|urlencode }}%0AType%3A%20{{ project.get_project_type_display|urlencode }}%0ADescription%3A%20{{ project.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20project.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
