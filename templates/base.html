@@ -298,6 +298,7 @@
             <div class="navbar-nav ms-auto py-4 py-lg-0">
                 <a href="{% url 'notes:home' %}" class="nav-item nav-link{% if current == 'home' %} active{% endif %}">Home</a>
                 <a href="{% url 'notes:about' %}" class="nav-item nav-link{% if current == 'about' %} active{% endif %}">About</a>
+                <a href="{% url 'notes:drone_shop' %}" class="nav-item nav-link{% if current == 'drone_shop' or current == 'drone_list' or current == 'drone_detail' %} active{% endif %}">Drone Kits</a>
                 <a href="{% url 'notes:product_list' %}" class="nav-item nav-link{% if current == 'product_list' or current == 'product_detail' or current == 'payment_success' or current == 'download_pdf' %} active{% endif %}">Study Materials</a>
                 <a href="{% url 'notes:workshops' %}" class="nav-item nav-link{% if current == 'workshops' or current == 'workshop_register' %} active{% endif %}">Workshops</a>
                 <a href="{% url 'notes:services' %}" class="nav-item nav-link{% if current == 'services' %} active{% endif %}">Services</a>
@@ -335,7 +336,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <div class="shop-option-card text-center p-4" onclick="goToService('drones')">
+                                <div class="shop-icon mb-3">
+                                    <i class="fas fa-helicopter fa-2x text-info"></i>
+                                </div>
+                                <h6 class="fw-bold">Drone Kits</h6>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="shop-option-card text-center p-4" onclick="goToService('notes')">
                                 <div class="shop-icon mb-3">
                                     <i class="fas fa-file-pdf fa-2x text-primary"></i>
@@ -343,7 +352,7 @@
                                 <h6 class="fw-bold">Study Materials</h6>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="shop-option-card text-center p-4" onclick="goToService('workshops')">
                                 <div class="shop-icon mb-3">
                                     <i class="fas fa-chalkboard-teacher fa-2x text-warning"></i>
@@ -351,7 +360,7 @@
                                 <h6 class="fw-bold">Workshops</h6>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="shop-option-card text-center p-4" onclick="goToService('projects')">
                                 <div class="shop-icon mb-3">
                                     <i class="fas fa-code fa-2x text-success"></i>
@@ -460,6 +469,9 @@
         
         // Redirect to the appropriate service
         switch(serviceType) {
+            case 'drones':
+                window.location.href = "{% url 'notes:drone_shop' %}";
+                break;
             case 'notes':
                 window.location.href = "{% url 'notes:product_list' %}";
                 break;
