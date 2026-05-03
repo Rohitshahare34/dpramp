@@ -50,7 +50,7 @@
                                 <span class="pro-price-label">Price</span>
                                 <span class="pro-price-value">Rs.{{ drone.price|floatformat:0 }}</span>
                             </div>
-                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:"Drone"|urlencode }}%0AImage%3A%20{% if drone.image %}{{ drone.image.url|urlencode }}{% else %}{{ request.build_absolute_uri|urlencode }}{% static 'img/rough_imgs/service-2-2.png'|urlencode }}{% endif %}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn-pro-details">
+                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:'Drone'|urlencode }}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn-pro-details">
                                 <i class="fab fa-whatsapp me-1"></i>WhatsApp
                             </a>
                         </div>
