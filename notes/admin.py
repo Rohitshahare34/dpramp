@@ -2,7 +2,8 @@ from django.contrib import admin
 import csv
 import datetime
 from django.http import HttpResponse
-from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup
+from django.urls import path, reverse
+from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup, ScholarshipRegistration
 
 
 @admin.register(Category)
@@ -402,6 +403,109 @@ class WebsitePopupAdmin(admin.ModelAdmin):
     def popup_type_display(self, obj):
         return obj.get_popup_type_display()
     popup_type_display.short_description = "Popup Type"
+
+
+@admin.register(ScholarshipRegistration)
+class ScholarshipRegistrationAdmin(admin.ModelAdmin):
+    list_display = [
+        "roll_number",
+        "full_name",
+        "mobile_number",
+        "student_class",
+        "school_name",
+        "city",
+        "registration_datetime",
+    ]
+    list_filter = ["student_class", "city", "school_name", "registration_datetime"]
+    search_fields = ["roll_number", "first_name", "middle_name", "surname", "mobile_number", "school_name", "city"]
+    readonly_fields = ["roll_number", "registration_datetime"]
+    actions = ["export_as_excel", "export_all_as_excel"]
+    change_list_template = "admin/notes/scholarshipregistration/change_list.html"
+    ordering = ["registration_datetime"]
+
+    fieldsets = (
+        ("Roll & Student", {"fields": ("roll_number", "first_name", "middle_name", "surname", "date_of_birth", "gender")}),
+        ("Contact", {"fields": ("mobile_number", "whatsapp_number", "parent_mobile_number")}),
+        ("Parent", {"fields": ("father_name", "mother_name")}),
+        ("Academic", {"fields": ("student_class", "school_name", "city", "medium")}),
+        ("Other", {"fields": ("address", "student_photo", "registration_datetime")}),
+    )
+
+    def full_name(self, obj):
+        return obj.full_name
+    full_name.short_description = "Student Name"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "export-all/",
+                self.admin_site.admin_view(self.export_all_view),
+                name="notes_scholarshipregistration_export_all",
+            ),
+        ]
+        return custom_urls + urls
+
+    def export_all_view(self, request):
+        queryset = ScholarshipRegistration.objects.all().order_by("registration_datetime")
+        return self._export_csv(queryset)
+
+    def _export_csv(self, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = (
+            f'attachment; filename="scholarship_registrations_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"'
+        )
+        writer = csv.writer(response)
+        writer.writerow(
+            [
+                "Roll Number",
+                "Student Name",
+                "Parent/Guardian Name",
+                "Age",
+                "Date of Birth",
+                "Gender",
+                "Parent Contact (WhatsApp)",
+                "Email ID",
+                "Class",
+                "School Name",
+                "City",
+                "Medium",
+                "Address",
+                "Mobile Number (System)",
+                "WhatsApp Number (System)",
+                "Registration Date",
+            ]
+        )
+        for reg in queryset:
+            writer.writerow(
+                [
+                    reg.roll_number,
+                    reg.full_name,
+                    reg.parent_guardian_name,
+                    reg.age,
+                    reg.date_of_birth.strftime("%Y-%m-%d") if reg.date_of_birth else "",
+                    reg.get_gender_display(),
+                    reg.parent_mobile_number,
+                    reg.email_id,
+                    reg.student_class,
+                    reg.school_name,
+                    reg.city,
+                    reg.get_medium_display(),
+                    reg.address,
+                    reg.mobile_number,
+                    reg.whatsapp_number,
+                    reg.registration_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                ]
+            )
+        return response
+
+    def export_as_excel(self, request, queryset):
+        return self._export_csv(queryset)
+    export_as_excel.short_description = "Export selected as Excel"
+
+    def export_all_as_excel(self, request, queryset):
+        return self._export_csv(ScholarshipRegistration.objects.all().order_by("registration_datetime"))
+    export_all_as_excel.short_description = "Export ALL entries as Excel"
 
 
 @admin.register(Order)

@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime, timedelta
-from django.db import models
+from django.db import models, transaction
+from django.db.models import Max
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils import timezone
@@ -446,6 +447,91 @@ class WebsitePopup(models.Model):
 
     def __str__(self):
         return f"{self.title} ({'Active' if self.is_active else 'Inactive'})"
+
+
+class ScholarshipRegistration(models.Model):
+    GENDER_CHOICES = [
+        ("male", "Male"),
+        ("female", "Female"),
+        ("other", "Other"),
+    ]
+    CLASS_CHOICES = [
+        ("8", "8"),
+        ("9", "9"),
+        ("10", "10"),
+    ]
+    MEDIUM_CHOICES = [
+        ("english", "English"),
+        ("semi-english", "Semi-English"),
+        ("marathi", "Marathi"),
+        ("hindi", "Hindi"),
+        ("other", "Other"),
+    ]
+
+    roll_number = models.CharField(max_length=20, unique=True, blank=True, db_index=True)
+    student_name = models.CharField(max_length=180, default="")
+    parent_guardian_name = models.CharField(max_length=180, default="")
+    age = models.PositiveIntegerField(default=0)
+    email_id = models.EmailField(default="")
+    first_name = models.CharField(max_length=100, blank=True, default="")
+    middle_name = models.CharField(max_length=100, blank=True, default="")
+    surname = models.CharField(max_length=100, blank=True, default="")
+    date_of_birth = models.DateField()
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+
+    mobile_number = models.CharField(max_length=15, unique=True)
+    whatsapp_number = models.CharField(max_length=15)
+    parent_mobile_number = models.CharField(max_length=15)
+
+    father_name = models.CharField(max_length=120, blank=True, default="")
+    mother_name = models.CharField(max_length=120, blank=True, default="")
+
+    student_class = models.CharField(max_length=10, choices=CLASS_CHOICES)
+    school_name = models.CharField(max_length=200)
+    city = models.CharField(max_length=120)
+    medium = models.CharField(max_length=20, choices=MEDIUM_CHOICES)
+
+    address = models.TextField()
+    student_photo = models.ImageField(upload_to="scholarship_students/")
+
+    registration_datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Scholarship Registration"
+        verbose_name_plural = "Scholarship Registrations"
+        ordering = ["-registration_datetime"]
+
+    def __str__(self):
+        return f"{self.roll_number} - {self.full_name}"
+
+    @property
+    def full_name(self):
+        if self.student_name:
+            return self.student_name.strip()
+        parts = [self.first_name, self.middle_name, self.surname]
+        return " ".join([p for p in parts if p]).strip()
+
+    def save(self, *args, **kwargs):
+        if not self.roll_number:
+            self.roll_number = self.generate_roll_number()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def generate_roll_number(cls):
+        year_prefix = "NG2026"
+        with transaction.atomic():
+            latest_roll = (
+                cls.objects.select_for_update()
+                .filter(roll_number__startswith=year_prefix)
+                .aggregate(max_roll=Max("roll_number"))
+                .get("max_roll")
+            )
+            if latest_roll:
+                last_seq = int(latest_roll.replace(year_prefix, ""))
+            else:
+                last_seq = 0
+            new_seq = last_seq + 1
+            return f"{year_prefix}{new_seq:02d}"
 
 
 class Order(models.Model):

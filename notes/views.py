@@ -2,19 +2,25 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
 from django.core.files import File
 from django.core.files.storage import default_storage
 from django.conf import settings
 from django.contrib import messages
+from django.db import IntegrityError
 from decimal import Decimal
 from io import BytesIO
+import csv
 import razorpay
 import uuid
 import os
+import re
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup
+from reportlab.lib.utils import ImageReader
+from .forms import ScholarshipRegistrationForm
+from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup, ScholarshipRegistration
 
 
 def home(request):
@@ -736,6 +742,274 @@ def download_workshop_ticket(request, registration_id):
 def workshops_conducted(request):
     """Workshops conducted page view"""
     return render(request, "workshops_conducted.html")
+
+
+def scholarship_registration(request):
+    if request.method == "POST":
+        form = ScholarshipRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                registration = form.save()
+                return redirect("notes:scholarship_success", registration_id=registration.id)
+            except IntegrityError:
+                form.add_error(
+                    "parent_mobile_number",
+                    "This Parent Contact No. is already registered.",
+                )
+    else:
+        form = ScholarshipRegistrationForm()
+
+    return render(request, "scholarship_registration.html", {"form": form})
+
+
+def scholarship_success(request, registration_id):
+    registration = get_object_or_404(ScholarshipRegistration, id=registration_id)
+    return render(
+        request,
+        "scholarship_success.html",
+        {
+            "registration": registration,
+            "whatsapp_group_link": "https://chat.whatsapp.com/Df3Mh2qEXycAUsDZr45W8Q",
+        },
+    )
+
+
+def download_hall_ticket(request, registration_id):
+    registration = get_object_or_404(ScholarshipRegistration, id=registration_id)
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
+
+    # Outer frame
+    p.setLineWidth(1.2)
+    p.setStrokeColorRGB(0.08, 0.18, 0.45)
+    p.roundRect(24, 24, width - 48, height - 48, 12, stroke=1, fill=0)
+
+    # Header band
+    p.setFillColorRGB(0.07, 0.14, 0.36)
+    p.roundRect(24, height - 120, width - 48, 96, 12, stroke=0, fill=1)
+    logo_path = os.path.join(settings.BASE_DIR, "DPRAMP", "img", "image.png")
+    text_start_x = 42
+    if os.path.exists(logo_path):
+        p.setFillColorRGB(1, 1, 1)
+        p.roundRect(38, height - 106, 62, 62, 8, stroke=0, fill=1)
+        p.drawImage(
+            ImageReader(logo_path),
+            42,
+            height - 102,
+            width=54,
+            height=54,
+            preserveAspectRatio=True,
+            mask="auto",
+        )
+        text_start_x = 112
+
+    p.setFillColorRGB(1, 1, 1)
+    p.setFont("Helvetica-Bold", 22)
+    p.drawString(text_start_x, height - 64, "ULC - REGISTRATION CARD")
+    p.setFont("Helvetica-Bold", 13)
+    p.drawString(text_start_x, height - 86, "Mega Education Fair & Scholarship Test 2026")
+    p.setFont("Helvetica", 9.5)
+    p.drawString(text_start_x, height - 102, "Universal Learning Center")
+    p.setFont("Helvetica", 10)
+    p.drawRightString(width - 42, height - 86, f"Roll No: {registration.roll_number}")
+
+    registration_dt = timezone.localtime(registration.registration_datetime)
+    reg_date_str = registration_dt.strftime("%d-%m-%Y")
+
+    # Meta row
+    p.setFillColorRGB(0.95, 0.97, 1)
+    p.roundRect(36, height - 160, width - 72, 30, 6, stroke=0, fill=1)
+    p.setFillColorRGB(0.08, 0.18, 0.45)
+    p.setFont("Helvetica", 9.5)
+    p.drawString(44, height - 142, f"Registration Date: {reg_date_str}")
+    p.drawRightString(width - 44, height - 142, f"Verification ID: {registration.roll_number}")
+
+    y = height - 191
+
+    # Photo card
+    p.setStrokeColorRGB(0.75, 0.8, 0.92)
+    p.roundRect(width - 190, y - 118, 145, 145, 8, stroke=1, fill=0)
+    p.setFillColorRGB(0.5, 0.55, 0.68)
+    p.setFont("Helvetica", 9)
+    p.drawCentredString(width - 118, y - 106, "Student Photo")
+    if registration.student_photo and registration.student_photo.path and os.path.exists(registration.student_photo.path):
+        p.drawImage(
+            ImageReader(registration.student_photo.path),
+            width - 184,
+            y - 112,
+            width=133,
+            height=133,
+            preserveAspectRatio=True,
+            mask="auto",
+        )
+
+    # Candidate Details card
+    p.setFillColorRGB(0.97, 0.98, 1)
+    p.roundRect(36, y - 180, width - 245, 205, 10, stroke=0, fill=1)
+    p.setFillColorRGB(0.08, 0.18, 0.45)
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(46, y + 6, "Candidate Profile")
+
+    p.setFont("Helvetica", 10)
+    label_x = 46
+    value_x = 170
+    line_y = y - 14
+    lines = [
+        ("Full Name", registration.full_name),
+        ("Parent/Guardian", registration.parent_guardian_name),
+        ("Age", str(registration.age)),
+        ("Class", registration.student_class),
+        ("School/College", registration.school_name),
+        ("City", registration.city),
+        ("Email", registration.email_id),
+        ("Parent Contact", registration.parent_mobile_number),
+    ]
+    for label, value in lines:
+        p.setFillColorRGB(0.16, 0.23, 0.4)
+        p.drawString(label_x, line_y, f"{label}:")
+        p.setFillColorRGB(0.05, 0.09, 0.2)
+        p.drawString(value_x, line_y, str(value))
+        line_y -= 22
+
+    # Center details (no exam date/time)
+    center_y = y - 218
+    p.setFillColorRGB(0.97, 0.99, 0.97)
+    p.roundRect(36, center_y - 62, width - 72, 82, 10, stroke=0, fill=1)
+    p.setFillColorRGB(0.1, 0.35, 0.12)
+    p.setFont("Helvetica-Bold", 11)
+    p.drawString(46, center_y + 4, "Test Center Information")
+    p.setFillColorRGB(0.12, 0.18, 0.12)
+    p.setFont("Helvetica", 10)
+    p.drawString(46, center_y - 16, "Universal Learning Center, Main Campus, Pune")
+    p.drawString(46, center_y - 34, "Please contact institute office for schedule updates.")
+
+    # Institute branding + contact information
+    info_y = center_y - 74
+    p.setFillColorRGB(0.95, 0.97, 1.0)
+    p.roundRect(36, info_y - 64, width - 72, 78, 10, stroke=0, fill=1)
+    p.setFillColorRGB(0.08, 0.18, 0.45)
+    p.setFont("Helvetica-Bold", 10.5)
+    p.drawString(46, info_y - 2, "Institute Information")
+    p.setFont("Helvetica", 9.2)
+    p.setFillColorRGB(0.10, 0.15, 0.30)
+    p.drawString(46, info_y - 18, "Programs: IIT-JEE | NEET | CET | XI-XII Science")
+    p.drawString(46, info_y - 33, "Branch 1: IT Park, Gayatri Nagar")
+    p.drawString(300, info_y - 33, "Branch 2: Nandanvan, Ganesh Nagar")
+    p.drawString(46, info_y - 48, "Helpdesk: +91 9322859474 / +91 9673248000")
+
+    # Instructions block
+    inst_y = info_y - 82
+    p.setFillColorRGB(1, 0.99, 0.95)
+    p.roundRect(36, inst_y - 84, width - 72, 98, 10, stroke=0, fill=1)
+    p.setFillColorRGB(0.56, 0.33, 0.0)
+    p.setFont("Helvetica-Bold", 11)
+    p.drawString(46, inst_y - 2, "Instructions")
+    p.setFillColorRGB(0.25, 0.2, 0.05)
+    p.setFont("Helvetica", 9.5)
+    instructions = [
+        "1. Carry this registration card and one valid ID proof.",
+        "2. Mobile phones and smart devices are not allowed in test hall.",
+        "3. Keep this card safely for verification at the center.",
+        "4. Follow all guidance shared by Universal Learning Center staff.",
+    ]
+    text_y = inst_y - 22
+    for line in instructions:
+        p.drawString(46, text_y, line)
+        text_y -= 16
+
+    # Footer signature strip
+    p.setFillColorRGB(0.93, 0.95, 0.99)
+    p.roundRect(36, 38, width - 72, 38, 8, stroke=0, fill=1)
+    p.setFillColorRGB(0.1, 0.17, 0.33)
+    p.setFont("Helvetica", 9)
+    p.drawString(46, 58, "Authorized by Universal Learning Center")
+    p.drawRightString(width - 46, 58, "Universal Learning Center | Scholarship Desk")
+    p.setFont("Helvetica-Oblique", 8.5)
+    p.drawString(46, 45, "This is a system-generated Registration Card.")
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+
+    response = HttpResponse(buffer.getvalue(), content_type="application/pdf")
+    safe_name = re.sub(r"[^A-Za-z0-9_-]+", "-", registration.full_name.strip()).strip("-") or "student"
+    response["Content-Disposition"] = (
+        f'attachment; filename="registration-card-{safe_name}-{registration.roll_number}.pdf"'
+    )
+    return response
+
+
+@staff_member_required
+def scholarship_admin_dashboard(request):
+    queryset = ScholarshipRegistration.objects.all().order_by("registration_datetime")
+
+    class_filter = request.GET.get("class", "").strip()
+    city_filter = request.GET.get("city", "").strip()
+    school_filter = request.GET.get("school", "").strip()
+
+    if class_filter:
+        queryset = queryset.filter(student_class=class_filter)
+    if city_filter:
+        queryset = queryset.filter(city__icontains=city_filter)
+    if school_filter:
+        queryset = queryset.filter(school_name__icontains=school_filter)
+
+    if request.GET.get("export") == "1":
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="scholarship_registrations.csv"'
+        writer = csv.writer(response)
+        writer.writerow(
+            [
+                "Roll Number",
+                "Student Name",
+                "Parent/Guardian Name",
+                "Age",
+                "Date of Birth",
+                "Gender",
+                "Parent Contact (WhatsApp)",
+                "Email ID",
+                "Class",
+                "School Name",
+                "City",
+                "Medium",
+                "Address",
+                "Mobile Number (System)",
+                "WhatsApp Number (System)",
+                "Registration Date",
+            ]
+        )
+        for reg in queryset:
+            writer.writerow(
+                [
+                    reg.roll_number,
+                    reg.full_name,
+                    reg.parent_guardian_name,
+                    reg.age,
+                    reg.date_of_birth.strftime("%Y-%m-%d") if reg.date_of_birth else "",
+                    reg.get_gender_display(),
+                    reg.parent_mobile_number,
+                    reg.email_id,
+                    reg.student_class,
+                    reg.school_name,
+                    reg.city,
+                    reg.get_medium_display(),
+                    reg.address,
+                    reg.mobile_number,
+                    reg.whatsapp_number,
+                    reg.registration_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                ]
+            )
+        return response
+
+    context = {
+        "registrations": queryset[:500],
+        "class_filter": class_filter,
+        "city_filter": city_filter,
+        "school_filter": school_filter,
+    }
+    return render(request, "scholarship_admin_dashboard.html", context)
 
 
 def product_list(request):

@@ -49,4 +49,8 @@ urlpatterns = [
     path("workshops/verify-payment/", views.verify_workshop_payment, name="verify_workshop_payment"),
     path("workshops/registration-success/<int:registration_id>/", views.workshop_registration_success, name="workshop_registration_success"),
     path("workshops/ticket/<int:registration_id>/", views.download_workshop_ticket, name="download_workshop_ticket"),
+    path("scholarship/register/", views.scholarship_registration, name="scholarship_registration"),
+    path("scholarship/success/<int:registration_id>/", views.scholarship_success, name="scholarship_success"),
+    path("scholarship/hall-ticket/<int:registration_id>/", views.download_hall_ticket, name="download_hall_ticket"),
+    path("scholarship/admin-dashboard/", views.scholarship_admin_dashboard, name="scholarship_admin_dashboard"),
 ]

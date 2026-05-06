@@ -1934,16 +1934,23 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- DB Popup: Banner/Poster -->
             <div class="modal fade" id="dbPopupModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                    <div class="modal-content border-0 shadow-lg scholarship-popup-card" style="border-radius: 16px; overflow: hidden;">
                         <button type="button" class="btn-close position-absolute end-0 top-0 m-3 bg-white rounded-circle p-2"
                                 data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
-                        {% if active_popup.action_link %}
-                            <a href="{{ active_popup.action_link }}" {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
-                                <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100" style="display:block; object-fit: cover;">
+                        <div class="p-2 p-md-3">
+                            {% if active_popup.action_link %}
+                                <a href="{{ active_popup.action_link }}" {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
+                                    <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100 scholarship-popup-poster">
+                                </a>
+                            {% else %}
+                                <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100 scholarship-popup-poster">
+                            {% endif %}
+                        </div>
+                        <div class="px-3 px-md-4 pb-4 text-center">
+                            <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn px-5 py-3">
+                                REGISTER HERE
                             </a>
-                        {% else %}
-                            <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100" style="display:block; object-fit: cover;">
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3063,6 +3070,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     </style>
     {% endif %}
+
+    <style>
+        #dbPopupModal .modal-content {
+            animation: popupFadeIn 0.45s ease;
+        }
+        .scholarship-popup-card {
+            background: #ffffff;
+        }
+        .scholarship-popup-poster {
+            display: block;
+            width: 100%;
+            max-height: 72vh;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        .scholarship-register-btn {
+            border: none;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: #fff;
+            background: linear-gradient(135deg, #ff3131 0%, #2563eb 100%);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .scholarship-register-btn:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
 
     <!-- Popup Script (DB-driven) -->
     <script>
