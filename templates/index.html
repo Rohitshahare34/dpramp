@@ -1966,8 +1966,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="modal-body">
                             {{ active_popup.modal_content|safe }}
                         </div>
+                        <div class="modal-footer border-0 bg-light">
+                            <div class="w-100 d-grid gap-2">
+                                <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn py-2">
+                                    REGISTER HERE
+                                </a>
+                            </div>
+                        </div>
                         {% if active_popup.action_link %}
-                            <div class="modal-footer border-0 bg-light">
+                            <div class="modal-footer border-0 bg-light pt-0">
                                 <a href="{{ active_popup.action_link }}" class="btn btn-gradient-emerald text-white w-100"
                                    {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
                                     {{ active_popup.action_text|default:"Learn More" }}
@@ -2091,8 +2098,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             </button>
                         </div>
                         <div class="col-6">
-                            <a href="{% url 'notes:product_list' %}" class="btn btn-gradient-emerald text-white w-100">
-                                <i class="fas fa-shopping-cart me-2"></i>Explore
+                            <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn text-white w-100 py-2">
+                                REGISTER HERE
                             </a>
                         </div>
                     </div>
