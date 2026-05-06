@@ -882,7 +882,7 @@ def download_hall_ticket(request, registration_id):
     p.drawString(46, center_y + 4, "Test Center Information")
     p.setFillColorRGB(0.12, 0.18, 0.12)
     p.setFont("Helvetica", 10)
-    p.drawString(46, center_y - 16, "Universal Learning Center, Main Campus, Pune")
+    p.drawString(46, center_y - 16, "Universal Learning Center")
     p.drawString(46, center_y - 34, "Please contact institute office for schedule updates.")
 
     # Institute branding + contact information
