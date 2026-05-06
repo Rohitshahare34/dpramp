@@ -3113,29 +3113,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     </style>
 
-    <!-- Popup Script (DB-driven) -->
+    <!-- Scholarship Poster Popup (forced) -->
+    <div class="modal fade" id="scholarshipPosterModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg scholarship-popup-card" style="border-radius: 16px; overflow: hidden;">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3 bg-white rounded-circle p-2"
+                        data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+                <div class="p-2 p-md-3">
+                    <img src="{% static 'img/Untitled design (1)_page-0001.jpg' %}" alt="Mega Education Fair Poster" class="w-100 scholarship-popup-poster">
+                </div>
+                <div class="px-3 px-md-4 pb-4 text-center">
+                    <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn px-5 py-3">
+                        REGISTER NOW
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Prefer DB popup; fallback to static popup
-            const modalEl = document.getElementById('dbPopupModal') || document.getElementById('pdfPopupModal');
+            const modalEl = document.getElementById('scholarshipPosterModal');
             if (!modalEl) return;
 
-            const popupId = "{{ active_popup.id|default:'' }}";
-            const showOnce = "{% if active_popup %}{{ active_popup.show_once_per_session|yesno:'1,0' }}{% else %}0{% endif %}";
-            const delayMs = parseInt("{% if active_popup %}{{ active_popup.display_delay|default:2000 }}{% else %}2000{% endif %}", 10) || 2000;
-            const storageKey = popupId ? `dbPopupShown:${popupId}` : (modalEl.id === 'pdfPopupModal' ? 'staticPopupShown' : 'dbPopupShown');
+            const delayMs = 700;
+            const storageKey = 'scholarshipPosterShown';
 
-            // Always show after refresh: clear flag on unload
+            // Always show again on refresh
             window.addEventListener('beforeunload', function() {
                 sessionStorage.removeItem(storageKey);
             });
 
-            if (showOnce === "1" && sessionStorage.getItem(storageKey)) return;
-
             setTimeout(function() {
                 const popupModal = new bootstrap.Modal(modalEl);
                 popupModal.show();
-                if (showOnce === "1") sessionStorage.setItem(storageKey, "true");
+                sessionStorage.setItem(storageKey, "true");
             }, delayMs);
         });
 
