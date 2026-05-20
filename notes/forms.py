@@ -1,5 +1,5 @@
 from django import forms
-from .models import ScholarshipRegistration
+from .models import ScholarshipRegistration, WorkshopStudentRegistration
 
 
 class ScholarshipRegistrationForm(forms.ModelForm):
@@ -35,18 +35,6 @@ class ScholarshipRegistrationForm(forms.ModelForm):
             "address": forms.Textarea(attrs={"rows": 3}),
         }
 
-    def clean_mobile_number(self):
-        mobile = self.cleaned_data["mobile_number"].strip()
-        if not mobile.isdigit() or len(mobile) != 10:
-            raise forms.ValidationError("Enter a valid 10-digit mobile number.")
-        return mobile
-
-    def clean_whatsapp_number(self):
-        number = self.cleaned_data["whatsapp_number"].strip()
-        if not number.isdigit() or len(number) != 10:
-            raise forms.ValidationError("Enter a valid 10-digit WhatsApp number.")
-        return number
-
     def clean_parent_mobile_number(self):
         number = self.cleaned_data["parent_mobile_number"].strip()
         if not number.isdigit() or len(number) != 10:
@@ -67,3 +55,71 @@ class ScholarshipRegistrationForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+class WorkshopStudentRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = WorkshopStudentRegistration
+        fields = [
+            "full_name",
+            "email",
+            "school_college",
+            "standard_year",
+            "whatsapp_number",
+            "payment_transaction_id",
+            "payment_screenshot",
+        ]
+        labels = {
+            "full_name": "Full name",
+            "email": "Email",
+            "school_college": "School / college",
+            "standard_year": "Standard / year",
+            "whatsapp_number": "WhatsApp number",
+            "payment_transaction_id": "Payment transaction ID",
+            "payment_screenshot": "Payment screenshot",
+        }
+        widgets = {
+            "full_name": forms.TextInput(
+                attrs={"class": "form-control", "autocomplete": "name", "required": True}
+            ),
+            "email": forms.EmailInput(
+                attrs={"class": "form-control", "autocomplete": "email", "required": True}
+            ),
+            "school_college": forms.TextInput(attrs={"class": "form-control", "required": True}),
+            "standard_year": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "e.g. 10th, FY B.Tech, Second year",
+                    "required": True,
+                }
+            ),
+            "whatsapp_number": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "autocomplete": "tel",
+                    "inputmode": "numeric",
+                    "placeholder": "10-digit WhatsApp number",
+                    "required": True,
+                }
+            ),
+            "payment_transaction_id": forms.TextInput(
+                attrs={"class": "form-control", "required": True}
+            ),
+            "payment_screenshot": forms.ClearableFileInput(
+                attrs={
+                    "class": "form-control",
+                    "accept": "image/*",
+                }
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["payment_screenshot"].required = True
+
+    def clean_whatsapp_number(self):
+        raw = self.cleaned_data["whatsapp_number"].strip()
+        digits = "".join(c for c in raw if c.isdigit())
+        if len(digits) < 10:
+            raise forms.ValidationError("Enter a valid WhatsApp number (at least 10 digits).")
+        return digits[-10:] if len(digits) > 10 else digits

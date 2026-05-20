@@ -449,6 +449,31 @@ class WebsitePopup(models.Model):
         return f"{self.title} ({'Active' if self.is_active else 'Inactive'})"
 
 
+class WorkshopStudentRegistration(models.Model):
+    """Workshop signup from homepage poster (separate from paid Razorpay workshop checkout)."""
+
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    school_college = models.CharField(max_length=200)
+    standard_year = models.CharField(max_length=50, help_text="Class / year (e.g. FY, SY, 10th)")
+    whatsapp_number = models.CharField(max_length=15, db_index=True)
+    payment_transaction_id = models.CharField(max_length=120)
+    payment_screenshot = models.ImageField(
+        upload_to="workshop_payment_screenshots/",
+        blank=True,
+        null=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Workshop Student Registration"
+        verbose_name_plural = "Workshop Student Registrations"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.full_name} — {self.whatsapp_number}"
+
+
 class ScholarshipRegistration(models.Model):
     GENDER_CHOICES = [
         ("male", "Male"),

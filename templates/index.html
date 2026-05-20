@@ -2,6 +2,88 @@
 
 {% block title %}DPRAMP-TECH SOLUTIONS{% endblock %}
 
+{% block extra_css %}
+<style>
+.workshop-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 16px;
+}
+.workshop-popup-content {
+    background: #081120;
+    padding: 20px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 30px #00d9ff;
+}
+.workshop-popup-poster {
+    width: 100%;
+    border-radius: 15px;
+    display: block;
+}
+.popup-slide {
+    display: none;
+}
+.popup-slide.is-active {
+    display: block;
+}
+.popup-poster-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.popup-poster-link:hover {
+    opacity: 0.98;
+}
+.scholarship-popup-register-btn {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #00c6ff, #9dff00);
+    color: #000;
+    font-size: 17px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 6px 16px rgba(0, 198, 255, 0.35);
+}
+.scholarship-popup-register-btn:hover {
+    color: #000;
+    opacity: 0.95;
+}
+.workshop-popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 2;
+}
+@media (max-width: 576px) {
+    .workshop-popup-content {
+        max-width: 95vw;
+        padding: 16px;
+    }
+}
+</style>
+{% endblock %}
+
 {% block extra_js %}
 <script>
 // Fix mobile menu closing
@@ -34,6 +116,52 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+});
+
+var homePopupSlideTimer = null;
+var homePopupCurrentSlide = 0;
+var homePopupSlideDurations = [2000, 3000];
+
+function showHomePopupSlide(index) {
+    var slides = document.querySelectorAll('#popup .popup-slide');
+    slides.forEach(function(s, i) {
+        s.classList.toggle('is-active', i === index);
+    });
+}
+
+function advanceHomePopupSlide() {
+    var slides = document.querySelectorAll('#popup .popup-slide');
+    if (!slides.length) return;
+    homePopupCurrentSlide = (homePopupCurrentSlide + 1) % slides.length;
+    showHomePopupSlide(homePopupCurrentSlide);
+    homePopupSlideTimer = setTimeout(advanceHomePopupSlide, homePopupSlideDurations[homePopupCurrentSlide]);
+}
+
+function closePopup() {
+    var popup = document.getElementById('popup');
+    if (popup) {
+        popup.style.display = 'none';
+        sessionStorage.setItem('homePopupSliderClosed', '1');
+    }
+    if (homePopupSlideTimer) {
+        clearTimeout(homePopupSlideTimer);
+        homePopupSlideTimer = null;
+    }
+}
+
+window.addEventListener('load', function() {
+    var popup = document.getElementById('popup');
+    if (!popup) return;
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) closePopup();
+    });
+    if (sessionStorage.getItem('homePopupSliderClosed') === '1') return;
+    setTimeout(function() {
+        popup.style.display = 'flex';
+        homePopupCurrentSlide = 0;
+        showHomePopupSlide(0);
+        homePopupSlideTimer = setTimeout(advanceHomePopupSlide, homePopupSlideDurations[0]);
+    }, 700);
 });
 </script>
 {% endblock %}
@@ -1905,7 +2033,27 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <!-- Contact Section End -->
 
-
+<!-- Homepage popup slider: scholarship (2s) then workshop poster (3s), cycling -->
+<div id="popup" class="workshop-popup" role="dialog" aria-modal="true" aria-label="Announcements">
+    <div class="workshop-popup-content">
+        <span class="close-btn" onclick="closePopup()" aria-label="Close">&times;</span>
+        <div class="popup-slide popup-slide-scholarship is-active" data-slide="0">
+            <a href="{% url 'notes:scholarship_registration' %}" class="popup-poster-link">
+                {% if active_popup and active_popup.popup_type == 'banner' and active_popup.poster_image %}
+                <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="workshop-popup-poster">
+                {% else %}
+                <img src="{% static 'img/scholarship_popup.png' %}" alt="Scholarship program" class="workshop-popup-poster">
+                {% endif %}
+            </a>
+            <a href="{% url 'notes:scholarship_registration' %}" class="scholarship-popup-register-btn">Register</a>
+        </div>
+        <div class="popup-slide popup-slide-workshop" data-slide="1">
+            <a href="{% url 'notes:workshop_registration' %}" class="popup-poster-link">
+                <img src="{% static 'img/workshop_popup.png' %}" alt="Workshop — register" class="workshop-popup-poster">
+            </a>
+        </div>
+    </div>
+</div>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
@@ -1917,1241 +2065,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{% static 'js/main.js' %}"></script>
-
-    {% if active_popup %}
-        {% if active_popup.popup_type == 'banner' %}
-            <!-- DB Popup: Banner/Poster -->
-            <div class="modal fade" id="dbPopupModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 shadow-lg scholarship-popup-card" style="border-radius: 16px; overflow: hidden;">
-                        <button type="button" class="btn-close position-absolute end-0 top-0 m-3 bg-white rounded-circle p-2"
-                                data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
-                        <div class="p-2 p-md-3">
-                            {% if active_popup.action_link %}
-                                <a href="{{ active_popup.action_link }}" {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
-                                    <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100 scholarship-popup-poster">
-                                </a>
-                            {% else %}
-                                <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="w-100 scholarship-popup-poster">
-                            {% endif %}
-                        </div>
-                        <div class="px-3 px-md-4 pb-4 text-center">
-                            <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn px-5 py-3">
-                                REGISTER HERE
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <!-- DB Popup: Modal HTML -->
-            <div class="modal fade" id="dbPopupModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
-                        <div class="modal-header border-0" style="background: linear-gradient(135deg, #00A86B 0%, #008050 100%);">
-                            <h5 class="modal-title fw-bold mb-0 text-white">{{ active_popup.title }}</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ active_popup.modal_content|safe }}
-                        </div>
-                        <div class="modal-footer border-0 bg-light">
-                            <div class="w-100 d-grid gap-2">
-                                <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn py-2">
-                                    REGISTER HERE
-                                </a>
-                            </div>
-                        </div>
-                        {% if active_popup.action_link %}
-                            <div class="modal-footer border-0 bg-light pt-0">
-                                <a href="{{ active_popup.action_link }}" class="btn btn-gradient-emerald text-white w-100"
-                                   {% if active_popup.action_link|slice:":4" == "http" %}target="_blank" rel="noopener"{% endif %}>
-                                    {{ active_popup.action_text|default:"Learn More" }}
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-    {% endif %}
-
-    {% if not active_popup %}
-    <!-- Legacy hardcoded popup (default fallback) -->
-    <div class="modal fade" id="pdfPopupModal" tabindex="-1" aria-labelledby="pdfPopupModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-gradient-primary text-white border-0 position-relative">
-                    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #00A86B 0%, #008050 100%); opacity: 0.95;"></div>
-                    <div class="position-relative d-flex justify-content-between align-items-center w-100">
-                        <h5 class="modal-title fw-bold mb-0">
-                            <i class="fas fa-rocket me-2 text-warning"></i>
-                            <span class="text-warning">EXCLUSIVE ACCESS:</span> Innovative Tech Solutions
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="position: relative; z-index: 10;"></button>
-                    </div>
-                </div>
-                <div class="modal-body p-0">
-                    <div class="row g-0">
-                        <div class="col-md-5 bg-gradient-info text-white p-0 position-relative" style="min-height: 200px;">
-                            <img src="{% static 'img/ChatGPT Image Apr 18, 2026, 01_45_28 PM.png' %}" 
-                                 class="w-100 h-100" 
-                                 alt="Study Smart" 
-                                 style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-center p-4" 
-                                 style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);">
-                                <div>
-                                    <h5 class="fw-bold mb-2 text-white">🎓 Your Success Partner</h5>
-                                    <p class="small mb-3 text-white-50">Excellence in Education & Technology</p>
-                                    <h4 class="fw-bold mb-3 text-white">Study Smart, Not Hard!</h4>
-                                    <p class="small mb-0 text-white-50">Join thousands of students who've aced their exams</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-7 p-4">
-                            <div class="mb-4">
-                                <h3 class="text-primary fw-bold mb-3 text-center text-md-start">
-                                    <i class="fas fa-bolt text-warning me-2"></i>
-                                    Empowering Your Future
-                                </h3>
-                                <p class="text-muted mb-3 text-center text-md-start" style="font-size: 0.95rem;">
-                                    <strong>Study Materials | Drones | Workshops | IoT | AI/ML</strong>
-                                </p>
-                            </div>
-                            
-                            <div class="row g-2 mb-3">
-                                <div class="col-6">
-                                    <a href="{% url 'notes:product_list' %}" class="popup-service-item text-decoration-none">
-                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-file-pdf text-emerald" style="font-size: 1.2rem;"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-2">
-                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">Study Materials</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="{% url 'notes:drone_shop' %}" class="popup-service-item text-decoration-none">
-                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-drone text-success" style="font-size: 1.2rem;"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-2">
-                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">Drone Purchase</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="{% url 'notes:workshops' %}" class="popup-service-item text-decoration-none">
-                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-chalkboard-teacher text-warning" style="font-size: 1.2rem;"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-2">
-                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">Workshops</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="{% url 'notes:services' %}" class="popup-service-item text-decoration-none">
-                                        <div class="d-flex align-items-center p-2 bg-light rounded h-100">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-network-wired text-info" style="font-size: 1.2rem;"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-2">
-                                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">IoT Solutions</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <p class="text-center text-muted d-block d-md-none mb-3" style="font-size: 0.8rem;">Explore high-quality tech solutions designed for excellence.</p>
-                            
-                            <div class="alert alert-emerald border-0 d-none d-md-block" role="alert" style="background: rgba(0, 168, 107, 0.1); color: #008050;">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <strong>All Services:</strong> Premium Study materials, drones, and tech workshops available!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer border-0 bg-light">
-                    <div class="row w-100 g-2">
-                        <div class="col-6">
-                            <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">
-                                <i class="fas fa-times me-2"></i>Skip
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn text-white w-100 py-2">
-                                REGISTER HERE
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        .bg-gradient-primary {
-            background: linear-gradient(135deg, #00A86B 0%, #008050 100%) !important;
-        }
-
-        .popup-service-item {
-            display: block;
-            transition: all 0.3s ease;
-        }
-
-        .popup-service-item:hover {
-            transform: translateY(-3px);
-        }
-
-        .popup-service-item:hover .bg-light {
-            background-color: #e9ecef !important;
-            box-shadow: 0 4px 10px rgba(0, 168, 107, 0.15);
-            border: 1px solid rgba(0, 168, 107, 0.2);
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .bg-gradient-info {
-            background: linear-gradient(135deg, #00A86B 0%, #008050 100%) !important;
-        }
-
-        .btn-gradient-emerald {
-            background: linear-gradient(135deg, #00A86B 0%, #008050 100%);
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-gradient-emerald:hover {
-            background: linear-gradient(135deg, #008050 0%, #00A86B 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 168, 107, 0.4);
-        }
-        
-        #pdfPopupModal .modal-content {
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        
-        #pdfPopupModal .modal-dialog {
-            transform: scale(0.9);
-            opacity: 0;
-            transition: all 0.3s ease;
-            margin: 1rem;
-            max-width: 90vw;
-        }
-        
-        #pdfPopupModal.show .modal-dialog {
-            transform: scale(1);
-            opacity: 1;
-        }
-        
-        /* Mobile responsive popup */
-        @media (max-width: 768px) {
-            #pdfPopupModal .modal-dialog {
-                margin: 0.5rem;
-                max-width: 95vw;
-            }
-            
-            #pdfPopupModal .modal-content {
-                border-radius: 10px;
-            }
-        }
-        
-        /* WhatsApp Floating Button Fix */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: #25D366;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        
-        .whatsapp-float:hover {
-            background: #128C7E;
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
-        }
-        
-        /* Scrolling Features Section */
-        .scrolling-features-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 10%);
-            padding: 60px 0;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .scrolling-features-wrapper {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .scrolling-features-container {
-            width: 100%;
-            overflow: hidden;
-            padding: 10px 0;
-        }
-
-        .scrolling-features-track {
-            display: flex;
-            gap: 20px;
-            width: max-content;
-            will-change: transform;
-            animation: featureMarquee var(--feature-marquee-duration, 22s) linear infinite;
-            transform: translate3d(0, 0, 0);
-        }
-
-        .scrolling-features-container.is-paused .scrolling-features-track {
-            animation-play-state: paused;
-        }
-
-        @keyframes featureMarquee {
-            from { transform: translate3d(0, 0, 0); }
-            to { transform: translate3d(calc(-1 * var(--feature-marquee-distance, 600px)), 0, 0); }
-        }
-
-        .scrolling-feature-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            min-width: 280px;
-            max-width: 320px;
-            flex: 0 0 auto;
-            flex-direction: column;
-            margin-bottom: 20px;
-            padding: 20px 18px;
-            text-align: center;
-        }
-
-        .scrolling-feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 168, 107, 0.15);
-        }
-
-        .scrolling-feature-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, #00A86B 0%, #00B4D8 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 28px;
-            transition: all 0.3s ease;
-        }
-
-        .scrolling-feature-title {
-            font-size: 1.08rem;
-            font-weight: 800;
-            color: #1a1a2e;
-            margin-bottom: 2px;
-        }
-
-        .scrolling-features-scroll-btn {
-            background: linear-gradient(135deg, #00A86B, #00B4D8 100%);
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0 10px;
-        }
-
-        .scrolling-features-scroll-btn:hover {
-            background: linear-gradient(135deg, #00A86B, #00B4D8 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 168, 107, 0.15);
-        }
-
-        /* Custom scrollbar styling */
-        .scrolling-features-container::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .scrolling-features-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .scrolling-features-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #00A86B, #00B4D8);
-            border-radius: 10px;
-        }
-
-        .scrolling-features-container::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #008B5A, #0096C7);
-        }
-
-        /* Continuous auto-scroll: keep it clean */
-        .scrolling-features-wrapper .scrolling-features-container {
-            scroll-snap-type: none;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            user-select: none;
-            cursor: grab;
-        }
-        .scrolling-features-wrapper .scrolling-features-container:active {
-            cursor: grabbing;
-        }
-        .scrolling-features-wrapper .scrolling-features-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Mobile responsive layout fixes */
-        @media (max-width: 768px) {
-            html, body {
-                overflow-x: hidden !important;
-                width: 100% !important;
-                position: relative !important;
-            }
-
-            /* Standardized Section Padding for Mobile */
-            .features-section, 
-            .about-section, 
-            #notes-section, 
-            #drones-section, 
-            .feature, 
-            .service, 
-            .portfolio,
-            .callback,
-            .footer {
-                padding-top: 30px !important;
-                padding-bottom: 30px !important;
-            }
-
-            .footer { margin-top: 20px !important; }
-            .facts {
-                padding-top: 30px !important;
-                padding-bottom: 30px !important;
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
-            }
-
-            /* Notes + Drones only: avoid negative margins (no horizontal slider) */
-            #notes-section .row,
-            #drones-section .row {
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                --bs-gutter-x: 20px !important;
-            }
-            
-            #notes-section .row > *,
-            #drones-section .row > * {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-                margin-top: 15px !important; /* Standardize vertical gap between stacked columns */
-            }
-
-            /* HARD FIX: never allow Notes/Drone sections to horizontally overflow */
-            #notes-section,
-            #drones-section,
-            #notes-section .container,
-            #drones-section .container,
-            #notes-section .row,
-            #drones-section .row {
-                overflow-x: hidden !important;
-            }
-
-            #notes-section img,
-            #drones-section img,
-            #notes-section .pro-card,
-            #drones-section .pro-card {
-                max-width: 100% !important;
-            }
-
-            /* Notes + Drones: remove row negative margins that create side-scroll */
-            #notes-section .container,
-            #drones-section .container {
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-                max-width: 100% !important;
-            }
-
-            #notes-section .row,
-            #drones-section .row {
-                /* Force a true non-scroll layout on mobile */
-                display: grid !important;
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                column-gap: 10px !important;
-                row-gap: 10px !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                width: 100% !important;
-            }
-
-            #notes-section .row > *,
-            #drones-section .row > * {
-                max-width: 100% !important;
-                /* In grid mode, Bootstrap .col-6 width makes cards narrow (50% of 50%). */
-                width: auto !important;
-                flex: initial !important;
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-                overflow: hidden !important;
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-            }
-
-            /* Remove internal card scrollbars in Notes + Drones */
-            #notes-section .pro-card,
-            #drones-section .pro-card,
-            #notes-section .pro-card-body,
-            #drones-section .pro-card-body {
-                overflow: hidden !important;
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-            }
-
-            #notes-section .row > *::-webkit-scrollbar,
-            #drones-section .row > *::-webkit-scrollbar,
-            #notes-section .pro-card::-webkit-scrollbar,
-            #drones-section .pro-card::-webkit-scrollbar,
-            #notes-section .pro-card-body::-webkit-scrollbar,
-            #drones-section .pro-card-body::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-                height: 0 !important;
-            }
-
-            /* Ensure content is not hidden by WOW animations or overflow */
-            .wow {
-                visibility: visible !important;
-                opacity: 1 !important;
-                animation-name: none !important;
-            }
-            
-            /* Prevent horizontal "slider" / scrollbar on mobile */
-            section, div:not(.scrolling-features-container):not(.service-nav):not(.advanced-tabs) {
-                overflow-x: hidden !important;
-            }
-
-            .scrolling-features-container, .service-nav, .advanced-tabs {
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .mb-5 { margin-bottom: 25px !important; }
-            .mb-4 { margin-bottom: 20px !important; }
-            .mt-5 { margin-top: 25px !important; }
-            .py-5 { padding-top: 30px !important; padding-bottom: 30px !important; }
-
-            /* Heading Scale-down for Mobile */
-            .display-4 {
-                font-size: 2.2rem !important;
-                line-height: 1.2 !important;
-                margin-bottom: 1.5rem !important;
-            }
-
-            .display-5 {
-                font-size: 1.8rem !important;
-                line-height: 1.2 !important;
-            }
-
-            h1, .h1 { font-size: 2rem !important; }
-            h2, .h2 { font-size: 1.75rem !important; }
-            h3, .h3 { font-size: 1.5rem !important; }
-
-            .lead {
-                font-size: 1rem !important;
-                margin-bottom: 2rem !important;
-            }
-
-            .container, .container-fluid, .container-xxl {
-                padding-left: 15px !important;
-                padding-right: 15px !important;
-            }
-
-            .scrolling-features-container {
-                padding: 10px 0;
-                overflow: hidden;
-            }
-
-            .scrolling-features-track {
-                gap: 15px;
-                display: flex;
-                flex-wrap: nowrap;
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-
-            .scrolling-feature-card {
-                min-width: 78vw;
-                margin-right: 0;
-                margin-bottom: 5px;
-                padding: 20px;
-                border: 1px solid rgba(0, 168, 107, 0.1);
-            }
-
-            .scrolling-feature-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-
-            .scrolling-feature-title {
-                font-size: 1rem;
-            }
-
-            .about-section .row {
-                margin-left: 0;
-                margin-right: 0;
-            }
-
-            .about-image-wrapper {
-                margin-bottom: 30px;
-            }
-
-            .about-title {
-                font-size: 1.8rem !important;
-                text-align: center;
-            }
-
-            .section-label {
-                text-align: center;
-            }
-
-            .about-description, .about-highlight-box {
-                text-align: center;
-            }
-
-            /* Features Section Mobile 2x2 Grid */
-            .feature .row.g-4 {
-                display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 15px !important;
-            }
-
-            .feature .col-md-6 {
-                flex: 0 0 calc(50% - 7.5px) !important;
-                max-width: calc(50% - 7.5px) !important;
-                margin-bottom: 15px !important;
-            }
-
-            .feature .feature-box {
-                height: 100% !important;
-                padding: 20px !important;
-                text-align: center !important;
-            }
-
-            .feature .feature-box i {
-                font-size: 2rem !important;
-                margin-bottom: 15px !important;
-            }
-
-            .feature .feature-box h4 {
-                font-size: 1rem !important;
-                margin-bottom: 10px !important;
-                line-height: 1.3 !important;
-            }
-
-            .feature .feature-box p {
-                font-size: 0.85rem !important;
-                margin-bottom: 0 !important;
-                line-height: 1.4 !important;
-            }
-
-            .advanced-tabs {
-                flex-wrap: nowrap !important;
-                overflow-x: auto;
-                padding-bottom: 10px;
-                justify-content: flex-start !important;
-            }
-
-            .advanced-tab-btn {
-                flex: 0 0 auto;
-                width: auto !important;
-                padding: 10px 20px !important;
-                font-size: 0.9rem;
-            }
-
-            .info-card {
-                margin-bottom: 15px;
-            }
-
-            /* About section only: remove vertical/internal sliders */
-            .about-section .advanced-tabs-wrapper,
-            .about-section .tab-content,
-            .about-section .tab-pane,
-            .about-section .info-card,
-            .about-section .mission-content,
-            .about-section .vision-content {
-                overflow-y: hidden !important;
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-            }
-
-            .about-section .advanced-tabs-wrapper::-webkit-scrollbar,
-            .about-section .tab-content::-webkit-scrollbar,
-            .about-section .tab-pane::-webkit-scrollbar,
-            .about-section .info-card::-webkit-scrollbar,
-            .about-section .mission-content::-webkit-scrollbar,
-            .about-section .vision-content::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-                height: 0 !important;
-            }
-            
-            #pdfPopupModal .modal-header {
-                padding: 1rem !important;
-            }
-            
-            #pdfPopupModal .modal-title {
-                font-size: 1rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .col-md-5 {
-                padding: 1.5rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .col-md-7 {
-                padding: 1.5rem !important;
-            }
-            
-            #pdfPopupModal .modal-body h3 {
-                font-size: 1.1rem !important;
-            }
-            
-            #pdfPopupModal .modal-body p {
-                font-size: 0.9rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .btn {
-                font-size: 0.9rem !important;
-                padding: 0.5rem 1rem !important;
-            }
-
-            /* Product Card Refinement */
-            .pro-card {
-                margin-bottom: 20px !important;
-            }
-
-            .pro-img-wrapper img {
-                height: 180px !important;
-                object-fit: cover;
-            }
-
-            .pro-title {
-                font-size: 1rem !important;
-            }
-
-            /* Facts Section 2x2 Grid */
-            .facts {
-                padding-top: 40px !important;
-                padding-bottom: 40px !important;
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
-            }
-
-            .facts .col-6 {
-                margin-bottom: 20px;
-            }
-
-            .facts i {
-                font-size: 1.5rem !important;
-            }
-
-            .facts h2 {
-                font-size: 1.5rem !important;
-            }
-
-            /* Services Section Mobile Fixes */
-            .service-nav {
-                flex-direction: row !important;
-                overflow-x: auto;
-                flex-wrap: nowrap !important;
-                padding-bottom: 15px;
-                gap: 10px;
-                scrollbar-width: none; /* Hide scrollbar for cleaner look */
-            }
-
-            .service-nav::-webkit-scrollbar {
-                display: none;
-            }
-
-            .service-nav-item {
-                flex: 0 0 250px !important;
-                margin-bottom: 0 !important;
-                padding: 15px !important;
-            }
-
-            .service-nav-item .service-icon-wrapper {
-                width: 40px !important;
-                height: 40px !important;
-                min-width: 40px !important;
-            }
-
-            .service-nav-item i {
-                font-size: 1.2rem !important;
-            }
-
-            .service-tab-content {
-                padding: 25px !important;
-            }
-
-            .service-tab-content .row {
-                flex-direction: column-reverse;
-            }
-
-            .service-image-wrapper {
-                margin-bottom: 25px;
-                height: 250px !important;
-            }
-
-            .service-image-wrapper img {
-                height: 250px !important;
-                width: 100%;
-            }
-
-            /* Contact Form Mobile Refinement */
-            .callback .container {
-                padding: 0 !important;
-            }
-
-            .callback .bg-white {
-                padding: 25px 20px !important;
-                border-radius: 15px !important;
-                margin: 0 10px;
-            }
-
-            .callback h1 {
-                font-size: 1.8rem !important;
-            }
-
-            /* Portfolio Section Mobile Refinement */
-            .portfolio .pro-card {
-                margin-bottom: 25px !important;
-            }
-
-            /* Portfolio only: remove internal vertical scrollbars on mobile */
-            .portfolio .row > div,
-            .portfolio .pro-card,
-            .portfolio .pro-card-body {
-                overflow: hidden !important;
-                scrollbar-width: none !important;
-                -ms-overflow-style: none !important;
-            }
-
-            .portfolio .row > div::-webkit-scrollbar,
-            .portfolio .pro-card::-webkit-scrollbar,
-            .portfolio .pro-card-body::-webkit-scrollbar {
-                display: none !important;
-                width: 0 !important;
-                height: 0 !important;
-            }
-
-            /* Portfolio only: show less text on card in mobile */
-            .portfolio .pro-category {
-                font-size: 0.55rem !important;
-                margin-bottom: 2px !important;
-            }
-
-            .portfolio .pro-title {
-                font-size: 0.8rem !important;
-                line-height: 1.2 !important;
-                min-height: auto !important;
-                margin-bottom: 2px !important;
-                -webkit-line-clamp: 1 !important;
-                line-clamp: 1;
-            }
-
-            .portfolio .pro-card-body p.text-muted.small {
-                display: none !important;
-            }
-
-            .portfolio .pro-status-badge {
-                display: none !important;
-            }
-
-            .portfolio h1 {
-                font-size: 1.8rem !important;
-            }
-
-            /* Two cards per row for Portfolio (keep only here) */
-            .portfolio .row {
-                display: flex !important;
-                flex-wrap: wrap !important;
-                overflow-x: hidden !important;
-                width: 100% !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-            }
-
-            .portfolio .row > div {
-                flex: 0 0 50% !important;
-                max-width: 50% !important;
-                padding-left: 5px !important;
-                padding-right: 5px !important;
-                margin-bottom: 10px !important;
-            }
-
-            .pro-card {
-                padding: 4px !important;
-                height: 100% !important;
-            }
-
-            .pro-card-body {
-                padding: 6px !important;
-                flex-grow: 1;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .pro-img-wrapper {
-                height: 105px !important;
-            }
-
-            .pro-img-wrapper img {
-                height: 105px !important;
-            }
-
-            .pro-title {
-                font-size: 0.75rem !important;
-                min-height: 2rem !important;
-                margin-bottom: 3px !important;
-                line-height: 1.2 !important;
-            }
-
-            .pro-category {
-                font-size: 0.5rem !important;
-                margin-bottom: 1px !important;
-            }
-
-            .pro-description {
-                display: none !important; /* Hide description on mobile to save space for 2-card layout */
-            }
-
-            .btn-pro-details {
-                padding: 2px 4px !important;
-                font-size: 0.55rem !important;
-                border: none !important;
-                background: transparent !important;
-                color: #00A86B !important;
-                text-decoration: none !important;
-                font-weight: 600 !important;
-                text-transform: uppercase;
-                letter-spacing: 0.1px;
-                display: inline-block !important;
-                white-space: nowrap !important;
-                line-height: 1.2 !important;
-            }
-
-            .btn-pro-details::after {
-                content: " \2192";
-                font-size: 0.7rem;
-            }
-
-            .pro-price-value {
-                font-size: 0.75rem !important;
-                font-weight: 800 !important;
-                color: #1a1a2e !important;
-                white-space: nowrap !important;
-            }
-
-            .pro-price-label {
-                font-size: 0.45rem !important;
-                margin-bottom: 0 !important;
-                line-height: 1 !important;
-            }
-
-            .pro-card-footer {
-                padding-top: 3px !important;
-                margin-top: 3px !important;
-                border-top: 1px solid rgba(0,0,0,0.05) !important;
-                flex-direction: row !important;
-                flex-wrap: nowrap !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                display: flex !important;
-                width: 100% !important;
-            }
-
-            .pro-price-box {
-                text-align: left !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                flex-shrink: 1 !important;
-            }
-
-            #show-more-btn {
-                width: 100%;
-                padding: 12px 20px !important;
-                font-size: 0.9rem !important;
-            }
-
-            .btn-pro-view-all {
-                width: 100%;
-                padding: 12px 20px !important;
-                font-size: 0.9rem !important;
-                border-radius: 30px !important;
-                display: flex !important;
-                align-items: center;
-                justify-content: center;
-            }
-        }
-
-        /* Global Pro View All Button Style */
-        .btn-pro-view-all {
-            background: linear-gradient(135deg, #00A86B, #00B4D8);
-            color: white !important;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0, 168, 107, 0.3);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            padding: 15px 40px;
-        }
-
-        .btn-pro-view-all:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 168, 107, 0.4);
-            background: linear-gradient(135deg, #00B4D8, #00A86B);
-        }
-
-        .btn-pro-view-all i:first-child {
-            transition: transform 0.4s ease;
-        }
-
-        .btn-pro-view-all:hover i:first-child {
-            transform: rotate(15deg) scale(1.2);
-        }
-
-        .btn-pro-view-all i:last-child {
-            transition: transform 0.3s ease;
-        }
-
-        .btn-pro-view-all:hover i:last-child {
-            transform: translateX(8px);
-        }
-        
-        @media (max-width: 576px) {
-            #pdfPopupModal .modal-dialog {
-                margin: 0 auto;
-                max-width: 90vw;
-                max-height: auto;
-                top: 50%;
-                transform: translateY(-50%) !important;
-            }
-            
-            #pdfPopupModal .modal-content {
-                border-radius: 12px;
-                max-height: 90vh;
-                overflow: hidden;
-            }
-            
-            #pdfPopupModal .modal-header {
-                padding: 0.8rem !important;
-            }
-            
-            #pdfPopupModal .modal-title {
-                font-size: 0.85rem !important;
-            }
-            
-            
-            #pdfPopupModal .modal-body .col-md-7 {
-                padding: 1rem !important;
-            }
-            
-            #pdfPopupModal .modal-body i {
-                font-size: 1.5rem !important;
-            }
-            
-            #pdfPopupModal .modal-body h4 {
-                font-size: 0.9rem !important;
-                margin-bottom: 0.2rem !important;
-            }
-            
-            #pdfPopupModal .modal-body p {
-                font-size: 0.85rem !important;
-                margin-bottom: 0.2rem !important;
-            }
-            
-            #pdfPopupModal .modal-body h3 {
-                font-size: 1.1rem !important;
-                margin-bottom: 0.4rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .col-md-5 {
-                min-height: 150px !important;
-                height: 150px !important;
-            }
-
-            #pdfPopupModal .modal-body .col-md-5 img {
-                height: 150px !important;
-            }
-
-            #pdfPopupModal .modal-body .col-md-5 .position-absolute {
-                padding: 1rem !important;
-            }
-
-            #pdfPopupModal .modal-body .col-md-5 h5 {
-                font-size: 0.8rem !important;
-                margin-bottom: 0.1rem !important;
-            }
-
-            #pdfPopupModal .modal-body .col-md-5 p {
-                font-size: 0.65rem !important;
-                margin-bottom: 0.1rem !important;
-            }
-
-            #pdfPopupModal .modal-body .col-md-5 h4 {
-                font-size: 0.9rem !important;
-                margin-bottom: 0.1rem !important;
-            }
-
-            #pdfPopupModal .modal-body .col-6 {
-                flex: 0 0 50% !important;
-                padding: 0.2rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .d-flex {
-                padding: 0.4rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .d-flex i {
-                font-size: 1rem !important;
-            }
-            
-            #pdfPopupModal .modal-body .d-flex h6 {
-                font-size: 0.75rem !important;
-                margin-bottom: 0 !important;
-            }
-            
-            #pdfPopupModal .modal-footer {
-                padding: 0.8rem !important;
-            }
-            
-            #pdfPopupModal .modal-footer .btn {
-                font-size: 0.8rem !important;
-                padding: 0.6rem 0.4rem !important;
-                margin: 0 !important;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-    </style>
-    {% endif %}
-
-    <style>
-        #dbPopupModal .modal-content {
-            animation: popupFadeIn 0.45s ease;
-        }
-        .scholarship-popup-card {
-            background: #ffffff;
-        }
-        .scholarship-popup-poster {
-            display: block;
-            width: 100%;
-            max-height: 72vh;
-            object-fit: contain;
-            border-radius: 12px;
-        }
-        .scholarship-register-btn {
-            border: none;
-            border-radius: 999px;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-            color: #fff;
-            background: linear-gradient(135deg, #ff3131 0%, #2563eb 100%);
-            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-        .scholarship-register-btn:hover {
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
-        }
-        @keyframes popupFadeIn {
-            from { opacity: 0; transform: translateY(12px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-    </style>
-
-    <!-- Scholarship Poster Popup (forced) -->
-    <div class="modal fade" id="scholarshipPosterModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow-lg scholarship-popup-card" style="border-radius: 16px; overflow: hidden;">
-                <button type="button" class="btn-close position-absolute end-0 top-0 m-3 bg-white rounded-circle p-2"
-                        data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
-                <div class="p-2 p-md-3">
-                    <img src="{% static 'img/Untitled design (1)_page-0001.jpg' %}" alt="Mega Education Fair Poster" class="w-100 scholarship-popup-poster">
-                </div>
-                <div class="px-3 px-md-4 pb-4 text-center">
-                    <a href="{% url 'notes:scholarship_registration' %}" class="btn scholarship-register-btn px-5 py-3">
-                        REGISTER NOW
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Popup Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modalEl = document.getElementById('scholarshipPosterModal');
-            if (!modalEl) return;
-
-            const delayMs = 700;
-            const storageKey = 'scholarshipPosterShown';
-
-            // Always show again on refresh
-            window.addEventListener('beforeunload', function() {
-                sessionStorage.removeItem(storageKey);
-            });
-
-            setTimeout(function() {
-                const popupModal = new bootstrap.Modal(modalEl);
-                popupModal.show();
-                sessionStorage.setItem(storageKey, "true");
-            }, delayMs);
-        });
-
         // Portfolio Show More/Less functionality
         const showMoreBtn = document.getElementById('show-more-btn');
         if (showMoreBtn) {

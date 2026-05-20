@@ -3,7 +3,7 @@ import csv
 import datetime
 from django.http import HttpResponse
 from django.urls import path, reverse
-from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup, ScholarshipRegistration
+from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup, ScholarshipRegistration, WorkshopStudentRegistration
 
 
 @admin.register(Category)
@@ -403,6 +403,29 @@ class WebsitePopupAdmin(admin.ModelAdmin):
     def popup_type_display(self, obj):
         return obj.get_popup_type_display()
     popup_type_display.short_description = "Popup Type"
+
+
+@admin.register(WorkshopStudentRegistration)
+class WorkshopStudentRegistrationAdmin(admin.ModelAdmin):
+    list_display = [
+        "full_name",
+        "email",
+        "school_college",
+        "standard_year",
+        "whatsapp_number",
+        "payment_transaction_id",
+        "created_at",
+    ]
+    search_fields = [
+        "full_name",
+        "email",
+        "whatsapp_number",
+        "payment_transaction_id",
+        "school_college",
+    ]
+    list_filter = ["created_at"]
+    ordering = ["-created_at"]
+    readonly_fields = ["created_at"]
 
 
 @admin.register(ScholarshipRegistration)

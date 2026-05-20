@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Workshop Registration | DPRAMP{% endblock %}
+
+{% block extra_css %}
+<style>
+.ws-success-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.ws-success-overlay.is-visible { display: flex; }
+.ws-success-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem 1.75rem;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+.ws-success-card h2 { font-size: 1.35rem; font-weight: 800; color: #00A86B; margin-bottom: 0.5rem; }
+.ws-actions-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.ws-actions-overlay.is-visible { display: flex; }
+.ws-actions-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+.ws-actions-card p { margin-bottom: 1.25rem; color: #475569; font-size: 0.95rem; }
+</style>
+{% endblock %}
+
+{% block below_nav %}
+<div style="padding-top: 100px;"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="mb-4 text-center text-md-start">
+                <h1 class="h2 fw-bold text-dark mb-2">Workshop student registration</h1>
+                <p class="text-muted mb-0">
+                    Submit your details after completing payment. All fields marked * are required.
+                </p>
+                {% if featured_workshop %}
+                <p class="small text-primary mt-2 mb-0">
+                    <i class="fas fa-chalkboard-teacher me-1"></i>
+                    Featured workshop: <strong>{{ featured_workshop.title }}</strong>
+                    {% if featured_workshop.date %}— {{ featured_workshop.date|date:"M d, Y" }}{% endif %}
+                </p>
+                {% endif %}
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }} *</label>
+                                {{ form.full_name }}
+                                {% if form.full_name.errors %}<div class="invalid-feedback d-block">{{ form.full_name.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.email.id_for_label }}">{{ form.email.label }} *</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<div class="invalid-feedback d-block">{{ form.email.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.whatsapp_number.id_for_label }}">{{ form.whatsapp_number.label }} *</label>
+                                {{ form.whatsapp_number }}
+                                {% if form.whatsapp_number.errors %}<div class="invalid-feedback d-block">{{ form.whatsapp_number.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.school_college.id_for_label }}">{{ form.school_college.label }} *</label>
+                                {{ form.school_college }}
+                                {% if form.school_college.errors %}<div class="invalid-feedback d-block">{{ form.school_college.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="{{ form.standard_year.id_for_label }}">{{ form.standard_year.label }} *</label>
+                                {{ form.standard_year }}
+                                {% if form.standard_year.errors %}<div class="invalid-feedback d-block">{{ form.standard_year.errors|striptags }}</div>{% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="{{ form.payment_transaction_id.id_for_label }}">{{ form.payment_transaction_id.label }} *</label>
+                                {{ form.payment_transaction_id }}
+                                {% if form.payment_transaction_id.errors %}<div class="invalid-feedback d-block">{{ form.payment_transaction_id.errors|striptags }}</div>{% endif %}
+                                <div class="form-text">UPI / bank reference from your receipt.</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="{{ form.payment_screenshot.id_for_label }}">{{ form.payment_screenshot.label }} *</label>
+                                {{ form.payment_screenshot }}
+                                {% if form.payment_screenshot.errors %}<div class="invalid-feedback d-block">{{ form.payment_screenshot.errors|striptags }}</div>{% endif %}
+                                <div class="form-text">Upload a clear screenshot of the successful payment.</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-grid gap-2 d-sm-flex">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold">
+                                Submit registration
+                            </button>
+                            <a href="{% url 'notes:home' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">Back to home</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="wsCongratsOverlay" class="ws-success-overlay" role="dialog" aria-modal="true" aria-labelledby="wsCongratsTitle" aria-hidden="true">
+    <div class="ws-success-card">
+        <div class="mb-2" style="font-size: 3rem;" aria-hidden="true">🎉</div>
+        <h2 id="wsCongratsTitle">Congratulations!</h2>
+        <p class="text-muted mb-0">Your registration was submitted successfully.</p>
+    </div>
+</div>
+
+<div id="wsNextStepsOverlay" class="ws-actions-overlay" role="dialog" aria-modal="true" aria-labelledby="wsNextTitle" aria-hidden="true">
+    <div class="ws-actions-card">
+        <h3 id="wsNextTitle" class="h5 fw-bold text-dark mb-2">Next steps</h3>
+        <p class="mb-0">Join our WhatsApp group for further instructions, or register another participant.</p>
+        <div class="d-grid gap-2 mt-3">
+            <a href="https://chat.whatsapp.com/LJcNXzoeuns8XJjiK5NsAs" class="btn btn-success rounded-pill py-2 fw-bold" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp me-2"></i>Join WhatsApp group
+            </a>
+            <a href="{% url 'notes:workshop_registration' %}" class="btn btn-outline-primary rounded-pill py-2 fw-bold">
+                Fill another response
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if workshop_submitted %}
+<script>
+(function() {
+    var congrats = document.getElementById('wsCongratsOverlay');
+    var nextSteps = document.getElementById('wsNextStepsOverlay');
+    if (!congrats || !nextSteps) return;
+    congrats.classList.add('is-visible');
+    congrats.setAttribute('aria-hidden', 'false');
+    setTimeout(function() {
+        congrats.classList.remove('is-visible');
+        congrats.setAttribute('aria-hidden', 'true');
+        nextSteps.classList.add('is-visible');
+        nextSteps.setAttribute('aria-hidden', 'false');
+    }, 2000);
+})();
+</script>
+{% endif %}
+{% endblock %}

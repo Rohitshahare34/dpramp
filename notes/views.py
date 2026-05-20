@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.http import HttpResponse, Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -19,8 +20,25 @@ import re
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
-from .forms import ScholarshipRegistrationForm
-from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup, ScholarshipRegistration
+from .forms import ScholarshipRegistrationForm, WorkshopStudentRegistrationForm
+from .models import (
+    Category,
+    Product,
+    Order,
+    DownloadToken,
+    ProductImage,
+    Contact,
+    Project,
+    Workshop,
+    WorkshopForm,
+    WorkshopRegistration,
+    Feature,
+    Drone,
+    CustomerSupport,
+    WebsitePopup,
+    ScholarshipRegistration,
+    WorkshopStudentRegistration,
+)
 
 
 def home(request):
@@ -528,6 +546,32 @@ def workshops(request):
     """Workshops listing page view"""
     workshops = Workshop.objects.filter(active=True)
     return render(request, "workshops.html", {"workshops": workshops})
+
+
+def workshop_registration(request):
+    """Workshop student signup form (opened from homepage workshop poster)."""
+    featured_workshop = (
+        Workshop.objects.filter(active=True, date__gte=timezone.now())
+        .order_by("date")
+        .first()
+    )
+    submitted = request.GET.get("submitted") == "1"
+    if request.method == "POST":
+        form = WorkshopStudentRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(f"{reverse('notes:workshop_registration')}?submitted=1")
+    else:
+        form = WorkshopStudentRegistrationForm()
+    return render(
+        request,
+        "workshop_registration.html",
+        {
+            "featured_workshop": featured_workshop,
+            "form": form,
+            "workshop_submitted": submitted,
+        },
+    )
 
 
 def workshop_register(request, slug):
