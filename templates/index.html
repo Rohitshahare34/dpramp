@@ -37,6 +37,17 @@
 }
 .popup-slide.is-active {
     display: block;
+    animation: popupSlideFade 0.45s ease;
+}
+@keyframes popupSlideFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 .popup-poster-link {
     display: block;
@@ -141,7 +152,6 @@ function closePopup() {
     var popup = document.getElementById('popup');
     if (popup) {
         popup.style.display = 'none';
-        sessionStorage.setItem('homePopupSliderClosed', '1');
     }
     if (homePopupSlideTimer) {
         clearTimeout(homePopupSlideTimer);
@@ -155,7 +165,6 @@ window.addEventListener('load', function() {
     popup.addEventListener('click', function(e) {
         if (e.target === popup) closePopup();
     });
-    if (sessionStorage.getItem('homePopupSliderClosed') === '1') return;
     setTimeout(function() {
         popup.style.display = 'flex';
         homePopupCurrentSlide = 0;
@@ -2039,11 +2048,7 @@ window.addEventListener('load', function() {
         <span class="close-btn" onclick="closePopup()" aria-label="Close">&times;</span>
         <div class="popup-slide popup-slide-scholarship is-active" data-slide="0">
             <a href="{% url 'notes:scholarship_registration' %}" class="popup-poster-link">
-                {% if active_popup and active_popup.popup_type == 'banner' and active_popup.poster_image %}
-                <img src="{{ active_popup.poster_image.url }}" alt="{{ active_popup.title }}" class="workshop-popup-poster">
-                {% else %}
-                <img src="{% static 'img/scholarship_popup.png' %}" alt="Scholarship program" class="workshop-popup-poster">
-                {% endif %}
+                <img src="{% static 'img/Untitled design (1)_page-0001.jpg' %}" alt="Scholarship program" class="workshop-popup-poster">
             </a>
             <a href="{% url 'notes:scholarship_registration' %}" class="scholarship-popup-register-btn">Register</a>
         </div>
