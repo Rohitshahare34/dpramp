@@ -45,6 +45,40 @@
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 .ws-actions-card p { margin-bottom: 1.25rem; color: #475569; font-size: 0.95rem; }
+.ws-payment-box {
+    border: 1px solid #dbeafe;
+    background: #f8fbff;
+    border-radius: 14px;
+    padding: 14px;
+}
+.ws-payment-fee {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+.ws-payment-qr {
+    max-width: 220px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    padding: 6px;
+}
+.ws-upi-copy-wrap {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+}
+.ws-upi-id {
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.2px;
+}
 </style>
 {% endblock %}
 
@@ -114,6 +148,22 @@
                                 {% if form.standard_year.errors %}<div class="invalid-feedback d-block">{{ form.standard_year.errors|striptags }}</div>{% endif %}
                             </div>
                             <div class="col-12">
+                                <div class="ws-payment-box">
+                                    <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                                        <img src="{% static 'img/qr code .jpeg' %}" alt="Workshop registration payment QR" class="ws-payment-qr">
+                                        <div class="text-center text-md-start">
+                                            <div class="ws-payment-fee">Registration fee: Rs. 50</div>
+                                            <div class="small text-muted">Pay using this QR, then fill transaction ID and upload screenshot below.</div>
+                                            <div class="ws-upi-copy-wrap">
+                                                <span class="small text-muted">UPI ID:</span>
+                                                <span id="workshopUpiId" class="ws-upi-id">shaharerohit47@oksbi</span>
+                                                <button type="button" id="copyWorkshopUpiBtn" class="btn btn-sm btn-outline-primary">Copy</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
                                 <label class="form-label fw-semibold" for="{{ form.payment_transaction_id.id_for_label }}">{{ form.payment_transaction_id.label }} *</label>
                                 {{ form.payment_transaction_id }}
                                 {% if form.payment_transaction_id.errors %}<div class="invalid-feedback d-block">{{ form.payment_transaction_id.errors|striptags }}</div>{% endif %}
@@ -165,6 +215,34 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+(function () {
+    var copyBtn = document.getElementById('copyWorkshopUpiBtn');
+    var upiEl = document.getElementById('workshopUpiId');
+    if (!copyBtn || !upiEl) return;
+
+    copyBtn.addEventListener('click', async function () {
+        var upiText = (upiEl.textContent || '').trim();
+        if (!upiText) return;
+        var oldLabel = copyBtn.textContent;
+        try {
+            await navigator.clipboard.writeText(upiText);
+            copyBtn.textContent = 'Copied';
+            copyBtn.classList.remove('btn-outline-primary');
+            copyBtn.classList.add('btn-success');
+        } catch (err) {
+            copyBtn.textContent = 'Copy failed';
+            copyBtn.classList.remove('btn-outline-primary');
+            copyBtn.classList.add('btn-danger');
+        }
+        setTimeout(function () {
+            copyBtn.textContent = oldLabel;
+            copyBtn.classList.remove('btn-success', 'btn-danger');
+            copyBtn.classList.add('btn-outline-primary');
+        }, 1200);
+    });
+})();
+</script>
 {% if workshop_submitted %}
 <script>
 (function() {
