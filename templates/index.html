@@ -76,6 +76,17 @@
     color: #000;
     opacity: 0.95;
 }
+.popup-workshop-date-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(0, 198, 255, 0.15);
+    color: #e8f7ff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
 .workshop-popup .close-btn {
     position: absolute;
     top: 10px;
@@ -2054,8 +2065,9 @@ window.addEventListener('load', function() {
         </div>
         <div class="popup-slide popup-slide-workshop" data-slide="1">
             <a href="{% url 'notes:workshop_registration' %}" class="popup-poster-link">
-                <img src="{% static 'img/workshop_popup.png' %}" alt="Workshop — register" class="workshop-popup-poster">
+                <img src="{% static 'img/workshop_popup.png' %}" alt="DPRAMP Technology Workshop - 31 May 2026, Nagpur" class="workshop-popup-poster">
             </a>
+            <div class="popup-workshop-date-badge">31 May 2026</div>
         </div>
     </div>
 </div>

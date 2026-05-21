@@ -31,7 +31,7 @@
                     <div class="workshop-details">
                         <div class="d-flex align-items-center mb-2">
                             <i class="fas fa-calendar text-primary me-2"></i>
-                            <small><strong>{{ workshop.date|date:"M d, Y" }}</strong> at {{ workshop.date|date:"g:i A" }}</small>
+                            <small><strong>31 May 2026</strong> at 10:00 AM</small>
                         </div>
                         
                         <div class="d-flex align-items-center mb-2">
@@ -203,7 +203,7 @@
                                 <i class="fas fa-lock me-1"></i>Pay & Register (INR {{ workshop.entry_fee }})
                             </button> -->
                             <!-- END TEMPORARILY DISABLED SECTION -->
-                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AWorkshop%3A%20{{ workshop.title|urlencode }}%0ADate%3A%20{{ workshop.date|date:"M d, Y"|urlencode }}%0ALocation%3A%20{{ workshop.location|urlencode }}%0AInstructor%3A%20{{ workshop.instructor|urlencode }}%0APrice%3A%20Rs.{{ workshop.entry_fee|urlencode }}%0ADeadline%3A%20{{ workshop.registration_deadline|date:"M d"|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20workshop.%0A%0AThank%20you!" target="_blank" class="btn btn-primary rounded-pill px-4" style="background-color: #25D366; border-color: #25D366;">
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0AWorkshop%3A%20{{ workshop.title|urlencode }}%0ADate%3A%2031%20May%202026%0ALocation%3A%20{{ workshop.location|urlencode }}%0AInstructor%3A%20{{ workshop.instructor|urlencode }}%0APrice%3A%20Rs.{{ workshop.entry_fee|urlencode }}%0ADeadline%3A%20{{ workshop.registration_deadline|date:"M d"|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20workshop.%0A%0AThank%20you!" target="_blank" class="btn btn-primary rounded-pill px-4" style="background-color: #25D366; border-color: #25D366;">
                                 <i class="fab fa-whatsapp me-1"></i> WhatsApp Inquiry (INR {{ workshop.entry_fee }})
                             </a>
                         </div>
