@@ -3,7 +3,24 @@ import csv
 import datetime
 from django.http import HttpResponse
 from django.urls import path, reverse
-from .models import Category, Product, Order, DownloadToken, ProductImage, Contact, Project, Workshop, WorkshopForm, WorkshopRegistration, Feature, Drone, CustomerSupport, WebsitePopup, ScholarshipRegistration, WorkshopStudentRegistration
+from .models import (
+    Category,
+    Product,
+    Order,
+    DownloadToken,
+    ProductImage,
+    Contact,
+    Project,
+    Workshop,
+    WorkshopForm,
+    WorkshopRegistration,
+    Feature,
+    Drone,
+    CustomerSupport,
+    WebsitePopup,
+    ScholarshipRegistration,
+    EngineeringCounsellingRegistration,
+)
 
 
 @admin.register(Category)
@@ -405,27 +422,25 @@ class WebsitePopupAdmin(admin.ModelAdmin):
     popup_type_display.short_description = "Popup Type"
 
 
-@admin.register(WorkshopStudentRegistration)
-class WorkshopStudentRegistrationAdmin(admin.ModelAdmin):
+@admin.register(EngineeringCounsellingRegistration)
+class EngineeringCounsellingRegistrationAdmin(admin.ModelAdmin):
     list_display = [
-        "full_name",
+        "student_name",
+        "mobile_number",
         "email",
-        "school_college",
-        "standard_year",
-        "whatsapp_number",
-        "payment_transaction_id",
+        "city",
+        "twelfth_status",
+        "branch_display",
         "created_at",
     ]
-    search_fields = [
-        "full_name",
-        "email",
-        "whatsapp_number",
-        "payment_transaction_id",
-        "school_college",
-    ]
-    list_filter = ["created_at"]
+    list_filter = ["twelfth_status", "city", "created_at"]
+    search_fields = ["student_name", "mobile_number", "email", "city", "interested_branch"]
     ordering = ["-created_at"]
     readonly_fields = ["created_at"]
+
+    @admin.display(description="Interested branch")
+    def branch_display(self, obj):
+        return obj.get_branch_display_label()
 
 
 @admin.register(ScholarshipRegistration)

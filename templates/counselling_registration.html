@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Engineering Counselling Registration | DPRAMP{% endblock %}
+
+{% block extra_css %}
+<style>
+.counselling-page-wrap { max-width: 720px; margin: 0 auto; }
+.counselling-page-hero {
+    background: linear-gradient(135deg, #0f235c 0%, #1c3f96 70%, #2563eb 100%);
+    border-radius: 16px;
+    color: #fff;
+    padding: 1.75rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 12px 32px rgba(15, 35, 92, 0.2);
+}
+.counselling-page-hero .badge-admissions {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.35);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+}
+.counselling-poster-page {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    image-rendering: auto;
+}
+.counselling-form-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+}
+.counselling-form-card .card-head {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 1.5rem;
+}
+.counselling-form-card .card-body { padding: 1.5rem; }
+.counselling-form-pro .form-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+.counselling-form-pro .form-floating > .form-control,
+.counselling-form-pro .form-floating > .form-select {
+    border-radius: 10px;
+    border-color: #cbd5e1;
+    min-height: calc(3.1rem + 2px);
+}
+.counselling-form-pro .form-floating > label { color: #64748b; font-size: 0.88rem; }
+.counselling-form-pro .form-floating > .form-control:focus,
+.counselling-form-pro .form-floating > .form-select:focus {
+    border-color: #1c3f96;
+    box-shadow: 0 0 0 0.2rem rgba(28, 63, 150, 0.12);
+}
+.counselling-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #e2e8f0;
+}
+.counselling-form-actions .btn-submit-reg {
+    background: linear-gradient(135deg, #0f235c, #1c3f96);
+    border: none;
+    border-radius: 999px;
+    padding: 0.7rem 1.75rem;
+    font-weight: 700;
+    color: #fff;
+}
+.counselling-form-actions .btn-submit-reg:hover {
+    opacity: 0.92;
+    color: #fff;
+}
+.counselling-success-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: rgba(15, 23, 42, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.counselling-success-overlay.is-visible { display: flex; }
+.counselling-success-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+    border: 1px solid #e2e8f0;
+}
+</style>
+{% endblock %}
+
+{% block below_nav %}
+<div style="padding-top: 100px;"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5 counselling-page-wrap">
+    <div class="counselling-page-hero text-center">
+        <span class="badge-admissions">Admissions Open 2026</span>
+        <h1 class="h3 fw-bold mb-2">Engineering Admission Counselling</h1>
+        <p class="mb-0 small opacity-90 mx-auto" style="max-width: 520px;">
+            Registration for students after 12th — personalised guidance for engineering branch and college selection.
+        </p>
+    </div>
+
+    <img src="{% static 'img/engineering_counselling_poster.jpeg' %}?v=20260522" alt="DPRAMP Engineering Counselling" class="counselling-poster-page">
+
+    <div class="counselling-form-card">
+        <div class="card-head">
+            <h2 class="h6 fw-bold mb-1 text-dark">Counselling registration form</h2>
+            <p class="small text-muted mb-0">Fields marked with * are required. Our team will contact you on your mobile number.</p>
+        </div>
+        <div class="card-body counselling-form-pro">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <p class="form-section-title">Student details</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.student_name }}
+                            <label for="{{ form.student_name.id_for_label }}">Student name</label>
+                        </div>
+                        {% if form.student_name.errors %}<div class="text-danger small mt-1">{{ form.student_name.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.mobile_number }}
+                            <label for="{{ form.mobile_number.id_for_label }}">Mobile number</label>
+                        </div>
+                        {% if form.mobile_number.errors %}<div class="text-danger small mt-1">{{ form.mobile_number.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.city }}
+                            <label for="{{ form.city.id_for_label }}">City</label>
+                        </div>
+                        {% if form.city.errors %}<div class="text-danger small mt-1">{{ form.city.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.twelfth_status }}
+                            <label for="{{ form.twelfth_status.id_for_label }}">12th status</label>
+                        </div>
+                        {% if form.twelfth_status.errors %}<div class="text-danger small mt-1">{{ form.twelfth_status.errors|striptags }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <p class="form-section-title mt-4">Preferences</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.interested_branch }}
+                            <label for="{{ form.interested_branch.id_for_label }}">Interested branch</label>
+                        </div>
+                        {% if form.interested_branch.errors %}<div class="text-danger small mt-1">{{ form.interested_branch.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.email }}
+                            <label for="{{ form.email.id_for_label }}">Email (optional)</label>
+                        </div>
+                        {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors|striptags }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <div class="counselling-form-actions">
+                    <button type="submit" class="btn btn-submit-reg">Submit registration</button>
+                    <a href="{{ counselling_whatsapp_url }}" class="btn btn-success rounded-pill px-4 fw-bold" target="_blank" rel="noopener noreferrer" title="Contact on WhatsApp">
+                        <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                    </a>
+                    <a href="{% url 'notes:home' %}" class="btn btn-outline-secondary rounded-pill px-4">Home</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="counsellingPageSuccess" class="counselling-success-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="counselling-success-card">
+        <div class="mb-2 text-success" style="font-size: 2.5rem;"><i class="fas fa-check-circle"></i></div>
+        <h2 class="h5 fw-bold mb-2">Registration submitted</h2>
+        <p class="text-muted small mb-3">Thank you for registering. Our counselling team will contact you shortly.</p>
+        <div class="d-grid gap-2">
+            <a href="{{ counselling_whatsapp_url }}" class="btn btn-success rounded-pill py-2 fw-bold" target="_blank" rel="noopener noreferrer" title="Contact on WhatsApp">
+                <i class="fab fa-whatsapp me-2"></i>WhatsApp
+            </a>
+            <a href="{% url 'notes:counselling_registration' %}" class="btn btn-outline-primary rounded-pill py-2">Register another student</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if counselling_submitted %}
+<script>
+(function () {
+    var el = document.getElementById('counsellingPageSuccess');
+    if (el) {
+        el.classList.add('is-visible');
+        el.setAttribute('aria-hidden', 'false');
+    }
+})();
+</script>
+{% endif %}
+{% endblock %}

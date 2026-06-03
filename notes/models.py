@@ -474,6 +474,36 @@ class WorkshopStudentRegistration(models.Model):
         return f"{self.full_name} — {self.whatsapp_number}"
 
 
+class EngineeringCounsellingRegistration(models.Model):
+    TWELFTH_STATUS_CHOICES = [
+        ("appearing", "12th Appearing"),
+        ("passed", "12th Passed"),
+    ]
+
+    student_name = models.CharField(max_length=200)
+    mobile_number = models.CharField(max_length=15, db_index=True)
+    email = models.EmailField(blank=True, default="")
+    city = models.CharField(max_length=120)
+    twelfth_status = models.CharField(max_length=20, choices=TWELFTH_STATUS_CHOICES)
+    interested_branch = models.CharField(max_length=200, blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Engineering Counselling Registration"
+        verbose_name_plural = "Engineering Counselling Registrations"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.student_name} — {self.mobile_number}"
+
+    def get_branch_display_label(self):
+        from .counselling_constants import COUNSELLING_BRANCH_CHOICES
+
+        labels = dict(COUNSELLING_BRANCH_CHOICES)
+        value = (self.interested_branch or "").strip()
+        return labels.get(value, value) if value else "—"
+
+
 class ScholarshipRegistration(models.Model):
     GENDER_CHOICES = [
         ("male", "Male"),

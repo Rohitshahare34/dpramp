@@ -1,5 +1,10 @@
 from django import forms
-from .models import ScholarshipRegistration, WorkshopStudentRegistration
+from .counselling_constants import COUNSELLING_BRANCH_CHOICES
+from .models import (
+    ScholarshipRegistration,
+    WorkshopStudentRegistration,
+    EngineeringCounsellingRegistration,
+)
 
 
 class ScholarshipRegistrationForm(forms.ModelForm):
@@ -122,4 +127,66 @@ class WorkshopStudentRegistrationForm(forms.ModelForm):
         digits = "".join(c for c in raw if c.isdigit())
         if len(digits) < 10:
             raise forms.ValidationError("Enter a valid WhatsApp number (at least 10 digits).")
+        return digits[-10:] if len(digits) > 10 else digits
+
+
+class EngineeringCounsellingRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = EngineeringCounsellingRegistration
+        fields = [
+            "student_name",
+            "mobile_number",
+            "email",
+            "city",
+            "twelfth_status",
+            "interested_branch",
+        ]
+        labels = {
+            "student_name": "Student name",
+            "mobile_number": "Mobile number",
+            "email": "Email ID",
+            "city": "City",
+            "twelfth_status": "12th appearing / passed",
+            "interested_branch": "Interested engineering branch",
+        }
+        widgets = {
+            "student_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Student name", "required": True}
+            ),
+            "mobile_number": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Mobile number",
+                    "inputmode": "numeric",
+                    "required": True,
+                }
+            ),
+            "email": forms.EmailInput(
+                attrs={"class": "form-control", "placeholder": "Email (optional)"}
+            ),
+            "city": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "City", "required": True}
+            ),
+            "twelfth_status": forms.Select(attrs={"class": "form-select", "required": True}),
+            "interested_branch": forms.Select(attrs={"class": "form-select"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].required = False
+        self.fields["interested_branch"] = forms.ChoiceField(
+            choices=COUNSELLING_BRANCH_CHOICES,
+            required=False,
+            label="Interested engineering branch",
+            widget=forms.Select(attrs={"class": "form-select"}),
+        )
+
+    def clean_interested_branch(self):
+        return self.cleaned_data.get("interested_branch") or ""
+
+    def clean_mobile_number(self):
+        raw = self.cleaned_data["mobile_number"].strip()
+        digits = "".join(c for c in raw if c.isdigit())
+        if len(digits) < 10:
+            raise forms.ValidationError("Enter a valid mobile number (at least 10 digits).")
         return digits[-10:] if len(digits) > 10 else digits

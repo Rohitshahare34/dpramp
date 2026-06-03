@@ -1,0 +1,111 @@
+{% load static %}
+<div class="modal fade" id="counsellingRegistrationModal" tabindex="-1" aria-labelledby="counsellingModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content border-0 counselling-modal-card shadow-lg">
+            <div class="modal-header counselling-modal-header border-0 pb-2">
+                <div>
+                    <span class="counselling-admissions-badge">Admissions Open 2026</span>
+                    <h5 class="modal-title fw-bold mt-2 mb-1 text-white" id="counsellingModalTitle">Engineering Admission Counselling 2026</h5>
+                    <p class="counselling-modal-sub mb-0">Expert career counselling &amp; admission guidance after 12th</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body counselling-modal-body-pro pt-2">
+                <p class="counselling-modal-desc small mb-3">
+                    Branch &amp; college selection, admission process, scholarships, and seat allotment support for Engineering aspirants.
+                </p>
+
+                <div id="counsellingFormWrap">
+                    <div class="counselling-modal-form-card counselling-form-pro">
+                        <form id="counsellingRegForm" novalidate>
+                            {% csrf_token %}
+                            <div id="counsellingFormErrors" class="alert alert-danger d-none py-2 small" role="alert"></div>
+
+                            <p class="form-section-title">Student details</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="counselling_student_name" name="student_name" placeholder="Full name" required maxlength="200">
+                                        <label for="counselling_student_name">Student name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="counselling_mobile_number" name="mobile_number" placeholder="Mobile" required maxlength="15" inputmode="numeric">
+                                        <label for="counselling_mobile_number">Mobile number</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="counselling_city" name="city" placeholder="City" required maxlength="120">
+                                        <label for="counselling_city">City</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="counselling_twelfth_status" name="twelfth_status" required>
+                                            <option value="" selected disabled>Select status</option>
+                                            <option value="appearing">12th Appearing</option>
+                                            <option value="passed">12th Passed</option>
+                                        </select>
+                                        <label for="counselling_twelfth_status">12th status</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="form-section-title mt-3">Preferences</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="counselling_interested_branch" name="interested_branch">
+                                            <option value="" selected>Preferred branch (optional)</option>
+                                            <option value="cse">CSE — Computer Science &amp; Engineering</option>
+                                            <option value="it">IT — Information Technology</option>
+                                            <option value="ct">CT — Computer Technology</option>
+                                            <option value="ai">AI — Artificial Intelligence</option>
+                                            <option value="ds">DS — Data Science</option>
+                                            <option value="cs">CS — Computer Systems</option>
+                                            <option value="et">ET — Electronics &amp; Telecommunication</option>
+                                            <option value="ee">EE — Electrical Engineering</option>
+                                            <option value="me">ME — Mechanical Engineering</option>
+                                            <option value="other">Other / Not sure yet</option>
+                                        </select>
+                                        <label for="counselling_interested_branch">Interested branch</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="counselling_email" name="email" placeholder="Email" maxlength="254">
+                                        <label for="counselling_email">Email (optional)</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="counselling-form-actions">
+                                <button type="submit" class="btn btn-primary btn-counselling-submit" id="counsellingSubmitBtn">
+                                    Submit registration
+                                </button>
+                                <a href="{{ counselling_whatsapp_url }}" class="btn btn-success rounded-pill px-4 fw-bold" target="_blank" rel="noopener noreferrer" title="Contact on WhatsApp">
+                                    <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="text-center mt-2 mb-0">
+                        <a href="{% url 'notes:counselling_registration' %}" class="small text-muted">Open full registration page</a>
+                    </p>
+                </div>
+
+                <div id="counsellingSuccessWrap" class="text-center py-4 d-none">
+                    <div class="counselling-modal-form-card">
+                        <div class="mb-2 text-success" style="font-size: 2.5rem;" aria-hidden="true"><i class="fas fa-check-circle"></i></div>
+                        <h6 class="fw-bold mb-2">Registration submitted</h6>
+                        <p class="text-muted small mb-0" id="counsellingSuccessMessage">
+                            Thank you for registering. Our counselling team will contact you shortly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

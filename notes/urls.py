@@ -44,7 +44,17 @@ urlpatterns = [
     # Drone Shop URL
     path("drone-shop/", views.drone_shop, name="drone_shop"),
     path("workshops/", views.workshops, name="workshops"),
+    path(
+        "counselling-registration/",
+        views.counselling_registration,
+        name="counselling_registration",
+    ),
     path("workshop-registration/", views.workshop_registration, name="workshop_registration"),
+    path(
+        "engineering-counselling/register/",
+        views.engineering_counselling_register,
+        name="engineering_counselling_register",
+    ),
     path("workshops/<slug:slug>/register/", views.workshop_register, name="workshop_register"),
     path("workshops/<slug:slug>/create-order/", views.create_workshop_order, name="create_workshop_order"),
     path("workshops/verify-payment/", views.verify_workshop_payment, name="verify_workshop_payment"),

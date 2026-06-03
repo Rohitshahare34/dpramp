@@ -9,6 +9,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.db import IntegrityError
 from decimal import Decimal
 from io import BytesIO
@@ -20,7 +21,10 @@ import re
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
-from .forms import ScholarshipRegistrationForm, WorkshopStudentRegistrationForm
+from .forms import (
+    ScholarshipRegistrationForm,
+    EngineeringCounsellingRegistrationForm,
+)
 from .models import (
     Category,
     Product,
@@ -37,7 +41,7 @@ from .models import (
     CustomerSupport,
     WebsitePopup,
     ScholarshipRegistration,
-    WorkshopStudentRegistration,
+    EngineeringCounsellingRegistration,
 )
 
 
@@ -548,30 +552,74 @@ def workshops(request):
     return render(request, "workshops.html", {"workshops": workshops})
 
 
-def workshop_registration(request):
-    """Workshop student signup form (opened from homepage workshop poster)."""
-    featured_workshop = (
-        Workshop.objects.filter(active=True, date__gte=timezone.now())
-        .order_by("date")
-        .first()
+def _notify_counselling_lead(registration):
+    """Email admin about a new engineering counselling registration."""
+    recipients = getattr(settings, "COUNSELLING_ADMIN_EMAILS", None) or [
+        "dpramptechsolution@gmail.com",
+        "info@dpramp.com",
+    ]
+    status_label = registration.get_twelfth_status_display()
+    branch = registration.get_branch_display_label()
+    email_line = registration.email or "Not provided"
+    body = (
+        f"New Engineering Admission Counselling registration\n\n"
+        f"Student Name: {registration.student_name}\n"
+        f"Mobile: {registration.mobile_number}\n"
+        f"Email: {email_line}\n"
+        f"City: {registration.city}\n"
+        f"12th Status: {status_label}\n"
+        f"Interested Branch: {branch}\n"
+        f"Submitted: {registration.created_at}\n"
     )
+    send_mail(
+        subject=f"New Counselling Lead — {registration.student_name}",
+        message=body,
+        from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "noreply@dpramp.com"),
+        recipient_list=recipients,
+        fail_silently=True,
+    )
+
+
+COUNSELLING_SUCCESS_MESSAGE = (
+    "Thank you for registering. Our counselling team will contact you shortly."
+)
+
+
+@require_http_methods(["POST"])
+def engineering_counselling_register(request):
+    """AJAX endpoint for engineering admission counselling registration."""
+    form = EngineeringCounsellingRegistrationForm(request.POST)
+    if not form.is_valid():
+        return JsonResponse({"success": False, "errors": form.errors}, status=400)
+    registration = form.save()
+    _notify_counselling_lead(registration)
+    return JsonResponse({"success": True, "message": COUNSELLING_SUCCESS_MESSAGE})
+
+
+def counselling_registration(request):
+    """Full-page engineering counselling registration (after 12th)."""
     submitted = request.GET.get("submitted") == "1"
     if request.method == "POST":
-        form = WorkshopStudentRegistrationForm(request.POST, request.FILES)
+        form = EngineeringCounsellingRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect(f"{reverse('notes:workshop_registration')}?submitted=1")
+            registration = form.save()
+            _notify_counselling_lead(registration)
+            return redirect(f"{reverse('notes:counselling_registration')}?submitted=1")
     else:
-        form = WorkshopStudentRegistrationForm()
+        form = EngineeringCounsellingRegistrationForm()
     return render(
         request,
-        "workshop_registration.html",
+        "counselling_registration.html",
         {
-            "featured_workshop": featured_workshop,
             "form": form,
-            "workshop_submitted": submitted,
+            "counselling_submitted": submitted,
         },
     )
+
+
+def workshop_registration(request):
+    """Legacy URL — redirects to engineering counselling registration."""
+    return redirect("notes:counselling_registration", permanent=False)
 
 
 def workshop_register(request, slug):

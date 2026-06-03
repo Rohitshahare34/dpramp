@@ -64,6 +64,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "notes.context_processors.counselling",
             ],
         },
     },
@@ -161,3 +162,14 @@ if DEBUG:
 else:
     RAZORPAY_KEY_ID = RAZORPAY_LIVE_KEY_ID
     RAZORPAY_KEY_SECRET = RAZORPAY_LIVE_KEY_SECRET
+
+# Engineering counselling lead notifications
+COUNSELLING_ADMIN_EMAILS = [
+    "dpramptechsolution@gmail.com",
+    "info@dpramp.com",
+]
+DEFAULT_FROM_EMAIL = "noreply@dpramp.com"
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

@@ -18,19 +18,119 @@
     padding: 16px;
 }
 .workshop-popup-content {
-    background: #081120;
-    padding: 20px;
-    border-radius: 20px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
     width: 100%;
-    max-width: 420px;
+    max-width: 460px;
     text-align: center;
     position: relative;
-    box-shadow: 0 0 30px #00d9ff;
+    box-shadow: none;
 }
-.workshop-popup-poster {
+.popup-card-clean {
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+    position: relative;
+}
+.workshop-popup-poster,
+.counselling-poster-sharp {
     width: 100%;
-    border-radius: 15px;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    object-position: center top;
     display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
+    vertical-align: top;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.popup-slide-counselling .workshop-popup-poster {
+    max-height: min(72vh, 620px);
+}
+.popup-actions {
+    padding: 10px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+}
+.popup-actions .scholarship-popup-register-btn,
+.popup-actions .btn-counselling-popup,
+.popup-actions .btn-counselling-whatsapp {
+    width: auto;
+    min-width: 200px;
+    max-width: 260px;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+.counselling-form-pro .form-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+.counselling-form-pro .form-floating > .form-control,
+.counselling-form-pro .form-floating > .form-select {
+    border-radius: 10px;
+    border-color: #cbd5e1;
+    min-height: calc(3.1rem + 2px);
+}
+.counselling-form-pro .form-floating > label {
+    color: #64748b;
+    font-size: 0.88rem;
+}
+.counselling-form-pro .form-floating > .form-control:focus,
+.counselling-form-pro .form-floating > .form-select:focus {
+    border-color: #1c3f96;
+    box-shadow: 0 0 0 0.2rem rgba(28, 63, 150, 0.12);
+}
+.counselling-form-pro .counselling-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+.counselling-form-pro .btn-counselling-submit {
+    background: linear-gradient(135deg, #0f235c, #1c3f96);
+    border: none;
+    border-radius: 999px;
+    padding: 0.65rem 1.75rem;
+    font-weight: 700;
+}
+.counselling-form-pro .btn-counselling-submit:hover {
+    opacity: 0.92;
+    background: linear-gradient(135deg, #0f235c, #1c3f96);
+}
+.counselling-modal-body-pro {
+    background: #f8fafc;
+}
+.counselling-modal-form-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.25rem 1.25rem 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+.popup-poster-link,
+.popup-card-clean > button.popup-poster-link {
+    background: transparent !important;
+    line-height: 0;
 }
 .popup-slide {
     display: none;
@@ -58,49 +158,220 @@
     opacity: 0.98;
 }
 .scholarship-popup-register-btn {
-    display: block;
-    width: 100%;
-    margin-top: 14px;
-    padding: 12px 16px;
+    display: inline-block;
+    width: auto;
+    margin-top: 0;
+    padding: 10px 12px;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     background: linear-gradient(90deg, #00c6ff, #9dff00);
     color: #000;
-    font-size: 17px;
+    font-size: 0.88rem;
     font-weight: 800;
     text-align: center;
     text-decoration: none;
-    box-shadow: 0 6px 16px rgba(0, 198, 255, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 198, 255, 0.3);
+    line-height: 1.25;
 }
 .scholarship-popup-register-btn:hover {
     color: #000;
     opacity: 0.95;
 }
-.popup-workshop-date-badge {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: rgba(0, 198, 255, 0.15);
-    color: #e8f7ff;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
+.popup-counselling-slide {
+    text-align: left;
+    color: #e8f4ff;
 }
+.popup-counselling-slide h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 0.35rem;
+    line-height: 1.3;
+}
+.popup-counselling-slide .popup-counselling-sub {
+    font-size: 0.82rem;
+    color: #b8d4f0;
+    margin-bottom: 0.65rem;
+}
+.popup-counselling-slide .popup-counselling-desc {
+    font-size: 0.78rem;
+    color: #9fb8d4;
+    line-height: 1.45;
+    margin-bottom: 0.85rem;
+}
+.popup-admissions-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff3131, #2563eb);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+.btn-counselling-popup {
+    width: auto;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.25;
+    background: linear-gradient(90deg, #00c6ff, #9dff00);
+    color: #000;
+}
+.btn-counselling-popup:hover { opacity: 0.95; color: #000; }
+.btn-counselling-whatsapp {
+    display: inline-block;
+    width: auto;
+    margin-top: 0;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 10px;
+    background: #25D366;
+    color: #fff;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+}
+.btn-counselling-whatsapp:hover { color: #fff; opacity: 0.95; }
+.popup-slide-counselling .popup-counselling-slide {
+    text-align: center;
+}
+.counselling-home-banner {
+    background: linear-gradient(135deg, #0f235c 0%, #1c3f96 55%, #00A86B 100%);
+    border-radius: 20px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.counselling-home-banner-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .counselling-home-banner-inner {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+.counselling-poster-btn {
+    border: none;
+    background: transparent;
+    padding: 0;
+    max-width: min(100%, 420px);
+    width: 100%;
+    cursor: pointer;
+}
+.counselling-poster-btn img {
+    width: 100%;
+    height: auto;
+    max-width: 420px;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    display: block;
+    image-rendering: auto;
+}
+.counselling-home-copy {
+    color: #fff;
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .counselling-home-copy { text-align: left; flex: 1; }
+}
+.counselling-home-copy h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+.counselling-home-copy p { font-size: 0.92rem; opacity: 0.92; margin-bottom: 0.75rem; }
+.counselling-modal-card { border-radius: 16px; overflow: hidden; }
+.counselling-modal-header { background: linear-gradient(135deg, #0f235c, #1c3f96); color: #fff; }
+.counselling-modal-header .modal-title,
+.counselling-modal-header #counsellingModalTitle {
+    color: #ffffff !important;
+}
+.counselling-modal-header .btn-close { filter: invert(1); }
+.counselling-admissions-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff3131, #2563eb);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+.counselling-modal-sub { font-size: 0.88rem; color: #dbeafe; }
+.counselling-modal-desc { font-size: 0.9rem; color: #475569; }
 .workshop-popup .close-btn {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    color: #fff;
-    font-size: 28px;
+    top: 8px;
+    right: 8px;
+    color: #1a1a2e;
+    font-size: 20px;
     cursor: pointer;
     line-height: 1;
-    z-index: 2;
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 @media (max-width: 576px) {
     .workshop-popup-content {
-        max-width: 95vw;
-        padding: 16px;
+        max-width: min(96vw, 400px);
+    }
+    .popup-slide-counselling .workshop-popup-poster {
+        max-height: min(65vh, 480px);
+    }
+    .popup-actions .scholarship-popup-register-btn,
+    .popup-actions .btn-counselling-popup,
+    .popup-actions .btn-counselling-whatsapp {
+        min-width: 180px;
+        max-width: 240px;
+        width: 85%;
+    }
+    .popup-actions {
+        padding: 8px 0 0;
+        gap: 7px;
+    }
+    .scholarship-popup-register-btn,
+    .btn-counselling-popup,
+    .btn-counselling-whatsapp {
+        font-size: 0.82rem;
+        padding: 9px 10px;
+    }
+}
+@media (min-width: 577px) and (max-width: 991px) {
+    .workshop-popup-content {
+        max-width: 420px;
+    }
+    .popup-slide-counselling .workshop-popup-poster {
+        max-height: min(68vh, 560px);
+    }
+}
+@media (min-width: 992px) {
+    .workshop-popup-content {
+        max-width: 520px;
+    }
+    .popup-slide-counselling .workshop-popup-poster {
+        max-height: 620px;
+    }
+    .popup-actions {
+        padding: 12px 0 0;
     }
 }
 </style>
@@ -182,6 +453,75 @@ window.addEventListener('load', function() {
         showHomePopupSlide(0);
         homePopupSlideTimer = setTimeout(advanceHomePopupSlide, homePopupSlideDurations[0]);
     }, 700);
+});
+
+function openCounsellingModal() {
+    closePopup();
+    var el = document.getElementById('counsellingRegistrationModal');
+    if (!el || typeof bootstrap === 'undefined') return;
+    var modal = bootstrap.Modal.getInstance(el);
+    if (!modal) {
+        modal = new bootstrap.Modal(el);
+    }
+    var formWrap = document.getElementById('counsellingFormWrap');
+    var successWrap = document.getElementById('counsellingSuccessWrap');
+    if (formWrap) formWrap.classList.remove('d-none');
+    if (successWrap) successWrap.classList.add('d-none');
+    var form = document.getElementById('counsellingRegForm');
+    if (form) form.reset();
+    var errBox = document.getElementById('counsellingFormErrors');
+    if (errBox) { errBox.classList.add('d-none'); errBox.textContent = ''; }
+    modal.show();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('counsellingRegForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('counsellingSubmitBtn');
+        var errBox = document.getElementById('counsellingFormErrors');
+        if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+        if (errBox) { errBox.classList.add('d-none'); errBox.textContent = ''; }
+        var fd = new FormData(form);
+        fetch("{% url 'notes:engineering_counselling_register' %}", {
+            method: 'POST',
+            body: fd,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+        .then(function (res) {
+            if (res.ok && res.data.success) {
+                document.getElementById('counsellingFormWrap').classList.add('d-none');
+                var successWrap = document.getElementById('counsellingSuccessWrap');
+                var msgEl = document.getElementById('counsellingSuccessMessage');
+                if (msgEl) msgEl.textContent = res.data.message;
+                successWrap.classList.remove('d-none');
+                return;
+            }
+            var errors = res.data.errors || {};
+            var lines = [];
+            Object.keys(errors).forEach(function (k) {
+                (errors[k] || []).forEach(function (m) { lines.push(m); });
+            });
+            if (errBox) {
+                errBox.textContent = lines.join(' ') || 'Please check the form and try again.';
+                errBox.classList.remove('d-none');
+            }
+        })
+        .catch(function () {
+            if (errBox) {
+                errBox.textContent = 'Something went wrong. Please try again.';
+                errBox.classList.remove('d-none');
+            }
+        })
+        .finally(function () {
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = 'Submit registration';
+            }
+        });
+    });
 });
 </script>
 {% endblock %}
@@ -798,6 +1138,30 @@ window.addEventListener('load', function() {
 </div>
 <!-- Professional White & Green Hero Section End -->
 
+<!-- Engineering Admission Counselling Banner -->
+<div class="container-xxl pb-2">
+    <div class="container">
+        <div class="counselling-home-banner wow fadeInUp" data-wow-delay="0.1s">
+            <div class="counselling-home-banner-inner">
+                <button type="button" class="counselling-poster-btn" onclick="openCounsellingModal()" aria-label="Open counselling registration">
+                    <img src="{% static 'img/engineering_counselling_poster.jpeg' %}?v=20260522" alt="Engineering Admission Counselling 2026" class="counselling-poster-sharp">
+                </button>
+                <div class="counselling-home-copy">
+                    <span class="popup-admissions-badge">Admissions Open 2026</span>
+                    <h2 class="text-white">Engineering Admission Counselling 2026</h2>
+                    <p>Expert guidance for branch selection, college selection, and admission process across Pune, Mumbai, Nagpur, Bangalore, and more.</p>
+                    <button type="button" class="btn btn-light rounded-pill px-4 py-2 fw-bold me-2 mb-2" onclick="openCounsellingModal()">
+                        Book Counselling Session
+                    </button>
+                    <a href="{% url 'notes:counselling_registration' %}" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold mb-2">
+                        Register online
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Features Section Start -->
 <div class="container-xxl pt-3 pb-5 features-section">
     <div class="container">
@@ -1029,19 +1393,24 @@ window.addEventListener('load', function() {
     filter: drop-shadow(0 2px 4px rgba(0, 168, 107, 0.2));
 }
 
-/* Mobile: show only one main heading line */
+/* Mobile: compact header, keep section readable */
 @media (max-width: 575.98px) {
-    .features-header { margin-bottom: 18px !important; }
-    .features-title,
-    .features-subtitle { display: none !important; }
+    .features-header { margin-bottom: 1.25rem !important; }
     .features-kicker {
-        font-size: 1.15rem !important;
-        letter-spacing: 0.5px !important;
-        margin-bottom: 0 !important;
-        text-transform: none !important;
-        color: #1a1a2e !important;
+        font-size: 0.8rem !important;
+        letter-spacing: 0.6px !important;
+        margin-bottom: 0.35rem !important;
+        color: #00A86B !important;
     }
     .features-heading-icon { width: 22px; height: 22px; }
+    .features-title {
+        font-size: 1.35rem !important;
+        margin-bottom: 0.35rem !important;
+    }
+    .features-subtitle {
+        font-size: 0.88rem !important;
+        margin-bottom: 1rem !important;
+    }
 }
 
 .feature-card {
@@ -1094,6 +1463,135 @@ window.addEventListener('load', function() {
 
 .feature-card:hover .feature-description {
     color: #6c757d;
+}
+
+/* Homepage scrolling features marquee */
+.scrolling-features-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 4px 0 12px;
+}
+
+.scrolling-features-container {
+    overflow: hidden;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.scrolling-features-track {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    width: max-content;
+    will-change: transform;
+    animation: featureMarquee var(--feature-marquee-duration, 28s) linear infinite;
+}
+
+.scrolling-features-container.is-paused .scrolling-features-track {
+    animation-play-state: paused;
+}
+
+@keyframes featureMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-1 * var(--feature-marquee-distance, 800px))); }
+}
+
+.scrolling-feature-card {
+    flex: 0 0 auto;
+    width: 210px;
+    min-width: 210px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(0, 168, 107, 0.14);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.scrolling-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 168, 107, 0.16);
+    border-color: rgba(0, 168, 107, 0.35);
+}
+
+.scrolling-feature-card a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    min-height: 100%;
+    color: inherit;
+}
+
+.scrolling-feature-card a:hover {
+    color: inherit;
+}
+
+.scrolling-feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00A86B 0%, #00B4D8 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    box-shadow: 0 6px 14px rgba(0, 168, 107, 0.25);
+    flex-shrink: 0;
+}
+
+.scrolling-feature-content {
+    width: 100%;
+}
+
+.scrolling-feature-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+}
+
+.scrolling-feature-card:hover .scrolling-feature-title {
+    color: #00A86B;
+}
+
+.features-kicker {
+    font-weight: 700;
+    gap: 0.5rem !important;
+}
+
+.features-title {
+    color: #1a1a2e;
+    font-weight: 800;
+}
+
+.features-subtitle {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 575.98px) {
+    .scrolling-feature-card {
+        width: 170px;
+        min-width: 170px;
+        padding: 14px 12px;
+    }
+    .scrolling-feature-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.15rem;
+    }
+    .scrolling-feature-title {
+        font-size: 0.85rem;
+    }
 }
 </style>
 
@@ -2053,24 +2551,38 @@ window.addEventListener('load', function() {
 </div>
 <!-- Contact Section End -->
 
-<!-- Homepage popup slider: scholarship (2s) then workshop poster (3s), cycling -->
+<!-- Homepage popup slider: scholarship (2s) then counselling (3s), cycling -->
 <div id="popup" class="workshop-popup" role="dialog" aria-modal="true" aria-label="Announcements">
     <div class="workshop-popup-content">
-        <span class="close-btn" onclick="closePopup()" aria-label="Close">&times;</span>
         <div class="popup-slide popup-slide-scholarship is-active" data-slide="0">
-            <a href="{% url 'notes:scholarship_registration' %}" class="popup-poster-link">
-                <img src="{% static 'img/Untitled design (1)_page-0001.jpg' %}" alt="Scholarship program" class="workshop-popup-poster">
-            </a>
-            <a href="{% url 'notes:scholarship_registration' %}" class="scholarship-popup-register-btn">Register</a>
+            <div class="popup-card-clean">
+                <span class="close-btn" onclick="closePopup()" aria-label="Close">&times;</span>
+                <a href="{% url 'notes:scholarship_registration' %}" class="popup-poster-link">
+                    <img src="{% static 'img/Untitled design (1)_page-0001.jpg' %}" alt="Scholarship program" class="workshop-popup-poster">
+                </a>
+                <div class="popup-actions">
+                    <a href="{% url 'notes:scholarship_registration' %}" class="scholarship-popup-register-btn">Register</a>
+                </div>
+            </div>
         </div>
-        <div class="popup-slide popup-slide-workshop" data-slide="1">
-            <a href="{% url 'notes:workshop_registration' %}" class="popup-poster-link">
-                <img src="{% static 'img/workshop_popup.png' %}" alt="DPRAMP Technology Workshop - 31 May 2026, Nagpur" class="workshop-popup-poster">
-            </a>
-            <div class="popup-workshop-date-badge">31 May 2026</div>
+        <div class="popup-slide popup-slide-counselling" data-slide="1">
+            <div class="popup-card-clean">
+                <span class="close-btn" onclick="closePopup()" aria-label="Close">&times;</span>
+                <button type="button" class="popup-poster-link border-0 p-0 w-100 bg-transparent" onclick="openCounsellingModal()" aria-label="Open counselling registration">
+                    <img src="{% static 'img/engineering_counselling_poster.jpeg' %}?v=20260522" alt="Engineering Admission Counselling 2026" class="workshop-popup-poster counselling-poster-sharp">
+                </button>
+                <div class="popup-actions">
+                    <button type="button" class="btn-counselling-popup" onclick="openCounsellingModal()">Book Counselling</button>
+                    <a href="{{ counselling_whatsapp_url }}" class="btn-counselling-whatsapp" target="_blank" rel="noopener noreferrer" title="Contact on WhatsApp">
+                        <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+{% include 'partials/counselling_registration_modal.html' %}
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
