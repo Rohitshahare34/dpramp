@@ -28,6 +28,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['dpramp.com', 'www.dpramp.com', '127.0.0.1', 'localhost', 'testserver']
 
+# Required for HTTPS POST (counselling form AJAX) — missing this causes 403 Forbidden
+CSRF_TRUSTED_ORIGINS = [
+    'https://dpramp.com',
+    'https://www.dpramp.com',
+    'http://dpramp.com',
+    'http://www.dpramp.com',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+
 
 # Application definition
 

@@ -474,6 +474,13 @@ function openCounsellingModal() {
     modal.show();
 }
 
+function getCsrfToken() {
+    var input = document.querySelector('#counsellingRegForm input[name="csrfmiddlewaretoken"]');
+    if (input && input.value) return input.value;
+    var match = document.cookie.match(/csrftoken=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : '';
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('counsellingRegForm');
     if (!form) return;
@@ -484,10 +491,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
         if (errBox) { errBox.classList.add('d-none'); errBox.textContent = ''; }
         var fd = new FormData(form);
+        var csrf = getCsrfToken();
         fetch("{% url 'notes:engineering_counselling_register' %}", {
             method: 'POST',
             body: fd,
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrf
+            },
+            credentials: 'same-origin'
         })
         .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
         .then(function (res) {
