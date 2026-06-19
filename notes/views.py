@@ -989,7 +989,7 @@ def download_hall_ticket(request, registration_id):
     p.drawString(46, info_y - 18, "Programs: IIT-JEE | NEET | CET | XI-XII Science")
     p.drawString(46, info_y - 33, "Branch 1: IT Park, Gayatri Nagar")
     p.drawString(300, info_y - 33, "Branch 2: Nandanvan, Ganesh Nagar")
-    p.drawString(46, info_y - 48, "Helpdesk: +91 9322859474 / +91 9673248000")
+    p.drawString(46, info_y - 48, "Helpdesk: +91 9322859474 / +91 9359919779")
 
     # Instructions block
     inst_y = info_y - 82

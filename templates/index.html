@@ -48,7 +48,6 @@
     border-radius: 12px;
     background: transparent;
     box-shadow: 0 10px 36px rgba(0, 0, 0, 0.35);
-    vertical-align: top;
     image-rendering: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -1151,6 +1150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Professional White & Green Hero Section End -->
 
 <!-- Engineering Admission Counselling Banner -->
+{% comment %}
 <div class="container-xxl pb-2">
     <div class="container">
         <div class="counselling-home-banner wow fadeInUp" data-wow-delay="0.1s">
@@ -1173,6 +1173,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     </div>
 </div>
+{% endcomment %}
 
 <!-- Features Section Start -->
 <div class="container-xxl pt-3 pb-5 features-section">
@@ -1819,7 +1820,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
                                 <i class="fas fa-info-circle"></i>
                             </a>
-                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:'Drone'|urlencode }}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%3A%0A%0ADrone%3A%20{{ drone.name|urlencode }}%0APrice%3A%20Rs.{{ drone.price|urlencode }}%0ACategory%3A%20{{ drone.category|default:'Drone'|urlencode }}%0ADescription%3A%20{{ drone.description|truncatewords:10|urlencode }}%0A%0APlease%20send%20more%20details%20and%20photos%20of%20this%20drone.%0A%0AThank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1846,7 +1847,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
                                 <i class="fas fa-info-circle"></i>
                             </a>
-                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1872,7 +1873,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
                                 <i class="fas fa-info-circle"></i>
                             </a>
-                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1898,7 +1899,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
                                 <i class="fas fa-info-circle"></i>
                             </a>
-                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1924,7 +1925,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <a href="#" class="btn btn-primary btn-sm rounded-pill" title="View Details" onclick="alert('Drone details coming soon!'); return false;">
                                 <i class="fas fa-info-circle"></i>
                             </a>
-                            <a href="https://wa.me/919673248000?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
+                            <a href="https://wa.me/919359919779?text=Hi%20DPRAMP%2C%0A%0AI%20want%20to%20enquire%20about%20your%20educational%20drone%20kits.%0A%0APlease%20send%20more%20details%20and%20photos.%20Thank%20you!" target="_blank" class="btn btn-success btn-sm rounded-pill" title="WhatsApp Inquiry">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -2564,6 +2565,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Contact Section End -->
 
 <!-- Homepage popup slider: scholarship (2s) then counselling (3s), cycling -->
+{% comment %}
 <div id="popup" class="workshop-popup" role="dialog" aria-modal="true" aria-label="Announcements">
     <div class="workshop-popup-content">
         <div class="popup-slide popup-slide-scholarship is-active" data-slide="0">
@@ -2593,6 +2595,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     </div>
 </div>
+{% endcomment %}
 
 {% include 'partials/counselling_registration_modal.html' %}
 

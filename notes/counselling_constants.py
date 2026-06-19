@@ -2,7 +2,7 @@
 
 from urllib.parse import quote
 
-COUNSELLING_WHATSAPP_NUMBER = "919673248000"
+COUNSELLING_WHATSAPP_NUMBER = "919359919779"
 COUNSELLING_WHATSAPP_MESSAGE = (
     "Hi DPRAMP, I need Engineering Admission Counselling guidance for 2026."
 )
