@@ -7,7 +7,7 @@
 {% if drone.image %}
 <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="background: linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.26) 55%, rgba(0,0,0,0.48) 100%), url('{{ drone.image.url }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 {% else %}
-<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="background: linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.26) 55%, rgba(0,0,0,0.48) 100%), url('{% static 'img/rough_imgs/service-2-2.png' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s" style="background: linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.26) 55%, rgba(0,0,0,0.48) 100%), url(&quot;{% static 'img/rough_imgs/service-2-2.png' %}&quot;); background-size: cover; background-position: center; background-repeat: no-repeat;">
 {% endif %}
     <div class="container">
         <h1 class="display-4 mb-3 animated slideInDown">{{ drone.name }}</h1>
